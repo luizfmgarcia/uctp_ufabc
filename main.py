@@ -1,3 +1,16 @@
+class Prof:
+        def __init__(self, name, room, research, charge):
+
+class Theme:
+        def __init__(self, days_hours, local):
+
+class Solution:
+
+class Feasible(solution):
+
+class Infeasible(solution):
+
+
 # Create the first generation of solutions
 def start:
 
