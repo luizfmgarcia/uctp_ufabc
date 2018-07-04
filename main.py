@@ -3,7 +3,7 @@ class Prof:
         def __init__(self, name, local, research, charge):
                 self._name = name
                 self._local = local
-                self._research = research
+                #self._research = research
                 self._charge = charge
 
 # Keep the details of a subject
