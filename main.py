@@ -1,16 +1,19 @@
+# creditos defaul anual = 18
+# filtrar disciplinas graduação e computação apenas
 # Keep the details of a professor
 class Prof:
-    def __init__(self, name, local, research, charge):
+    def __init__(self, name, shift, charge):
         self.name = name
-        self.local = local
+        self. shift = shift
         #self._research = research
         self.charge = charge
 
 # Keep the details of a subject
 class Subject:
-    def __init__(self, daysHours, local, charge):
-        self.daysHours = daysHours
-        self.local = local
+    def __init__(self, name, shift, campus, charge):
+        self.name = name
+        self.shift = shift
+        self.campus = campus
         self.charge = charge
 
 # Keep the details of a Candidate
@@ -19,7 +22,7 @@ class Candidate:
         self.candidate = []
         self.relation = []
 
-    def __insert__(self, Prof, Subject):
+    def insert(self, Prof, Subject):
         self.relation.add(Prof, Subject)
         self.candidate.add(self._relation)
                 
@@ -29,13 +32,13 @@ class Solutions:
         self.listCandidates = []
         self.pop = None
     
-    def __feas__(self):
+    def feas(self):
         self._pop = 'f'
 
-    def __infeas__(self):
+    def infeas(self):
         self._pop = 'i'
     
-    def __resetPop__(self):
+    def resetPop(self):
         self._pop = None
                 
 ### Assign the type Feasible for a solution and gives an especific function
@@ -50,9 +53,9 @@ class Solutions:
 
 class UCTP:
     # Create the first generation of solutions
-    def start():
+    def start(self, prof, subj):
         # Read the data of professors and subjects
-        return
+        return prof, subj
     
     # Separation of solutions into 2 populations
     def two_pop():
@@ -86,20 +89,25 @@ class UCTP:
     def stop():
         pass
     
-    # main
-    def main():
-        # Random operator
-        from random import Random
-        rand = Random()
-        # Count of iterations of work
-        t = 0;
-        # Base List of Professors and Subjects
-        prof = list()
-        subj = list()
-        # Start of the works
-        self.start()
-        # Main work - iterations to find a solution
-        while(t!=100):
-             t = t+1
-        print("FIM")
+# main
+class main:
+    # to access methods
+    uctp = UCTP()
+    # Random operator
+    from random import Random
+    rand = Random()
+    # Number of iterations to get a solution
+    t = 0;
+    # Base Lists of Professors and Subjects
+    prof = []
+    subj = []
+    # Start of the works
+    prof, subj = uctp.start(prof, subj)
+    # Main work - iterations to find a solution
+    print("Starting hard work...")
+    while(t!=100):
+         
+         t = t+1
+         print "Iteration:", t
+    print("FIM")
     
