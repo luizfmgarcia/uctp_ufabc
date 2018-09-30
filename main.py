@@ -1,10 +1,11 @@
-# creditos defaul anual = 18
-# filtrar disciplinas graduação e computação apenas
+# creditos defaul anual sera 18
+# filtrar disciplinas graduacao e computacao apenas
+
 # Keep the details of a professor
 class Prof:
     def __init__(self, name, shift, charge):
         self.name = name
-        self. shift = shift
+        self.shift = shift
         #self._research = research
         self.charge = charge
 
@@ -52,11 +53,33 @@ class Solutions:
 ##                self._pop = "i"
 
 class UCTP:
-    # Create the first generation of solutions
-    def start(self, prof, subj):
-        # Read the data of professors and subjects
+    # Get all data to work
+    def getDatas(self, prof, subj):
+        import csv
+        
+        # Read the data of professors and subjects and create the respective objects
+        print("Getting datas of Professors...")
+        with open('professors.csv') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=';')
+            for row in spamreader:
+                print ', '.join(row)
+        
+        print("Setting Professors...")        
+        
+        print("Getting datas of Subjects...")
+        with open('subjects.csv') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=';')
+            for row in spamreader:
+                print ', '.join(row)
+        
+        print("Setting Subjects...")        
+        
         return prof, subj
     
+    # Create the first generation of solutions
+    def start(self, prof, subj):
+        pass
+
     # Separation of solutions into 2 populations
     def two_pop():
         pass
@@ -102,7 +125,7 @@ class main:
     prof = []
     subj = []
     # Start of the works
-    prof, subj = uctp.start(prof, subj)
+    prof, subj = uctp.getDatas(prof, subj)
     # Main work - iterations to find a solution
     print("Starting hard work...")
     while(t!=100):
