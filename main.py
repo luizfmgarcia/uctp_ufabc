@@ -1,19 +1,30 @@
-# creditos defaul anual sera 18
-# filtrar disciplinas graduacao e computacao apenas
+# filter subjects graduation and computing only;
+# So....level = 'G' and code = {'MCTA', 'MCZA'} 'BCM'?, 'MCTB'?;
+# Code where 2 first letters (period 'D' or 'N', class 'A' or 'B' etc);
+# and maybe one number before the code itself of subjects;
+# Example: DA1MCTA0001;
+# Every professor must have name, period and charge -> error if not;
+# Every subject must have level, code, name, quadri, period, campus and charge -> error if not;
+# Transform every letter to Uppercase;
 
 # Keep the details of a professor
 class Prof:
-    def __init__(self, name, shift, charge):
+    def __init__(self, name, period, charge):
         self.name = name
-        self.shift = shift
-        #self._research = research
+        self.period = period
+        #self.prefSubject = prefSubject
+        #self.research = research
+        #self.quadriSabbath = quadriSabbath
         self.charge = charge
 
 # Keep the details of a subject
 class Subject:
-    def __init__(self, name, shift, campus, charge):
+    def __init__(self, level, code, name, quadri, period, campus, charge):
+        self.level = level
+        self.code = code
         self.name = name
-        self.shift = shift
+        self.quadri = quadri
+        self.period = period
         self.campus = campus
         self.charge = charge
 
@@ -33,47 +44,41 @@ class Solutions:
         self.listCandidates = []
         self.pop = None
     
-    def feas(self):
+    def isFeas(self):
         self._pop = 'f'
 
-    def infeas(self):
+    def isInfeas(self):
         self._pop = 'i'
     
     def resetPop(self):
         self._pop = None
-                
-### Assign the type Feasible for a solution and gives an especific function
-##class Feasible(solution):
-##        def __init__(self):
-##                self._pop = "f"
-##
-### Assign the type Infeasible for a solution and gives an especific function
-##class Infeasible(solution):
-##        def __init__(self):
-##                self._pop = "i"
 
 class UCTP:
     # Get all data to work
-    def getDatas(self, prof, subj):
+    def getData(self, prof, subj):
+        # Read the data of professors and subjects and create the respective objects
         import csv
         
-        # Read the data of professors and subjects and create the respective objects
         print("Getting datas of Professors...")
         with open('professors.csv') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=';')
+            print("Setting Professors...")
             for row in spamreader:
-                print ', '.join(row)
-        
-        print("Setting Professors...")        
+                datas = [row[0].upper(), row[1].upper(), row[2].upper()]
+                if(not datas.__contains__('')):
+                    prof.append(Prof(row[0], row[1], row[2]))
+                    print datas
         
         print("Getting datas of Subjects...")
         with open('subjects.csv') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=';')
+            print("Setting Subjects...")
             for row in spamreader:
-                print ', '.join(row)
-        
-        print("Setting Subjects...")        
-        
+                datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper()]
+                if(not datas.__contains__('') and row[0] == 'G' and (row[1].c'MCTA' or 'MCZA')):
+                    subj.append(Subject(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
+                    print datas       
+                
         return prof, subj
     
     # Create the first generation of solutions
@@ -125,7 +130,7 @@ class main:
     prof = []
     subj = []
     # Start of the works
-    prof, subj = uctp.getDatas(prof, subj)
+    prof, subj = uctp.getData(prof, subj)
     # Main work - iterations to find a solution
     print("Starting hard work...")
     while(t!=100):
