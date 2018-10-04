@@ -56,26 +56,31 @@ class Solutions:
 class UCTP:
     # Get all data to work
     def getData(self, prof, subj):
+        # Remove accents of datas
+        from unicodedata import normalize 
+        def remove_accent(txt):
+            return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
+        
         # Read the data of professors and subjects and create the respective objects
         import csv
-        
         print("Getting datas of Professors...")
         with open('professors.csv') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=';')
             print("Setting Professors...")
             for row in spamreader:
-                datas = [row[0].upper(), row[1].upper(), row[2].upper()]
+                datas = [remove_accent(row[0].upper()), remove_accent(row[1].upper()), remove_accent(row[2].upper())]
                 if(not datas.__contains__('')):
                     prof.append(Prof(row[0], row[1], row[2]))
                     print datas
         
+        print(" ")
         print("Getting datas of Subjects...")
         with open('subjects.csv') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=';')
             print("Setting Subjects...")
             for row in spamreader:
                 datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper()]
-                if(not datas.__contains__('') and row[0] == 'G' and (row[1].c'MCTA' or 'MCZA')):
+                if(not datas.__contains__('') and row[0] == 'G' and ('MCTA' in row[1] or 'MCZA' in row[1])):
                     subj.append(Subject(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
                     print datas       
                 
@@ -132,6 +137,7 @@ class main:
     # Start of the works
     prof, subj = uctp.getData(prof, subj)
     # Main work - iterations to find a solution
+    print(" ")
     print("Starting hard work...")
     while(t!=100):
          
