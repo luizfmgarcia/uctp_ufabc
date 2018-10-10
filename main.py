@@ -6,7 +6,8 @@
 # Every professor must have name, period and charge -> error if not;
 # Every subject must have level, code, name, quadri, period, campus and charge -> error if not;
 # Transform every letter to Uppercase;
-
+from random import Random
+from random import randrange
 # Keep the details of a professor
 class Prof:
     def __init__(self, name, period, charge):
@@ -31,17 +32,7 @@ class Subject:
 # Keep the details of a Candidate
 class Candidate:
     def __init__(self):
-        self.candidate = []
-        self.relation = []
-
-    def insert(self, Prof, Subject):
-        self.relation.add(Prof, Subject)
-        self.candidate.add(self._relation)
-                
-# Keep all Candidates obtained during a run of the algorithm
-class Solutions:
-    def __init__(self):
-        self.listCandidates = []
+        self.listRelations = []
         self.pop = None
     
     def isFeas(self):
@@ -52,14 +43,32 @@ class Solutions:
     
     def resetPop(self):
         self._pop = None
+        
+    def insert(self, Prof, Subject):
+        relation = [Prof, Subject]
+        self.listRelations.add(relation)
+        
+    def remove(self, relation):
+        self.listRelations.remove(relation)    
+                
+# Keep all Candidates obtained during a run of the algorithm
+class Solutions:
+    def __init__(self):
+        self.listCandidates = []
+    
+    def insert(self, candidate):
+        self.listCandidates.add(candidate)
+        
+    def remove(self, candidate):
+        self.listCandidates.remove(candidate)        
 
 class UCTP:
     # Get all data to work
     def getData(self, prof, subj):
         # Remove accents of datas
-        from unicodedata import normalize 
-        def remove_accent(txt):
-            return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
+        #from unicodedata import normalize 
+        #def remove_accent(txt):
+        #    return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
         
         # Read the data of professors and subjects and create the respective objects
         import csv
@@ -68,9 +77,9 @@ class UCTP:
             spamreader = csv.reader(csvfile, delimiter=';')
             print("Setting Professors...")
             for row in spamreader:
-                datas = [remove_accent(row[0].upper()), remove_accent(row[1].upper()), remove_accent(row[2].upper())]
+                datas = [row[0].upper(), row[1].upper(), row[2].upper()]
                 if(not datas.__contains__('')):
-                    prof.append(Prof(row[0], row[1], row[2]))
+                    prof.append(Prof(datas[0], datas[1], datas[2]))
                     print datas
         
         print(" ")
@@ -81,17 +90,24 @@ class UCTP:
             for row in spamreader:
                 datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper()]
                 if(not datas.__contains__('') and row[0] == 'G' and ('MCTA' in row[1] or 'MCZA' in row[1])):
-                    subj.append(Subject(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
+                    subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6]))
                     print datas       
                 
         return prof, subj
     
     # Create the first generation of solutions
-    def start(self, prof, subj):
-        pass
+    def start(self, solutions, prof, subj):
+        # number of initial candidates
+        num = 50
+        n = 0
+        while(n!=num):
+            candidate = Candidate()
+            print randrange(len(prof))
+            n = n+1
+        return solutions
 
     # Separation of solutions into 2 populations
-    def two_pop():
+    def two_pop(self, solutions):
         pass
     
     # Detect the violation of a restriction into a solution
@@ -102,12 +118,12 @@ class UCTP:
     def calc_fit():
         pass
     
-    # Make a random selection into the solutions
-    def selection():
-        pass
-    
     # Generate new solutions from the actual population
     def new_generation():
+        pass
+    
+    # Make a random selection into the solutions
+    def selection():
         pass
         
     # Make a mutation into a solution
@@ -127,8 +143,8 @@ class main:
     # to access methods
     uctp = UCTP()
     # Random operator
-    from random import Random
     rand = Random()
+    randrange(10)
     # Number of iterations to get a solution
     t = 0;
     # Base Lists of Professors and Subjects
@@ -136,11 +152,14 @@ class main:
     subj = []
     # Start of the works
     prof, subj = uctp.getData(prof, subj)
+    solutions = Solutions()
+    solutions = uctp.start(solutions, prof, subj)
+    
     # Main work - iterations to find a solution
     print(" ")
     print("Starting hard work...")
     while(t!=100):
-         
+             
          t = t+1
          print "Iteration:", t
     print("FIM")
