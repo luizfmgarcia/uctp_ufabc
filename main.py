@@ -1,3 +1,8 @@
+# PERGUNTAS:
+# 1.Podem haver materias repetidas? Devo tratalas?
+# 2.Cuidar das conexoes como numeros (e procurar nas listas) ou ponteiro?
+# 3.Cuidar para ter todos os professores? Pode acontecer de um nao entrar?
+
 # filter subjects graduation and computing only;
 # So....level = 'G' and code = {'MCTA', 'MCZA'} 'BCM'?, 'MCTB'?;
 # Code where 2 first letters (period 'D' or 'N', class 'A' or 'B' etc);
@@ -44,9 +49,9 @@ class Candidate:
     def resetPop(self):
         self._pop = None
         
-    def insert(self, Prof, Subject):
-        relation = [Prof, Subject]
-        self.listRelations.add(relation)
+    def insert(self, Subject, Prof):
+        relation = [Subject, Prof]
+        self.listRelations.append(relation)
         
     def remove(self, relation):
         self.listRelations.remove(relation)    
@@ -57,14 +62,14 @@ class Solutions:
         self.listCandidates = []
     
     def insert(self, candidate):
-        self.listCandidates.add(candidate)
+        self.listCandidates.append(candidate)
         
     def remove(self, candidate):
         self.listCandidates.remove(candidate)        
 
 class UCTP:
     # Get all data to work
-    def getData(self, prof, subj):
+    def getData(self, subj, prof):
         # Remove accents of datas
         #from unicodedata import normalize 
         #def remove_accent(txt):
@@ -93,17 +98,21 @@ class UCTP:
                     subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6]))
                     print datas       
                 
-        return prof, subj
+        return subj, prof
     
     # Create the first generation of solutions
-    def start(self, solutions, prof, subj):
+    def start(self, solutions, subj, prof):
         # number of initial candidates
         num = 50
+        
         n = 0
         while(n!=num):
             candidate = Candidate()
-            print randrange(len(prof))
+            for sub in subj:
+                candidate.insert(sub, prof[randrange(len(prof))])
+            solutions.insert(candidate)
             n = n+1
+            print solutions
         return solutions
 
     # Separation of solutions into 2 populations
@@ -151,9 +160,9 @@ class main:
     prof = []
     subj = []
     # Start of the works
-    prof, subj = uctp.getData(prof, subj)
+    subj, prof = uctp.getData(subj, prof)
     solutions = Solutions()
-    solutions = uctp.start(solutions, prof, subj)
+    solutions = uctp.start(solutions, subj, prof)
     
     # Main work - iterations to find a solution
     print(" ")
