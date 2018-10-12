@@ -22,6 +22,9 @@ class Prof:
         #self.research = research
         #self.quadriSabbath = quadriSabbath
         self.charge = charge
+     
+    def get(self):
+        return self.name, self.period, self.charge
 
 # Keep the details of a subject
 class Subject:
@@ -33,12 +36,18 @@ class Subject:
         self.period = period
         self.campus = campus
         self.charge = charge
+    
+    def get(self):
+        return self.level, self.code, self.name, self.quadri, self.period, self.charge    
 
 # Keep the details of a Candidate
 class Candidate:
     def __init__(self):
         self.listRelations = []
         self.pop = None
+    
+    def get(self):
+        return self.listRelations
     
     def isFeas(self):
         self._pop = 'f'
@@ -60,6 +69,9 @@ class Candidate:
 class Solutions:
     def __init__(self):
         self.listCandidates = []
+    
+    def get(self):
+        return self.listCandidates
     
     def insert(self, candidate):
         self.listCandidates.append(candidate)
@@ -105,6 +117,7 @@ class UCTP:
         # number of initial candidates
         num = 50
         
+        print("Creating first generation...")
         n = 0
         while(n!=num):
             candidate = Candidate()
@@ -112,7 +125,10 @@ class UCTP:
                 candidate.insert(sub, prof[randrange(len(prof))])
             solutions.insert(candidate)
             n = n+1
-            print solutions
+            
+        for cand in solutions.get():
+            for 
+                print solutions
         return solutions
 
     # Separation of solutions into 2 populations
