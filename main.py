@@ -56,10 +56,10 @@ class Candidate:
     def get(self):
         return self.listRelations
     
-    def isFeas(self):
+    def setFeas(self):
         self._pop = 'f'
 
-    def isInfeas(self):
+    def setInfeas(self):
         self._pop = 'i'
         
     def getIF(self):
@@ -74,12 +74,16 @@ class Candidate:
     def getFitness(self): 
         return self.fitness
             
-    def insert(self, Subject, Prof):
+    def add(self, Subject, Prof):
         relation = [Subject, Prof]
         self.listRelations.append(relation)
         
     def remove(self, relation):
-        self.listRelations.remove(relation)    
+        self.listRelations.remove(relation)
+    
+    def update(self, old, new):
+        index = self.listRelations.pop(old)
+        self.listRelations.insert(index, new)        
                 
 # Keep all Candidates obtained during a run of the algorithm
 class Solutions:
@@ -89,11 +93,15 @@ class Solutions:
     def get(self):
         return self.listCandidates
     
-    def insert(self, candidate):
+    def add(self, candidate):
         self.listCandidates.append(candidate)
         
     def remove(self, candidate):
-        self.listCandidates.remove(candidate)        
+        self.listCandidates.remove(candidate)
+    
+    def update(self, old, new):
+        index = self.listCandidates.pop(old)
+        self.listCandidates.insert(index, new)            
 
 class UCTP:
     
@@ -188,7 +196,7 @@ class UCTP:
                 if(not datas.__contains__('')):
                     prof.append(Prof(datas[0], datas[1], datas[2], datas[3]))
                     print datas
-            csvfile.close() 
+        csvfile.close() 
             
         print(" ")
         print "Getting datas of Subjects...",
@@ -200,7 +208,7 @@ class UCTP:
                 if(not datas.__contains__('') and row[0] == 'G' and ('MCTA' in row[1] or 'MCZA' in row[1])):
                     subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6]))
                     print datas       
-            csvfile.close()
+        csvfile.close()
             
         print ("Data Obtained!")        
         return subj, prof
@@ -212,8 +220,8 @@ class UCTP:
         while(n!=num):
             candidate = Candidate()
             for sub in subj:
-                candidate.insert(sub, prof[randrange(len(prof))])
-            solutions.insert(candidate)
+                candidate.add(sub, prof[randrange(len(prof))])
+            solutions.add(candidate)
             n = n+1
         print ("Created first generation!")    
         self.printAllCand(solutions)
@@ -223,15 +231,24 @@ class UCTP:
     # Separation of solutions into 2 populations
     def two_pop(self, solutions):
         for cand in solutions.get():
-            solutions.remove(cand)
-            cand = self.in_feasible(cand)
-            solutions.insert(cand)
+            newCand = self.in_feasible(cand)
+            solutions.update(cand, newCand)
         return solutions
     
     # Detect the violation of a restriction into a candidate
     def in_feasible(self, candidate):
         for s, p in candidate.get():
-            pass
+            sLevel, sCode, sName, sQuadri, sPeriod, sCharge = s.get()
+            pName, pPeriod, pCharge, pQuadriSabbath = p.get()
+            
+            if(('NEGOCI' not in pPeriod) and (pPeriod != sPeriod)):
+                candidate.setInfeas()
+                return candidate
+            elif(pQuadriSabbath == sQuadri):
+                candidate.setInfeas()
+                return candidate
+            else:
+                candidate.setFeas()    
         return candidate
     
     # Calculate the Fitness of the candidate
@@ -242,8 +259,8 @@ class UCTP:
             elif cand.getIF() is 'i':
                 pass
             else:
-                pass
-                #print "ERROR: solution is not in a population!"
+                print "ERROR: no Fitness, solution is not in a population!"
+            #solutions.update(cand, newCand)
         return solutions
     
     # Generate new solutions from the actual population
@@ -284,7 +301,7 @@ class main:
     num = 50
     # Min number of candidates in a generation
     min = 50
-    # max number of candidates in a generation
+    # Max number of candidates in a generation
     max = 100
     
     # Base Lists of Professors and Subjects
