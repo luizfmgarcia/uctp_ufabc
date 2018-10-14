@@ -21,16 +21,16 @@ import sys
 
 # Keep the details of a professor
 class Prof:
-    def __init__(self, name, period, charge):
+    def __init__(self, name, period, charge, quadriSabbath):
         self.name = name
         self.period = period
+        self.charge = charge
+        self.quadriSabbath = quadriSabbath
         #self.prefSubject = prefSubject
         #self.research = research
-        #self.quadriSabbath = quadriSabbath
-        self.charge = charge
      
     def get(self):
-        return self.name, self.period, self.charge
+        return self.name, self.period, self.charge, self.quadriSabbath
 
 # Keep the details of a subject
 class Subject:
@@ -117,7 +117,7 @@ class UCTP:
             outName = newDir + 'gen' +  str(num) + '_cand' +  str(i) + '.csv'
             with open(outName, 'wb') as csvfile:
                 spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-                spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge'])
+                spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge', 'pQuadriSabbath'])
                 for s, p in cand.get():
                     row = s.get() + p.get()
                     spamwriter.writerow(row)
@@ -184,9 +184,9 @@ class UCTP:
             spamreader = csv.reader(csvfile, delimiter=';')
             print "Setting Professors...",
             for row in spamreader:
-                datas = [row[0].upper(), row[1].upper(), row[2].upper()]
+                datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper()]
                 if(not datas.__contains__('')):
-                    prof.append(Prof(datas[0], datas[1], datas[2]))
+                    prof.append(Prof(datas[0], datas[1], datas[2], datas[3]))
                     print datas
             csvfile.close() 
             
@@ -247,24 +247,30 @@ class UCTP:
         return solutions
     
     # Generate new solutions from the actual population
-    def new_generation(self, solutions):
+    def new_generation(self, solutions, min, max):
         return solutions
     
     # Make a random selection into the solutions
-    def selection():
+    def selection(self):
         pass
         
     # Make a mutation into a solution
-    def mutation():
+    def mutation(self):
         pass
     
     # Make a crossover between two solutions    
-    def crossover():
+    def crossover(self):
         pass
     
     # Detect the stop condition
-    def stop():
-        pass
+    def stop(self, iteration, total, solutions):
+        for cand in solutions.get():
+            if cand.getFitness() >= 100:
+                return False
+        if(iteration == total):
+            return False
+        else:
+            return True
     
 # main
 class main:
@@ -272,10 +278,14 @@ class main:
     uctp = UCTP()
     solutions = Solutions()
     
-    # Number of iterations to get a solution
+    # Max Number of iterations to get a solution
     total = 100;
     # number of initial candidates (first generation)
     num = 50
+    # Min number of candidates in a generation
+    min = 50
+    # max number of candidates in a generation
+    max = 100
     
     # Base Lists of Professors and Subjects
     prof = []
@@ -293,11 +303,11 @@ class main:
     print(" ")
     print("Starting hard work...")
     t = 0;
-    while(t!=total):
+    while(uctp.stop(t, total, solutions)):
         print 'Iteration:', t+1
         solutions = uctp.two_pop(solutions)
         solutions = uctp.calc_fit(solutions)  
-        solutions = uctp.new_generation(solutions)      
+        solutions = uctp.new_generation(solutions, min, max)      
         t = t+1
         #uctp.outData(solutions, t)
         uctp.printFit(solutions)
