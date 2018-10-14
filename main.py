@@ -1,7 +1,7 @@
 # PERGUNTAS:
-# 1.Podem haver materias repetidas? Devo tratalas?
-# 2.Cuidar das conexoes como numeros (e procurar nas listas) ou ponteiro?
-# 3.Cuidar para ter todos os professores? Pode acontecer de um nao entrar?
+# 1.Podem haver materias repetidas vindas do arquivo? Devo tratalas? Removelas?
+# 2.Cuidar das conexoes como numeros (e procurar nas listas), ponteiro, copia dos objetos?
+# 3.Cuidar para ter todos os professores logo na primeira populacao? Pode acontecer de um nao entrar por ser randomico?
 
 # filter subjects graduation and computing only;
 # So....level = 'G' and code = {'MCTA', 'MCZA'} 'BCM'?, 'MCTB'?;
@@ -11,8 +11,14 @@
 # Every professor must have name, period and charge -> error if not;
 # Every subject must have level, code, name, quadri, period, campus and charge -> error if not;
 # Transform every letter to Uppercase;
+
+
 from random import Random
 from random import randrange
+import csv
+import os
+import sys
+
 # Keep the details of a professor
 class Prof:
     def __init__(self, name, period, charge):
@@ -45,6 +51,7 @@ class Candidate:
     def __init__(self):
         self.listRelations = []
         self.pop = None
+        self.fitness = 0
     
     def get(self):
         return self.listRelations
@@ -54,10 +61,19 @@ class Candidate:
 
     def isInfeas(self):
         self._pop = 'i'
-    
+        
+    def getIF(self):
+        return self.pop
+        
     def resetPop(self):
         self._pop = None
-        
+    
+    def setFitness(self, fit): 
+        self.fitness = fit   
+    
+    def getFitness(self): 
+        return self.fitness
+            
     def insert(self, Subject, Prof):
         relation = [Subject, Prof]
         self.listRelations.append(relation)
@@ -80,6 +96,51 @@ class Solutions:
         self.listCandidates.remove(candidate)        
 
 class UCTP:
+    
+    def outData(self, solutions, num):
+        print "Exporting data...."
+        
+        # get current directory and creating new 'generationsCSV' dir
+        currentDir = os.getcwd()
+        newDir = currentDir + os.sep + 'generationsCSV' + os.sep
+        if not os.path.exists(newDir):
+                os.makedirs(newDir)
+        
+        # In 'generationsCSV' dir, create new 'gen' dir
+        newDir = newDir + 'gen' + str(num) + os.sep
+        if not os.path.exists(newDir):
+            os.makedirs(newDir)
+        
+        i = 0
+        for cand in solutions.get():            
+            outName = newDir + 'gen' +  str(num) + '_cand' +  str(i) + '.csv'
+            with open(outName, 'wb') as csvfile:
+                spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+                spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge'])
+                for s, p in cand.get():
+                    row = s.get() + p.get()
+                    spamwriter.writerow(row)
+                spamwriter.writerow(" ")
+                if cand.getIF() is 'f':
+                    spamwriter.writerow(['Feasible', cand.getFitness()])
+                elif cand.getIF() is 'i':
+                    spamwriter.writerow(['Infeasible', cand.getFitness()])
+                else:
+                    spamwriter.writerow(['Error', cand.getFitness()])   
+            # print("Created: " + outName + "in" + newDir + "...")
+            i = i + 1
+            csvfile.close()
+        print "Exported data!"    
+        
+    def printOneCand(self, candidate):
+        for s, p in candidate.get():
+            print s.get(), p.get()
+    
+    def printAllCand(self, solutions):
+        for cand in solutions.get():
+            self.printOneCand(cand)
+            print ("--------")
+    
     # Get all data to work
     def getData(self, subj, prof):
         # Remove accents of datas
@@ -88,36 +149,35 @@ class UCTP:
         #    return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
         
         # Read the data of professors and subjects and create the respective objects
-        import csv
-        print("Getting datas of Professors...")
+        print "Getting datas of Professors...",
         with open('professors.csv') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=';')
-            print("Setting Professors...")
+            print "Setting Professors..."
             for row in spamreader:
                 datas = [row[0].upper(), row[1].upper(), row[2].upper()]
                 if(not datas.__contains__('')):
                     prof.append(Prof(datas[0], datas[1], datas[2]))
                     print datas
-        
+            csvfile.close() 
+            
         print(" ")
-        print("Getting datas of Subjects...")
+        print "Getting datas of Subjects...",
         with open('subjects.csv') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=';')
-            print("Setting Subjects...")
+            print "Setting Subjects..."
             for row in spamreader:
                 datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper()]
                 if(not datas.__contains__('') and row[0] == 'G' and ('MCTA' in row[1] or 'MCZA' in row[1])):
                     subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6]))
                     print datas       
-                
+            csvfile.close()
+            
+        print "Obtained data!"        
         return subj, prof
     
     # Create the first generation of solutions
-    def start(self, solutions, subj, prof):
-        # number of initial candidates
-        num = 50
-        
-        print("Creating first generation...")
+    def start(self, solutions, subj, prof, num):        
+        print "Creating first generation...",
         n = 0
         while(n!=num):
             candidate = Candidate()
@@ -125,27 +185,40 @@ class UCTP:
                 candidate.insert(sub, prof[randrange(len(prof))])
             solutions.insert(candidate)
             n = n+1
-            
-        for cand in solutions.get():
-            for 
-                print solutions
+        print "Created first generation!"    
+        self.printAllCand(solutions)
+           
         return solutions
 
     # Separation of solutions into 2 populations
     def two_pop(self, solutions):
-        pass
+        for cand in solutions.get():
+            solutions.remove(cand)
+            cand = self.in_feasible(cand)
+            solutions.insert(cand)
+        return solutions
     
-    # Detect the violation of a restriction into a solution
-    def in_feasible():
-        pass
+    # Detect the violation of a restriction into a candidate
+    def in_feasible(self, candidate):
+        for s, p in candidate.get():
+            pass
+        return candidate
     
-    # Calculate the Fitness of the solution
-    def calc_fit():
-        pass
+    # Calculate the Fitness of the candidate
+    def calc_fit(self, solutions):
+        for cand in solutions.get():
+            if cand.getIF() is 'f':
+                pass
+            elif cand.getIF() is 'i':
+                pass
+            else:
+                pass
+                #print "ERROR: solution is not in a population!"
+        return solutions
     
     # Generate new solutions from the actual population
-    def new_generation():
-        pass
+    def new_generation(self, solutions):
+        return solutions
     
     # Make a random selection into the solutions
     def selection():
@@ -165,27 +238,33 @@ class UCTP:
     
 # main
 class main:
-    # to access methods
+    # to access main methods and creating Solutions (List of Candidates)
     uctp = UCTP()
-    # Random operator
-    rand = Random()
-    randrange(10)
+    solutions = Solutions()
     # Number of iterations to get a solution
-    t = 0;
+    total = 100;
+    # number of initial candidates (first generation)
+    num = 50
     # Base Lists of Professors and Subjects
     prof = []
     subj = []
+    
     # Start of the works
     subj, prof = uctp.getData(subj, prof)
-    solutions = Solutions()
-    solutions = uctp.start(solutions, subj, prof)
+    # First generation
+    solutions = uctp.start(solutions, subj, prof, num)
     
     # Main work - iterations to find a solution
     print(" ")
     print("Starting hard work...")
-    while(t!=100):
-             
-         t = t+1
-         print "Iteration:", t
+    t = 0;
+    while(t!=total):
+        #uctp.outData(solutions, t)
+        print ("Iteration:", t+1, end="");
+        solutions = uctp.two_pop(solutions)
+        solutions = uctp.calc_fit(solutions)  
+        solutions = uctp.new_generation(solutions)      
+        t = t+1
+        print(" ")
     print("FIM")
     
