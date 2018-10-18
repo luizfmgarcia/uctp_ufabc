@@ -2,6 +2,7 @@
 # 1.Podem haver materias repetidas vindas do arquivo? Devo tratalas? Removelas?
 # 2.Cuidar das conexoes como numeros (e procurar nas listas), ponteiro, copia dos objetos?
 # 3.Cuidar para ter todos os professores logo na primeira populacao? Pode acontecer de um nao entrar por ser randomico?
+# 4.Colocar tmb no calculo de Fitness se ha ou nao todos os professores (deve haver todos)
 
 # filter subjects graduation and computing only;
 # So....level = 'G' and code = {'MCTA', 'MCZA'} 'BCM'?, 'MCTB'?;
@@ -12,6 +13,7 @@
 # Every subject must have level, code, name, quadri, period, campus and charge -> error if not;
 # Transform every letter to Uppercase;
 
+from copy import copy
 from random import Random
 from random import randrange
 import csv
@@ -244,8 +246,9 @@ class UCTP:
     def resetPop(self, solutions):
         newSol = Solutions()
         for cand in solutions.get():
-            cand.resetPop()
-            newSol.add(cand)
+            newCand = cand
+            newCand.resetPop()
+            newSol.add(newCand)      
         return newSol
     
     # Separation of solutions into 2 populations
@@ -288,27 +291,48 @@ class UCTP:
         return newSol
     
     # Generate new solutions from the actual population
-    def new_generation(self, solutions):
+    def new_generation(self, solutions, nMut, nCross):
+        newSol = Solutions()
+        i=0
+        for i in range(nMut):
+            list = solutions.get()
+            newCand = self.mutation(list[randrange(len(list))])
+            newSol.add(newCand)
+            
+        i=0
+        for i in range(nCross):
+            list = solutions.get()
+            newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
+            newSol.add(newCand1)
+            newSol.add(newCand2)
+        
+        for newCand in newSol.get():
+            solutions.add(newCand)
+            
         return solutions
             
     # Make a mutation into a solution
-    def mutation(self):
-        pass
+    def mutation(self, candidate):
+        relations = candidate.get()
+        return candidate
     
     # Make a crossover between two solutions    
-    def crossover(self):
-        pass
+    def crossover(self, cand1, cand2):
+        relation1 = cand1.get()
+        relation2 = cand2.get()
+        return cand1, cand2
     
     # Make a random selection into the solutions
     def selection(self, solutions, min, max):
-        newSol = solutions
-        while(len(newSol.get())>max):
-            list = newSol.get()
+        originalSize = len(solutions.get())
+        while(originalSize > max):
+            list = solutions.get()
             cand = list[randrange(len(list))]
-            newSol.remove(cand)
+            solutions.remove(cand)
+            originalSize = originalSize-1
             print "Candidate removed by Selection...."
             self.printOneFit(cand)
-        return newSol
+        return solutions
     
     # Detect the stop condition
     def stop(self, iteration, total, solutions):
@@ -330,10 +354,12 @@ class main:
     total = 100;
     # number of initial candidates (first generation)
     num = 50
-    # Min number of candidates in a generation
+    # Min and Max number of candidates in a generation
     min = 50
-    # Max number of candidates in a generation
     max = 100
+    # Number of Mutations and Crossover
+    nMut = 10
+    nCross = 10
     
     # Base Lists of Professors and Subjects
     prof = []
@@ -344,6 +370,8 @@ class main:
     
     # First generation
     solutions = uctp.start(solutions, subj, prof, num)
+    solutions = uctp.two_pop(solutions)
+    solutions = uctp.calc_fit(solutions)
     #uctp.outData(solutions, 0)
     uctp.printAllFit(solutions)
     
@@ -353,11 +381,11 @@ class main:
     t = 0;
     while(uctp.stop(t, total, solutions)):
         print 'Iteration:', t+1
+        solutions = uctp.new_generation(solutions, nMut, nCross)
+        solutions = uctp.selection(solutions, min, max) 
         solutions = uctp.resetPop(solutions)
         solutions = uctp.two_pop(solutions)
-        solutions = uctp.calc_fit(solutions)  
-        solutions = uctp.new_generation(solutions)
-        solutions = uctp.selection(solutions, min, max)      
+        solutions = uctp.calc_fit(solutions)     
         t = t+1
         #uctp.outData(solutions, t)
         uctp.printAllFit(solutions)
