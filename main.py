@@ -259,7 +259,7 @@ class UCTP:
             newSol.add(cand)
         return newSol
     
-    # Detect the violation of a restriction into a candidate
+    # Detect the violation of a Restriction into a candidate
     def in_feasible(self, candidate):
         for s, p in candidate.get():
             sLevel, sCode, sName, sQuadri, sPeriod, sCharge = s.get()
@@ -282,13 +282,19 @@ class UCTP:
         for cand in solutions.get():
             newCand = cand
             if newCand.getIF() is 'f':
-                newCand.setFitness(1)
+                newCand.setFitness(self.calc_fitFeas(newCand))
             elif newCand.getIF() is 'i':
-                newCand.setFitness(-1)
+                newCand.setFitness(self.calc_fitInfeas(newCand))
             else:
                 print "ERROR: no Fitness, solution is not in a population!"
             newSol.add(newCand)
         return newSol
+    
+    def calc_fitFeas(self, candidate):
+        return 1
+    
+    def calc_fitInfeas(self, candidate):
+        return -1
     
     # Generate new solutions from the actual population
     def new_generation(self, solutions, nMut, nCross):
