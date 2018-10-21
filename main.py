@@ -252,28 +252,43 @@ class UCTP:
         return newSol
     
     # Separation of solutions into 2 populations
-    def two_pop(self, solutions):
+    def two_pop(self, solutions, prof):
         newSol = Solutions()
         for cand in solutions.get():
-            newCand = self.in_feasible(cand)
+            newCand = self.in_feasible(cand, prof)
             newSol.add(cand)
         return newSol
     
     # Detect the violation of a Restriction into a candidate
-    def in_feasible(self, candidate):
+    def in_feasible(self, candidate, prof):
+        # List used to relate with the position of Professors in 'prof' list 
+        prof_total_charge = []
+        n=0
+        for n in range(len(prof)):
+            prof_total_charge.append(0)
+            n = n+1
+            
         for s, p in candidate.get():
             sLevel, sCode, sName, sQuadri, sPeriod, sCharge = s.get()
             pName, pPeriod, pCharge, pQuadriSabbath = p.get()
-            # INSERIR MAIS VERIFICACOES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if(('NEGOCI' not in pPeriod) and (pPeriod != sPeriod)):
                 candidate.setInfeas()
                 return candidate
             elif(pQuadriSabbath == sQuadri):
                 candidate.setInfeas()
                 return candidate
-            else:
-                if(candidate.getIF() == None):
-                    candidate.setFeas()    
+            index = prof.index(p)
+            prof_total_charge[index] = (prof_total_charge[index]+ int(sCharge))
+        
+        n=0
+        for n in range(len(prof)):
+            pName, pPeriod, pCharge, pQuadriSabbath = prof[n].get()
+            if(pCharge < prof_total_charge[n]):
+                candidate.setInfeas()
+                return candidate
+            n = n+1
+            
+        candidate.setFeas()            
         return candidate
     
     # Calculate the Fitness of the candidate
@@ -376,7 +391,7 @@ class main:
     
     # First generation
     solutions = uctp.start(solutions, subj, prof, num)
-    solutions = uctp.two_pop(solutions)
+    solutions = uctp.two_pop(solutions, prof)
     solutions = uctp.calc_fit(solutions)
     #uctp.outData(solutions, 0)
     uctp.printAllFit(solutions)
@@ -390,12 +405,12 @@ class main:
         solutions = uctp.new_generation(solutions, nMut, nCross)
         solutions = uctp.selection(solutions, min, max) 
         solutions = uctp.resetPop(solutions)
-        solutions = uctp.two_pop(solutions)
+        solutions = uctp.two_pop(solutions, prof)
         solutions = uctp.calc_fit(solutions)     
-        t = t+1
         #uctp.outData(solutions, t)
         uctp.printAllFit(solutions)
         print(" ")
+        t = t+1
             
     print("FIM")
     
