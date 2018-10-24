@@ -114,6 +114,18 @@ class UCTP:
     # Make a mutation into a solution
     def mutation(self, candidate):
         relations = candidate.get()
+        
+        change1 = randrange(len(relations))
+        change2 = randrange(len(relations))
+        while(change2==change1):
+            change2 = randrange(len(relations))
+        
+        s1, p1 = relations[change1]
+        s2, p2 = relations[change2]
+        
+        relations[change1]=[s1,p2]
+        relations[change2]=[s2,p1]
+        
         return candidate
     
     # Make a crossover between two solutions    
