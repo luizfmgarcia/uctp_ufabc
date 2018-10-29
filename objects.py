@@ -54,6 +54,9 @@ class Candidate:
     
     def getFitness(self): 
         return self.fitness
+    
+    def setList(self, list):
+        self.listRelations = list
             
     def add(self, Subject, Prof):
         relation = [Subject, Prof]

@@ -122,11 +122,12 @@ class UCTP:
         
         s1, p1 = relations[change1]
         s2, p2 = relations[change2]
-        
         relations[change1]=[s1,p2]
         relations[change2]=[s2,p1]
         
-        return candidate
+        newCand = Candidate()
+        newCand.setList(relations)
+        return newCand
     
     # Make a crossover between two solutions    
     def crossover(self, cand1, cand2):
