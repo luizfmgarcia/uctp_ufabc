@@ -1,8 +1,7 @@
-# PERGUNTAS:
-# 1.Podem haver materias repetidas vindas do arquivo? Devo tratalas? Removelas?
-# 2.Cuidar das conexoes como numeros (e procurar nas listas), ponteiro, copia dos objetos?
-# 3.Cuidar para ter todos os professores logo na primeira populacao? Pode acontecer de um nao entrar por ser randomico?
-# 4.Colocar tmb no calculo de Fitness se ha ou nao todos os professores (deve haver todos)
+#OPERADORES!!! de crossover e mutation
+# 2.Cuidar das conexoes como numeros (e procurar nas listas), ponteiro, copia dos objetos? - trabalha sempre com ponteiros o python
+# 3.Cuidar para ter todos os professores logo na primeira populacao? Pode acontecer de um nao entrar por ser randomico? - nao a mutacao resolve
+# 4.Colocar tmb no calculo de Fitness se ha ou nao todos os professores (deve haver todos)!!!!!!
 
 # filter subjects graduation and computing only;
 # So....level = 'G' and code = {'MCTA', 'MCZA'} 'BCM'?, 'MCTB'?;
@@ -11,7 +10,11 @@
 # Example: DA1MCTA0001;
 # Every professor must have name, period and charge -> error if not;
 # Every subject must have level, code, name, quadri, period, campus and charge -> error if not;
-# Transform every letter to Uppercase;
+# Transform every letter to Uppercase; - nao se importar
+
+# Um excel onde a cada geracao e salva uma nova linha contendo (o fitness minimo - maximo - medio) - para plotar o grafico;
+# E gerar apenas no excel a melhor solucao final
+
 
 from objects import *
 from uctp import *
@@ -21,10 +24,15 @@ from ioData import *
 class main:
     # to access UCTP Main methods and creating Solutions (List of Candidates)
     uctp = UCTP()
-    solutions = Solutions()
+    solutionsI = Solutions()
+    solutionsF = Solutions()
+    solutionsNoPop = Solutions()
+    # Base Lists of Professors and Subjects
+    prof = []
+    subj = []
     
     # Max Number of iterations to get a solution
-    total = 100;
+    total = 100
     # number of initial candidates (first generation)
     num = 50
     # Min and Max number of candidates in a generation
@@ -34,35 +42,34 @@ class main:
     nMut = 10
     nCross = 10
     
-    # Base Lists of Professors and Subjects
-    prof = []
-    subj = []
-    
     # Start of the works
-    subj, prof = getData(subj, prof)
+    getData(subj, prof)
     
     # First generation
-    solutions = uctp.start(solutions, subj, prof, num)
-    solutions = uctp.two_pop(solutions, prof)
-    solutions = uctp.calc_fit(solutions)
-    #outData(solutions, 0)
-    printAllFit(solutions)
+    uctp.start(solutionsNoPop, subj, prof, num)
+    uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof)
+    uctp.calc_fit(solutionsI, solutionsF)
+    outDataMMM(solutionsI, solutionsF)
+    printAllFit(solutionsI, solutionsF)
     
     # Main work - iterations to find a solution
     print(" ")
     print("Starting hard work...")
     t = 0;
-    while(uctp.stop(t, total, solutions)):
+    while(uctp.stop(t, total, solutionsI, solutionsF)):
         print 'Iteration:', t+1
-        solutions = uctp.new_generation(solutions, nMut, nCross)
-        solutions = uctp.selection(solutions, min, max) 
-        solutions = uctp.resetPop(solutions)
-        solutions = uctp.two_pop(solutions, prof)
-        solutions = uctp.calc_fit(solutions)     
-        #outData(solutions, t)
-        printAllFit(solutions)
+        
+        uctp.new_generation(solutionsI, solutionsF, prof, nMut, nCross) 
+        uctp.resetPop(solutionsNoPop, solutionsI, solutionsF)
+        uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof)
+        uctp.calc_fit(solutionsI, solutionsF)
+        uctp.selection(solutionsI, solutionsF, min, max)
+        
+        outDataMMM(solutionsI, solutionsF)
+        printAllFit(solutionsI, solutionsF)
         print(" ")
         t = t+1
-            
+        
+    outData(solutionsI, solutionsF, t)        
     print("FIM")
     

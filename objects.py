@@ -31,24 +31,11 @@ class Subject:
 class Candidate:
     def __init__(self):
         self.listRelations = []
-        self.pop = None
         self.fitness = 0
     
     def get(self):
         return self.listRelations
-    
-    def setFeas(self):
-        self.pop = 'f'
-
-    def setInfeas(self):
-        self.pop = 'i'
         
-    def getIF(self):
-        return self.pop
-        
-    def resetPop(self):
-        self.pop = None
-    
     def setFitness(self, fit): 
         self.fitness = fit   
     
@@ -84,6 +71,9 @@ class Solutions:
     def remove(self, candidate):
         self.listCandidates.remove(candidate)
     
+    def reset(self):
+        self.listCandidates = []
+        
     def update(self, old, new):
         index = self.listCandidates.index(old)
         self.listCandidates.remove(old)

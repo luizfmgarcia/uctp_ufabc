@@ -6,12 +6,7 @@ import os
 import sys
     
 # Get all data to work
-def getData(subj, prof):
-    # Remove accents of datas
-    #from unicodedata import normalize 
-    #def remove_accent(txt):
-    #    return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
-    
+def getData(subj, prof): 
     # Read the data of professors and subjects and create the respective objects
     print "Getting datas of Professors...",
     with open('professors.csv') as csvfile:
@@ -36,11 +31,53 @@ def getData(subj, prof):
                 print datas       
     csvfile.close()
         
-    print ("Data Obtained!")        
-    return subj, prof
+    print ("Data Obtained!")
+    
+    #this code starts the OUT CSV with the titles
+    # get current directory and creating new 'generationsCSV' dir
+    currentDir = os.getcwd()
+    newDir = currentDir + os.sep + 'generationsCSV' + os.sep
+    if not os.path.exists(newDir):
+            os.makedirs(newDir)
+    outName = newDir + 'totalMinMaxAvg.csv'
+                    
+    with open(outName, 'wb') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow(['min', 'max', 'avg'])  
+    # print("Created: " + outName + "in" + newDir + "...")
+    csvfile.close()
 
+def outDataMMM(solutionsI, solutionsF):
+    print "Exporting data....",
+    
+    # get current directory and creating new 'generationsCSV' dir
+    currentDir = os.getcwd()
+    newDir = currentDir + os.sep + 'generationsCSV' + os.sep
+    if not os.path.exists(newDir):
+            os.makedirs(newDir)
+    outName = newDir + 'totalMinMaxAvg.csv'
+    
+    # All Candidates of a Generation
+    min = 0
+    max = 0
+    for cand in solutionsI.get():             
+        if(cand.getFitness() < min):
+            min = cand.getFitness()
+    
+    for cand in solutionsF.get():             
+        if(cand.getFitness() > max):
+            max = cand.getFitness()
+                    
+    with open(outName, 'ab') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow([min, max, ((min+max)/2)])  
+    # print("Created: " + outName + "in" + newDir + "...")
+    csvfile.close()
+            
+    print ("Data Exported!")
+    
 # Export Candidates in differents generations into CSV files
-def outData(solutions, num):
+def outData(solutionsI, solutionsF, num):
     print "Exporting data....",
     
     # get current directory and creating new 'generationsCSV' dir
@@ -50,14 +87,14 @@ def outData(solutions, num):
             os.makedirs(newDir)
     
     # In 'generationsCSV' dir, create new 'gen' dir
-    newDir = newDir + 'gen' + str(num) + os.sep
+    newDir = newDir + 'finalGen' + os.sep
     if not os.path.exists(newDir):
         os.makedirs(newDir)
     
     # All Candidates of a Generation
     i = 0
-    for cand in solutions.get():            
-        outName = newDir + 'gen' +  str(num) + '_cand' +  str(i) + '.csv'
+    for cand in solutionsI.get():            
+        outName = newDir + 'finalGen_candInf' +  str(i) + '.csv'
         with open(outName, 'wb') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
             spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge', 'pQuadriSabbath'])
@@ -66,60 +103,69 @@ def outData(solutions, num):
                 row = s.get() + p.get()
                 spamwriter.writerow(row)
             spamwriter.writerow(" ")
-            if cand.getIF() is 'f':
-                spamwriter.writerow(['Feasible', cand.getFitness()])
-            elif cand.getIF() is 'i':
-                spamwriter.writerow(['Infeasible', cand.getFitness()])
-            else:
-                spamwriter.writerow(['Error', cand.getFitness()])   
+            spamwriter.writerow(['Infeasible', cand.getFitness()])
         # print("Created: " + outName + "in" + newDir + "...")
         i = i + 1
         csvfile.close()
-        
+    
+    # All Candidates of a Generation
+    i = 0
+    for cand in solutionsF.get():            
+        outName = newDir + 'finalGen_candFea' +  str(i) + '.csv'
+        with open(outName, 'wb') as csvfile:
+            spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+            spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge', 'pQuadriSabbath'])
+            # All relations in a Candidate of a Generation
+            for s, p in cand.get():
+                row = s.get() + p.get()
+                spamwriter.writerow(row)
+            spamwriter.writerow(" ")
+            spamwriter.writerow(['Feasible', cand.getFitness()])
+        # print("Created: " + outName + "in" + newDir + "...")
+        i = i + 1
+        csvfile.close()
+            
     # All Fitness in a Generation
     outName = newDir + 'gen' +  str(num) + '.csv'
     with open(outName, 'wb') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(['Candidate', 'Population', 'Fitness'])
         i = 0
-        for cand in solutions.get():            
-            if cand.getIF() is 'f':
-                spamwriter.writerow([i,'Feasible', cand.getFitness()])
-            elif cand.getIF() is 'i':
-                spamwriter.writerow([i,'Infeasible', cand.getFitness()])
-            else:
-                spamwriter.writerow([i,'Error', cand.getFitness()])
-            i = i + 1       
+        for cand in solutionsI.get():            
+            spamwriter.writerow([i,'Infeasible', cand.getFitness()])
+            i = i + 1
+        
+        i = 0
+        for cand in solutionsF.get():            
+            spamwriter.writerow([i,'Feasible', cand.getFitness()])
+            i = i + 1            
     # print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
             
-    print ("Data Exported!")    
+    print ("Data Exported!")   
     
 def printOneCand(candidate):
     for s, p in candidate.get():
         print s.get(), p.get()
 
-def printAllCand(solutions):
-    for cand in solutions.get():
+def printAllCand(solutionsI, solutionsF):
+    for cand in solutionsI.get():
         self.printOneCand(cand)
-        print ("--------")
+    for cand in solutionsF.get():
+        self.printOneCand(cand)    
+        print ("--------")    
 
-def printOneFit(cand):
-    if cand.getIF() is 'f':
-       print (': Feasible, ', str(cand.getFitness()))
-    elif cand.getIF() is 'i':
-        print (': Infeasible, ', str(cand.getFitness()))
-    else:
-        print (': Error, ', str(cand.getFitness()))     
-        
-def printAllFit(solutions):
-    n = 1
-    for cand in solutions.get():
-        if cand.getIF() is 'f':
-           print str(n), ': Feasible, ', str(cand.getFitness()), ' / ',
-        elif cand.getIF() is 'i':
-            print str(n), ': Infeasible, ', str(cand.getFitness()), ' / ',
-        else:
-            print str(n), ': Error, ', str(cand.getFitness()), ' / ',       
+def printOneFit(candidate):
+    print (': Infeasible, ', str(candidate.getFitness()), ' / ')
+            
+def printAllFit(solutionsI, solutionsF):
+    n = 0
+    for cand in solutionsI.get():
+        print str(n), ': Infeasible, ', str(cand.getFitness()), ' / ',
         n = n + 1
+    
+    n = 0
+    for cand in solutionsF.get():
+        print str(n), ': Feasible, ', str(cand.getFitness()), ' / ',
+        n = n + 1    
         
