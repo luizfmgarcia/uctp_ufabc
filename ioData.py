@@ -64,11 +64,11 @@ def outDataMMA(solutionsI, solutionsF):
     # All Candidates of a Generation
     min = 0
     max = 0
-    for cand in solutionsI.get():             
+    for cand in solutionsI.getList():             
         if(cand.getFitness() < min):
             min = cand.getFitness()
     
-    for cand in solutionsF.get():             
+    for cand in solutionsF.getList():             
         if(cand.getFitness() > max):
             max = cand.getFitness()
                     
@@ -97,13 +97,13 @@ def outData(solutionsI, solutionsF, num):
     
     # All Candidates of a Generation
     i = 0
-    for cand in solutionsI.get():            
+    for cand in solutionsI.getList():            
         outName = newDir + 'finalGen_candInf' +  str(i) + '.csv'
         with open(outName, 'wb') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
             spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge', 'pQuadriSabbath'])
             # All relations in a Candidate of a Generation
-            for s, p in cand.get():
+            for s, p in cand.getList():
                 row = s.get() + p.get()
                 spamwriter.writerow(row)
             spamwriter.writerow(" ")
@@ -114,13 +114,13 @@ def outData(solutionsI, solutionsF, num):
     
     # All Candidates of a Generation
     i = 0
-    for cand in solutionsF.get():            
+    for cand in solutionsF.getList():            
         outName = newDir + 'finalGen_candFea' +  str(i) + '.csv'
         with open(outName, 'wb') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
             spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge', 'pQuadriSabbath'])
             # All relations in a Candidate of a Generation
-            for s, p in cand.get():
+            for s, p in cand.getList():
                 row = s.get() + p.get()
                 spamwriter.writerow(row)
             spamwriter.writerow(" ")
@@ -135,12 +135,12 @@ def outData(solutionsI, solutionsF, num):
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(['Candidate', 'Population', 'Fitness'])
         i = 0
-        for cand in solutionsI.get():            
+        for cand in solutionsI.getList():            
             spamwriter.writerow([i,'Infeasible', cand.getFitness()])
             i = i + 1
         
         i = 0
-        for cand in solutionsF.get():            
+        for cand in solutionsF.getList():            
             spamwriter.writerow([i,'Feasible', cand.getFitness()])
             i = i + 1            
     # print("Created: " + outName + "in" + newDir + "...")
@@ -149,13 +149,13 @@ def outData(solutionsI, solutionsF, num):
     print ("Data Exported!")   
     
 def printOneCand(candidate):
-    for s, p in candidate.get():
+    for s, p in candidate.getList():
         print s.get(), p.get()
 
 def printAllCand(solutionsI, solutionsF):
-    for cand in solutionsI.get():
+    for cand in solutionsI.getList():
         self.printOneCand(cand)
-    for cand in solutionsF.get():
+    for cand in solutionsF.getList():
         self.printOneCand(cand)    
         print ("--------")    
 
@@ -164,12 +164,12 @@ def printOneFit(candidate):
             
 def printAllFit(solutionsI, solutionsF):
     n = 0
-    for cand in solutionsI.get():
+    for cand in solutionsI.getList():
         print str(n), ': Infeasible, ', str(cand.getFitness()), ' / ',
         n = n + 1
     
     n = 0
-    for cand in solutionsF.get():
+    for cand in solutionsF.getList():
         print str(n), ': Feasible, ', str(cand.getFitness()), ' / ',
         n = n + 1    
         

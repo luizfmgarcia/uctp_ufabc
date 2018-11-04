@@ -32,7 +32,7 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    total = 100
+    total = 2
     # number of candidates in a generation (sum of Feasible and Inf.)
     numCand = 100
     # Percentage of candidates will pass through Selection, Mutation and Crossover
@@ -56,9 +56,9 @@ class main:
     t = 0;
     while(uctp.stop(t, total, solutionsI, solutionsF)):
         print 'Iteration:', t+1
-        
+
         uctp.selection(solutionsI, solutionsF, pctSelect, numCand)
-        uctp.offspring(solutionsI, solutionsF, prof, pctMut, pctCross) 
+        uctp.offspring(solutionsNoPop, solutionsI, solutionsF, prof, pctMut, pctCross) 
         uctp.resetPop(solutionsNoPop, solutionsI, solutionsF)
         uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof)
         uctp.calc_fit(solutionsI, solutionsF)

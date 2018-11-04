@@ -33,54 +33,44 @@ class Subject:
 class Candidate:
     def __init__(self):
         self.listRelations = []
-        self.fitness = 0
-    
-    def get(self):
-        return self.listRelations
+        self.fitness = 0.0
         
+    def getFitness(self): 
+        return self.fitness
+            
     def setFitness(self, fit): 
         self.fitness = fit   
     
-    def getFitness(self): 
-        return self.fitness
+    def getList(self):
+        return self.listRelations
     
     def setList(self, list):
         self.listRelations = list
             
-    def add(self, Subject, Prof):
+    def addRelation(self, Subject, Prof):
         relation = [Subject, Prof]
         self.listRelations.append(relation)
         
-    def remove(self, relation):
-        self.listRelations.remove(relation)
-    
-    def update(self, old, new):
-        index = self.listRelations.index(old)
-        self.listRelations.remove(old)
-        self.listRelations.insert(index, new)        
+    def removeRelation(self, relation):
+        self.listRelations.remove(relation)       
                 
 # Keep all Candidates obtained during a run of the algorithm
 class Solutions:
     def __init__(self):
         self.listCandidates = []
     
-    def get(self):
+    def getList(self):
         return self.listCandidates
     
-    def add(self, candidate):
+    def setList(self, list):
+        self.listCandidates = list 
+            
+    def resetList(self):
+        self.listCandidates = []
+            
+    def addCand(self, candidate):
         self.listCandidates.append(candidate)
         
-    def remove(self, candidate):
-        self.listCandidates.remove(candidate)
-    
-    def reset(self):
-        self.listCandidates = []
-    
-    def set(self, listCandidates):
-        self.listCandidates = listCandidates  
-        
-    def update(self, old, new):
-        index = self.listCandidates.index(old)
-        self.listCandidates.remove(old)
-        self.listCandidates.insert(index, new)
+    def removeCand(self, candidate):
+        self.listCandidates.remove(candidate) 
         
