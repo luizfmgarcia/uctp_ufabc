@@ -33,23 +33,21 @@ class main:
     
     # Max Number of iterations to get a solution
     total = 100
-    # number of initial candidates (first generation)
-    num = 50
-    # Min and Max number of candidates in a generation
-    min = 50
-    max = 100
-    # Number of Mutations and Crossover
-    nMut = 10
-    nCross = 10
+    # number of candidates in a generation (sum of Feasible and Inf.)
+    numCand = 100
+    # Percentage of candidates will pass through Selection, Mutation and Crossover
+    pctSelect = 70
+    pctMut = 15
+    pctCross = 15
     
     # Start of the works
     getData(subj, prof)
     
     # First generation
-    uctp.start(solutionsNoPop, subj, prof, num)
+    uctp.start(solutionsNoPop, subj, prof, numCand)
     uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof)
     uctp.calc_fit(solutionsI, solutionsF)
-    outDataMMM(solutionsI, solutionsF)
+    outDataMMA(solutionsI, solutionsF)
     printAllFit(solutionsI, solutionsF)
     
     # Main work - iterations to find a solution
@@ -59,13 +57,13 @@ class main:
     while(uctp.stop(t, total, solutionsI, solutionsF)):
         print 'Iteration:', t+1
         
-        uctp.new_generation(solutionsI, solutionsF, prof, nMut, nCross) 
+        uctp.selection(solutionsI, solutionsF, pctSelect, numCand)
+        uctp.offspring(solutionsI, solutionsF, prof, pctMut, pctCross) 
         uctp.resetPop(solutionsNoPop, solutionsI, solutionsF)
         uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof)
         uctp.calc_fit(solutionsI, solutionsF)
-        uctp.selection(solutionsI, solutionsF, min, max)
         
-        outDataMMM(solutionsI, solutionsF)
+        outDataMMA(solutionsI, solutionsF)
         printAllFit(solutionsI, solutionsF)
         print(" ")
         t = t+1

@@ -2,15 +2,17 @@
 
 from objects import *
 from ioData import *
-from random import randrange
+from random import *
+from unicodedata import numeric
+from _ast import Num
 
 class UCTP:
         
     # Create the first generation of solutions
-    def start(self, solutionsNoPop, subj, prof, num):        
+    def start(self, solutionsNoPop, subj, prof, init):        
         print "Creating first generation...",
         n = 0
-        while(n!=num):
+        while(n!=init):
             candidate = Candidate()
             for sub in subj:
                 candidate.add(sub, prof[randrange(len(prof))])
@@ -42,22 +44,36 @@ class UCTP:
         
     # Detect the violation of a Restriction into a candidate
     def in_feasible(self, candidate, prof):
-        # List used to relate with the position of Professors in 'prof' list 
+        # Lists used to relate with the position of Professors in 'prof' list 
         prof_total_charge = []
+        prof_total_exist = []
+        
+        # Initializing the lists 
         n=0
         for n in range(len(prof)):
             prof_total_charge.append(0)
+            prof_total_exist.append(0)
             n = n+1
             
         for s, p in candidate.get():
             sLevel, sCode, sName, sQuadri, sPeriod, sCharge = s.get()
             pName, pPeriod, pCharge, pQuadriSabbath = p.get()
+            # Period chosed by a Prof is not equal of a Subject
             if(('NEGOCI' not in pPeriod) and (pPeriod != sPeriod)):
                 return "infeasible"
+            # Subject is on a Quadri where the Prof chosed to be your Sabbath Quadri
             elif(pQuadriSabbath == sQuadri):
                 return "infeasible"
+            
+            # Searchs a Prof that dont exists on the Candidate
             index = prof.index(p)
-            prof_total_charge[index] = (prof_total_charge[index]+ float(sCharge))
+            prof_total_exist[index] = 1
+            # Sera que a distribuicao balanceada de materias eh uma resticao?? 
+            prof_total_charge[index] = (prof_total_charge[index]+ int(sCharge))
+        
+        # Count how many Prof doesnt has a Subject
+        if(prof_total_exist.count(0)!=0):
+            return "infeasible"
         
         n=0
         for n in range(len(prof)):
@@ -75,19 +91,93 @@ class UCTP:
         for cand in solutionsF.get():
             cand.setFitness(self.calc_fitFeas(cand))
     
+    # quao balanceada esta a dispribuicao de materias para cada Prof (levando em consideracao a carga escolhida por cada)
+    # quantas materias sao da preferencia do prof
+    # Tirar o quadriSabath como uma restricao?? e usar aqui? - minimizar a quantidade de materias no quadriSabath
     def calc_fitFeas(self, cand):
-        
-        return 1
+        result = 1
+        return result
     
+    # materia turno por professor (a) - quantos ferem 
+    # ??quadrimestre sabatico por prof (b) - quantos possuem materias no periodo sabatico
+    # ha todos os prof com materias (c) - quantos faltam
+    # quantas materias(no mesmo quadri) (1)ha no mesmo dia/mesmo horario, (2)mesmo dia/horario diferente/mesmo periodo/Campus diferentes 
     def calc_fitInfeas(self, cand):
-        return -1
-        # normalizacao materia turno por professor alfa
-        # quadrimestre sabatico por prof beta
+        result = 1
+        return ((-1)*result)
+        
     
+    # Make a Roulette Wheel selection of the solutions
+    def selection(self, solutionsI, solutionsF, pctSelect, numCand):
+        newSolInf = []
+        newSolFea = []
+        totalFitInf = 0
+        totalFitFea = 0
+        probInf = []
+        profFea = []
+        
+        # Find the total fitness of the population
+        for cand in solutionsI.get():
+            totalFitInf = totalFitInf + cand.getFitness()
+        for cand in solutionsF.get():
+            totalFitFea = totalFitFea + cand.getFitness()
+        
+        # Calculate the prob. of a selection for each candidate
+        for cand in solutionsI.get():
+            p = cand.getFitness()/totalFitInf
+            probInf.append(p) 
+        for cand in solutionsF.get():
+            p = cand.getFitness()/totalFitFea
+            profFea.append(p)
+        
+        # Calculate a cumulative prob. for each candidate
+        comulative=0
+        index = 0
+        for q in probInf:
+            qNew = q + comulative
+            probInf[index] = qNew
+            index = index+1
+            comulative = qNew
+        
+        comulative=0
+        index = 0     
+        for q in profFea:
+            qNew = q + comulative
+            profFea[index] = qNew
+            index = index + 1
+            comulative = qNew
+        
+        # MAIN Selection process
+        currentSelNum = len(newSolInf)+len(newSolFea)
+        objectiveSelNum = (pctSelect/100)*numCand
+        while(currentSelNum < objectiveSelNum):    
+            probPrev = 0
+            index = 0
+            for q in probInf:
+                r = uniform(1)
+                if(probPrev < r and r <= q):
+                    newSolInf.append(solutionsI.get()[index])
+                probPrev = q    
+                index = index + 1
+            
+            probPrev = 0
+            index = 0
+            for q in profFea:
+                r = uniform(1)
+                if(probPrev < r and r <= q):
+                    newSolFea.append(solutionsF.get()[index])
+                probPrev = q    
+                index = index + 1    
+        
+        solutionsI.reset()
+        solutionsI.set(newSolInf)
+        solutionsF.reset()
+        solutionsF.set(newSolFea)
+            
     # Generate new solutions from the actual population
-    def new_generation(self, solutionsI, solutionsF, prof, nMut, nCross):
-        newSolI = Solutions()
-        newSolF = Solutions()
+    def offspring(self, solutionsI, solutionsF, prof, nMut, nCross):
+        newCandInf = []
+        newCandFea = []
         
         i=0
         for i in range(nMut):
@@ -142,27 +232,7 @@ class UCTP:
     def crossover(self, cand1, cand2):
         relation1 = cand1.get()
         relation2 = cand2.get()
-        return cand1, cand2
-    
-    # Make a random selection into the solutions
-    def selection(self, solutionsI, solutionsF, min, max):
-        originalSize = len(solutionsI.get())
-        while(originalSize > max):
-            list = solutionsI.get()
-            cand = list[randrange(len(list))]
-            solutionsI.remove(cand)
-            originalSize = originalSize-1
-            print "Candidate removed by Selection...."
-            printOneFit(cand)
-            
-        originalSize = len(solutionsF.get())
-        while(originalSize > max):
-            list = solutionsF.get()
-            cand = list[randrange(len(list))]
-            solutionsF.remove(cand)
-            originalSize = originalSize-1
-            print "Candidate removed by Selection...."
-            printOneFit(cand)    
+        return cand1, cand2 
     
     # Detect the stop condition
     def stop(self, iteration, total, solutionsI, solutionsF):

@@ -8,7 +8,7 @@ class Prof:
         self.charge = charge
         self.quadriSabbath = quadriSabbath
         #self.prefSubject = prefSubject
-        #self.research = research
+        #self.research = research -> put this on the prefSubject (one list only)
      
     def get(self):
         return self.name, self.period, self.charge, self.quadriSabbath
@@ -23,6 +23,8 @@ class Subject:
         self.period = period
         self.campus = campus
         self.charge = charge
+        #self.daysList = daysList
+        #self.hourList = hourList
     
     def get(self):
         return self.level, self.code, self.name, self.quadri, self.period, self.charge    
@@ -73,6 +75,9 @@ class Solutions:
     
     def reset(self):
         self.listCandidates = []
+    
+    def set(self, listCandidates):
+        self.listCandidates = listCandidates  
         
     def update(self, old, new):
         index = self.listCandidates.index(old)

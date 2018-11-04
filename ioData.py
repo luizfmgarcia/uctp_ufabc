@@ -4,6 +4,7 @@ from objects import *
 import csv
 import os
 import sys
+import shutil
     
 # Get all data to work
 def getData(subj, prof): 
@@ -11,7 +12,7 @@ def getData(subj, prof):
     print "Getting datas of Professors...",
     with open('professors.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
-        print "Setting Professors...",
+        print "Setting Professors..."
         for row in spamreader:
             datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper()]
             if(not datas.__contains__('')):
@@ -23,7 +24,7 @@ def getData(subj, prof):
     print "Getting datas of Subjects...",
     with open('subjects.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
-        print "Setting Subjects...",
+        print "Setting Subjects..."
         for row in spamreader:
             datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper()]
             if(not datas.__contains__('') and row[0] == 'G' and ('MCTA' in row[1] or 'MCZA' in row[1])):
@@ -34,11 +35,14 @@ def getData(subj, prof):
     print ("Data Obtained!")
     
     #this code starts the OUT CSV with the titles
-    # get current directory and creating new 'generationsCSV' dir
+    # get current directory and (re)creating new 'generationsCSV' directory
     currentDir = os.getcwd()
     newDir = currentDir + os.sep + 'generationsCSV' + os.sep
     if not os.path.exists(newDir):
-            os.makedirs(newDir)
+        os.makedirs(newDir)
+    else:
+        shutil.rmtree(newDir)
+        os.makedirs(newDir)
     outName = newDir + 'totalMinMaxAvg.csv'
                     
     with open(outName, 'wb') as csvfile:
@@ -47,7 +51,7 @@ def getData(subj, prof):
     # print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
 
-def outDataMMM(solutionsI, solutionsF):
+def outDataMMA(solutionsI, solutionsF):
     print "Exporting data....",
     
     # get current directory and creating new 'generationsCSV' dir
