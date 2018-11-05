@@ -30,9 +30,9 @@ class UCTP:
         solutionsF.resetList()
             
     # Separation of solutions into 2 populations
-    def two_pop(self, solutionsNoPop, solutionsI, solutionsF, prof):
+    def two_pop(self, solutionsNoPop, solutionsI, solutionsF, prof, subj):
         for cand in solutionsNoPop.getList():
-            pop = self.in_feasible(cand, prof)
+            pop = self.in_feasible(cand, prof, subj)
             if(pop=="feasible"):
                 solutionsF.addCand(cand)
             elif(pop=="infeasible"):
@@ -41,7 +41,7 @@ class UCTP:
         solutionsNoPop.resetList()
         
     # Detect the violation of a Restriction into a candidate
-    def in_feasible(self, candidate, prof):
+    def in_feasible(self, candidate, prof, subj):
         # Lists used to relate with the position of Professors in 'prof' list 
         prof_total_charge = []
         prof_total_exist = []
@@ -59,20 +59,21 @@ class UCTP:
             # Period chosed by a Prof is not equal of a Subject
             if(('NEGOCI' not in pPeriod) and (pPeriod != sPeriod)):
                 return "infeasible"
-            # Subject is on a Quadri where the Prof chosed to be your Sabbath Quadri
+            # ?? Subject is on a Quadri where the Prof chosed to be your Sabbath Quadri
             elif(pQuadriSabbath == sQuadri):
                 return "infeasible"
             
             # Searchs a Prof that dont exists on the Candidate
             index = prof.index(p)
             prof_total_exist[index] = 1
-            # Sera que a distribuicao balanceada de materias eh uma resticao?? 
-            prof_total_charge[index] = (prof_total_charge[index]+ float(sCharge))
-        
+            # ?? Sera que a distribuicao balanceada de materias eh uma resticao??
+            prof_total_charge[index] = (prof_total_charge[index]+ float(sCharge.replace(",", ".")))
+
         # Count how many Prof doesnt has a Subject
         if(prof_total_exist.count(0)!=0):
             return "infeasible"
         
+        # ??
         n=0
         for n in range(len(prof)):
             pName, pPeriod, pCharge, pQuadriSabbath = prof[n].get()
@@ -83,16 +84,16 @@ class UCTP:
         return "feasible"
     
     # Calculate the Fitness of the candidate
-    def calc_fit(self, solutionsI, solutionsF):
+    def calc_fit(self, solutionsI, solutionsF, prof, subj):
         for cand in solutionsI.getList():
-            cand.setFitness(self.calc_fitInfeas(cand))
+            cand.setFitness(self.calc_fitInfeas(cand, prof, subj))
         for cand in solutionsF.getList():
-            cand.setFitness(self.calc_fitFeas(cand))
+            cand.setFitness(self.calc_fitFeas(cand, prof, subj))
     
     # quao balanceada esta a dispribuicao de materias para cada Prof (levando em consideracao a carga escolhida por cada)
     # quantas materias sao da preferencia do prof
     # Tirar o quadriSabath como uma restricao?? e usar aqui? - minimizar a quantidade de materias no quadriSabath
-    def calc_fitFeas(self, cand):
+    def calc_fitFeas(self, cand, prof, subj):
         result = 1.0
         return result
     
@@ -100,7 +101,7 @@ class UCTP:
     # ??quadrimestre sabatico por prof (b) - quantos possuem materias no periodo sabatico
     # ha todos os prof com materias (c) - quantos faltam
     # quantas materias(no mesmo quadri) (1)ha no mesmo dia/mesmo horario, (2)mesmo dia/horario diferente/mesmo periodo/Campus diferentes 
-    def calc_fitInfeas(self, cand):
+    def calc_fitInfeas(self, cand, prof, subj):
         result = 1.0
         return ((-1)*result)
         
@@ -113,6 +114,8 @@ class UCTP:
         totalFitFea = 0.0
         probInf = []
         profFea = []
+        
+        # Elitismo - escolher quantidade predefinida de feasibles e/ou os maiores fitness
         
         # Find the total fitness of the population
         for cand in solutionsI.getList():
@@ -173,33 +176,41 @@ class UCTP:
         solutionsF.setList(newSolFea)
             
     # Generate new solutions from the actual population
-    def offspring(self, solutionsNoPop, solutionsI, solutionsF, prof, nMut, nCross):
+    def offspring(self, solutionsNoPop, solutionsI, solutionsF, prof, pctMut, pctCross, numCand):
         
         i=0
-        for i in range(nMut):
-            list = solutionsI.getList()
-            if(len(list)!=0):
-                newCand = self.mutation(list[randrange(len(list))], prof)
-                solutionsNoPop.addCand(newCand)
-            
+        currentMutNum = 0
+        objectiveMutNum = (pctMut*numCand/100)
+        while(currentMutNum < objectiveMutNum):
             list = solutionsF.getList()
             if(len(list)!=0):
                 newCand = self.mutation(list[randrange(len(list))], prof)
                 solutionsNoPop.addCand(newCand)
+                currentMutNum = currentMutNum + 1
+                
+            list = solutionsI.getList()
+            if(len(list)!=0):
+                newCand = self.mutation(list[randrange(len(list))], prof)
+                solutionsNoPop.addCand(newCand)
+                currentMutNum = currentMutNum + 1
             
         i=0
-        for i in range(nCross):
-            list = solutionsI.getList()
-            if(len(list)!=0):
-                newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
-                solutionsNoPop.addCand(newCand1)
-                solutionsNoPop.addCand(newCand2)
-            
+        currentCrosNum = 0
+        objectiveCrosNum = (pctCross*numCand/100)
+        while(currentCrosNum < objectiveCrosNum):
             list = solutionsF.getList()
             if(len(list)!=0):
                 newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
                 solutionsNoPop.addCand(newCand1)
                 solutionsNoPop.addCand(newCand2)
+                currentCrosNum = currentCrosNum + 2
+            
+            list = solutionsI.getList()
+            if(len(list)!=0):
+                newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
+                solutionsNoPop.addCand(newCand1)
+                solutionsNoPop.addCand(newCand2)
+                currentCrosNum = currentCrosNum + 2
                 
     # Make a mutation into a solution - pegar um prof aleatorio da lista original!!!
     def mutation(self, candidate, prof):
@@ -221,14 +232,28 @@ class UCTP:
     
     # Make a crossover between two solutions    
     def crossover(self, cand1, cand2):
-        relation1 = cand1.getList()
-        relation2 = cand2.getList()
-        return cand1, cand2 
+        relations1 = cand1.getList()
+        relations2 = cand2.getList()
+        
+        originalRand1 = randrange(len(relations1))
+        originalRand2 = randrange(len(relations2))
+        rel1 = relations1[originalRand1]
+        rel2 = relations2[originalRand2]
+        
+        relations1[originalRand1] = rel2
+        relations2[originalRand2] = rel1
+        
+        newCand1 = Candidate()
+        newCand2 = Candidate()
+        newCand1.setList(relations1)
+        newCand2.setList(relations2)
+        
+        return newCand1, newCand2 
     
     # Detect the stop condition
     def stop(self, iteration, total, solutionsI, solutionsF):
         for cand in solutionsF.getList():
-            if cand.getFitness() >= 10:
+            if cand.getFitness() >= 0.999:
                 return False
         if(iteration == total):
             return False
