@@ -23,13 +23,12 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    total = 10
-    # number of candidates in a generation (sum of Feasible and Inf.)
+    iterations = 10
+    # number of candidates in a generation (for each Feas/Inf.)
     numCand = 100
-    # Percentage of candidates will pass through Selection, Mutation and Crossover
-    pctSelect = 70
+    # Percentage of candidates from Feasible Pop. that will pass through Roullete (Crossover) -> Mutation
     pctMut = 15
-    pctCross = 15
+    pctCross = 50
     
     # Start of the works
     getData(subj, prof)
@@ -45,14 +44,16 @@ class main:
     print(" ")
     print("Starting hard work...")
     t = 0;
-    while(uctp.stop(t, total, solutionsI, solutionsF)):
+    while(uctp.stop(t, iterations, solutionsI, solutionsF)):
         print 'Iteration:', t+1
 
-        uctp.selection(solutionsI, solutionsF, pctSelect, numCand)
-        uctp.offspring(solutionsNoPop, solutionsI, solutionsF, prof, pctMut, pctCross, numCand) 
-        uctp.resetPop(solutionsNoPop, solutionsI, solutionsF)
+        uctp.offspringI(solutionsNoPop, solutionsI, prof) 
+        uctp.offspringF(solutionsNoPop, solutionsF, prof, pctMut, pctCross, numCand) 
+        #uctp.resetPop(solutionsNoPop, solutionsI, solutionsF)
         uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof, subj)
         uctp.calc_fit(solutionsI, solutionsF, prof, subj)
+        uctp.selectionI(solutionsI, numCand)
+        uctp.selectionF(solutionsF, numCand)
         
         outDataMMA(solutionsI, solutionsF)
         printAllFit(solutionsI, solutionsF)

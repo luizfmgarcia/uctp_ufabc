@@ -30,12 +30,12 @@ def getData(subj, prof):
             if(not datas.__contains__('') and row[0] == 'G' and ('MCTA' in row[1] or 'MCZA' in row[1])):
                 subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6]))
                 print datas       
-    csvfile.close()
-        
+    csvfile.close()    
     print ("Data Obtained!")
+    startOutFolders()
     
-    #this code starts the OUT CSV with the titles
-    # get current directory and (re)creating new 'generationsCSV' directory
+# get current directory and (re)create new 'generationsCSV' directory - delete everything was there
+def startOutFolders():    
     currentDir = os.getcwd()
     newDir = currentDir + os.sep + 'generationsCSV' + os.sep
     if not os.path.exists(newDir):
@@ -44,13 +44,15 @@ def getData(subj, prof):
         shutil.rmtree(newDir)
         os.makedirs(newDir)
     outName = newDir + 'totalMinMaxAvg.csv'
-                    
+    
+    # this code starts the MAIN OUT CSV with the titles                
     with open(outName, 'wb') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(['min', 'max', 'avg'])  
     # print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
 
+# Put out on 'totalMinMaxAvg.csv' the current generation Min/Max/Avg Fitness
 def outDataMMA(solutionsI, solutionsF):
     print "Exporting data....",
     
