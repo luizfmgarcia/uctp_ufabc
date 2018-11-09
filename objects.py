@@ -8,6 +8,7 @@ class Prof:
         self.charge = charge
         self.quadriSabbath = quadriSabbath
         #self.prefSubject = prefSubject
+        #self.prefCampus = prefCampus
      
     def get(self):
         return self.name, self.period, self.charge, self.quadriSabbath

@@ -57,29 +57,29 @@ class UCTP:
             sLevel, sCode, sName, sQuadri, sPeriod, sCharge = s.get()
             pName, pPeriod, pCharge, pQuadriSabbath = p.get()
             # Period chosed by a Prof is not equal of a Subject
-            if(('NEGOCI' not in pPeriod) and (pPeriod != sPeriod)):
-                return "infeasible"
+            #if(('NEGOCI' not in pPeriod) and (pPeriod != sPeriod)):
+            #    return "infeasible"
             # ?? Subject is on a Quadri where the Prof chosed to be your Sabbath Quadri
-            elif(pQuadriSabbath == sQuadri):
-                return "infeasible"
+            #elif(pQuadriSabbath == sQuadri):
+            #    return "infeasible"
             
             # Searchs a Prof that dont exists on the Candidate
             index = prof.index(p)
             prof_total_exist[index] = 1
             # ?? Sera que a distribuicao balanceada de materias eh uma resticao??
-            prof_total_charge[index] = (prof_total_charge[index]+ float(sCharge.replace(",", ".")))
+            #prof_total_charge[index] = (prof_total_charge[index]+ float(sCharge.replace(",", ".")))
 
         # Count how many Prof doesnt has a Subject
         if(prof_total_exist.count(0)!=0):
             return "infeasible"
         
         # ??
-        n=0
-        for n in range(len(prof)):
-            pName, pPeriod, pCharge, pQuadriSabbath = prof[n].get()
-            if(pCharge < prof_total_charge[n]):
-                return "infeasible"
-            n = n+1
+        #n=0
+        #for n in range(len(prof)):
+        #    pName, pPeriod, pCharge, pQuadriSabbath = prof[n].get()
+        #    if(pCharge < prof_total_charge[n]):
+        #        return "infeasible"
+        #    n = n+1
                         
         return "feasible"
     
@@ -107,79 +107,74 @@ class UCTP:
         result = 1.0
         return ((-1)*result)
             
-    # Generate new solutions from the actual Infeasible population
-    def offspringI(solutionsNoPop, solutionsI, prof):
-        i=0
-        currentMutNum = 0
-        objectiveMutNum = (pctMut*numCand/100)
-        while(currentMutNum < objectiveMutNum):
-            list = solutionsF.getList()
-            if(len(list)!=0):
-                newCand = self.mutation(list[randrange(len(list))], prof)
+    # Generate new solutions from the current Infeasible population
+    def offspringI(self, solutionsNoPop, solutionsI, prof):
+        if(len(solutionsI.getList())!=0):
+            # Make a Mutation for each candidate, trying to repair a restriction problem maker
+            for cand in solutionsI.getList():
+                newCand = self.mutation(cand, prof)
                 solutionsNoPop.addCand(newCand)
-                currentMutNum = currentMutNum + 1
-                
-            list = solutionsI.getList()
-            if(len(list)!=0):
-                newCand = self.mutation(list[randrange(len(list))], prof)
-                solutionsNoPop.addCand(newCand)
-                currentMutNum = currentMutNum + 1
-            
-        i=0
-        currentCrosNum = 0
-        objectiveCrosNum = (pctCross*numCand/100)
-        while(currentCrosNum < objectiveCrosNum):
-            list = solutionsF.getList()
-            if(len(list)!=0):
-                newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
-                solutionsNoPop.addCand(newCand1)
-                solutionsNoPop.addCand(newCand2)
-                currentCrosNum = currentCrosNum + 2
-            
-            list = solutionsI.getList()
-            if(len(list)!=0):
-                newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
-                solutionsNoPop.addCand(newCand1)
-                solutionsNoPop.addCand(newCand2)
-                currentCrosNum = currentCrosNum + 2
                  
-    # Generate new solutions from the actual Feasible population
-    def offspringF(self, solutionsNoPop, solutionsF, prof, pctMut, pctCross, numCand):
-        
-        i=0
-        currentMutNum = 0
-        objectiveMutNum = (pctMut*numCand/100)
-        while(currentMutNum < objectiveMutNum):
-            list = solutionsF.getList()
-            if(len(list)!=0):
-                newCand = self.mutation(list[randrange(len(list))], prof)
-                solutionsNoPop.addCand(newCand)
-                currentMutNum = currentMutNum + 1
-                
-            list = solutionsI.getList()
-            if(len(list)!=0):
-                newCand = self.mutation(list[randrange(len(list))], prof)
-                solutionsNoPop.addCand(newCand)
-                currentMutNum = currentMutNum + 1
+    # Generate new solutions from the current Feasible population
+    def offspringF(self, solutionsNoPop, solutionsF, prof, pctMut, pctRouletteCross, numCand):
+        if(len(solutionsF.getList())!=0):
+            # Make a Roulette of 50% in Feasibles Pop. to become Parents
+            parentsSolFeas = []
+            childSolFeas = []
+            newSolFeas = []
+            totalFitFeas = 0.0
+            probFeas = []
+            cumulativeProbFeas = []
             
-        i=0
-        currentCrosNum = 0
-        objectiveCrosNum = (pctCross*numCand/100)
-        while(currentCrosNum < objectiveCrosNum):
-            list = solutionsF.getList()
-            if(len(list)!=0):
-                newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
-                solutionsNoPop.addCand(newCand1)
-                solutionsNoPop.addCand(newCand2)
-                currentCrosNum = currentCrosNum + 2
+            # Find the total fitness of the population
+            for cand in solutionsF.getList():
+                totalFitFeas = totalFitFeas + cand.getFitness()
             
-            list = solutionsI.getList()
-            if(len(list)!=0):
-                newCand1, newCand2 = self.crossover(list[randrange(len(list))], list[randrange(len(list))])  
-                solutionsNoPop.addCand(newCand1)
-                solutionsNoPop.addCand(newCand2)
-                currentCrosNum = currentCrosNum + 2
-                
+            # Calculate the prob. of a selection for each candidate
+            for cand in solutionsF.getList():
+                p = cand.getFitness()/totalFitFeas
+                probFeas.append(p) 
+            
+            # Calculate a cumulative prob. for each candidate
+            cumulative=0.0
+            for q in probFeas:
+                qNew = q + cumulative
+                cumulativeProbFeas.append(qNew)
+                cumulative = qNew
+            
+            # MAIN Roulette Selection process
+            objectiveNum = (pctRouletteCross*len(solutionsF)/100.0)
+            while(len(parentsSolFeas) < objectiveNum):    
+                probPrev = 0.0
+                index = 0
+                r = float(randrange(100)/100.0)
+                for q in cumulativeProbFeas:
+                    if(probPrev < r and r <= q):
+                        parentsSolFeas.append(solutionsF.getList()[index])
+                        break
+                    probPrev = q    
+                    index = index + 1        
+               
+            # Make a Crossover (two new candidates) for each pair of parents candidates
+            i=0
+            objectiveNum = (pctRouletteCross*len(solutionsF)/100.0)
+            while(childSolFeas < objectiveCrosNum):
+                i1 = i
+                i2 = len(parentsSolFeas)-1-i
+                newCand1, newCand2 = self.crossover(list[r1], list[r2])  
+                childSolFeas.append(newCand1)
+                childSolFeas.append(newCand2)
+                i = i+2
+            
+            #Make Mutations with Pm (mutation prob.) only childs (generated by crossover before)
+            for cand in newSolFeas:
+                r = float(randrange(100)/100.0)
+                if(r<=(pctMut/100.0)):
+                    newCand = self.mutation(cand, prof)
+                    solutionsNoPop.addCand(newCand)
+                else:
+                    solutionsNoPop.addCand(cand)    
+                    
     # Make a mutation into a solution
     def mutation(self, candidate, prof):
         relations = candidate.getList()
@@ -220,134 +215,60 @@ class UCTP:
         
     # Make a Roulette Wheel selection of the solutions from Infeasible Pop.
     def selectionI(self, solutionsI, numCand):
-        newSolInf = []
-        newSolFea = []
-        totalFitInf = 0.0
-        totalFitFea = 0.0
-        probInf = []
-        profFea = []
-        
-        # Elitismo - escolher quantidade predefinida de feasibles e/ou os maiores fitness pra cada valor fixo tipo = 3 e não é excluido da roleta
-        
-        # Find the total fitness of the population
-        for cand in solutionsI.getList():
-            totalFitInf = totalFitInf + cand.getFitness()
-        for cand in solutionsF.getList():
-            totalFitFea = totalFitFea + cand.getFitness()
-        
-        # Calculate the prob. of a selection for each candidate
-        for cand in solutionsI.getList():
-            p = cand.getFitness()/totalFitInf
-            probInf.append(p) 
-        for cand in solutionsF.getList():
-            p = cand.getFitness()/totalFitFea
-            profFea.append(p)
-        
-        # Calculate a cumulative prob. for each candidate
-        comulative=0.0
-        index = 0
-        for q in probInf:
-            qNew = q + comulative
-            probInf[index] = qNew
-            index = index+1
-            comulative = qNew
-        
-        comulative=0.0
-        index = 0     
-        for q in profFea:
-            qNew = q + comulative
-            profFea[index] = qNew
-            index = index + 1
-            comulative = qNew
-        
-        # MAIN Selection process
-        currentSelNum = len(newSolInf)+len(newSolFea)
-        objectiveSelNum = (pctSelect*numCand/100)
-        while(currentSelNum < objectiveSelNum):    
-            probPrev = 0.0
-            index = 0
+        if(len(solutionsI.getList())>numCand):
+            newSolInf = []
+            totalFitInf = 0.0
+            probInf = []
+            cumulativeProbInf = []
+            
+            # Find the total fitness of the population
+            for cand in solutionsI.getList():
+                totalFitInf = totalFitInf + cand.getFitness()
+            
+            # Calculate the prob. of a selection for each candidate
+            for cand in solutionsI.getList():
+                p = cand.getFitness()/totalFitInf
+                probInf.append(p) 
+            
+            # Calculate a cumulative prob. for each candidate
+            cumulative=0.0
             for q in probInf:
-                r = float(randrange(100)/100.0)
-                if(probPrev < r and r <= q):
-                    newSolInf.append(solutionsI.getList()[index])
-                probPrev = q    
-                index = index + 1
+                qNew = q + cumulative
+                cumulativeProbInf.append(qNew)
+                cumulative = qNew
             
-            probPrev = 0.0
-            index = 0
-            for q in profFea:
+            # MAIN Roulette Selection process
+            while(len(newSolInf) < numCand):    
+                probPrev = 0.0
+                index = 0
                 r = float(randrange(100)/100.0)
-                if(probPrev < r and r <= q):
-                    newSolFea.append(solutionsF.getList()[index])
-                probPrev = q    
-                index = index + 1
+                for q in cumulativeProbInf:
+                    if(probPrev < r and r <= q):
+                        newSolInf.append(solutionsI.getList()[index])
+                        break
+                    probPrev = q    
+                    index = index + 1
             
-            currentSelNum = len(newSolInf)+len(newSolFea)        
-
-        solutionsI.setList(newSolInf)
-        solutionsF.setList(newSolFea)
+            solutionsI.setList(newSolInf)            
     
     # Make a Selection of the best solutions from Feasible Pop.
     def selectionF(self, solutionsF, numCand):
-        newSolFea = []
-        totalFitFea = 0.0
-        profFea = []
-        
-        # Find the total fitness of the population
-        for cand in solutionsF.getList():
-            totalFitFea = totalFitFea + cand.getFitness()
-        
-        # Calculate the prob. of a selection for each candidate
-        for cand in solutionsI.getList():
-            p = cand.getFitness()/totalFitInf
-            probInf.append(p) 
-        for cand in solutionsF.getList():
-            p = cand.getFitness()/totalFitFea
-            profFea.append(p)
-        
-        # Calculate a cumulative prob. for each candidate
-        comulative=0.0
-        index = 0
-        for q in probInf:
-            qNew = q + comulative
-            probInf[index] = qNew
-            index = index+1
-            comulative = qNew
-        
-        comulative=0.0
-        index = 0     
-        for q in profFea:
-            qNew = q + comulative
-            profFea[index] = qNew
-            index = index + 1
-            comulative = qNew
-        
-        # MAIN Selection process
-        currentSelNum = len(newSolInf)+len(newSolFea)
-        objectiveSelNum = (pctSelect*numCand/100)
-        while(currentSelNum < objectiveSelNum):    
-            probPrev = 0.0
-            index = 0
-            for q in probInf:
-                r = float(randrange(100)/100.0)
-                if(probPrev < r and r <= q):
-                    newSolInf.append(solutionsI.getList()[index])
-                probPrev = q    
-                index = index + 1
+        if(len(solutionsF.getList())>numCand):
+            bestFeas = []
+            listFit = []
+            for cand in solutionsF.getList():
+                listFit.append(cand.getFitness())
             
-            probPrev = 0.0
-            index = 0
-            for q in profFea:
-                r = float(randrange(100)/100.0)
-                if(probPrev < r and r <= q):
-                    newSolFea.append(solutionsF.getList()[index])
-                probPrev = q    
-                index = index + 1
+            while(listFit.count(-10.0)<(len(solutionsF)-numCand)):
+                minValue = min(listFit)
+                minIndex = listFit.index(minValue)
+                listFit[minIndex] = -10.0
             
-            currentSelNum = len(newSolInf)+len(newSolFea)        
-
-        solutionsI.setList(newSolInf)
-        solutionsF.setList(newSolFea)
+            for i in range(numCand):
+                if(listFit[i]!=-10.0):
+                    bestFeas.append(solutionsF.getList()[i])
+                    
+            solutionsF.setList(bestFeas)        
                 
     # Detect the stop condition
     def stop(self, iteration, total, solutionsI, solutionsF):
