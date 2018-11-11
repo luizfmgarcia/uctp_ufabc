@@ -112,8 +112,30 @@ class UCTP:
         if(len(solutionsI.getList())!=0):
             # Make a Mutation for each candidate, trying to repair a restriction problem maker
             for cand in solutionsI.getList():
-                newCand = self.mutation(cand, prof)
+                newCand = self.mutationI(cand, prof)
                 solutionsNoPop.addCand(newCand)
+    
+    # Make a mutation into a solution
+    def mutationI(self, candidate, prof):
+        # (1) faltam prof com materias
+        # (2) quantas materias(no mesmo quadri) ha no mesmo dia/mesmo horario, 
+        # (3) mesmo dia/Campus diferentes
+        errorType =  randrange(1,4)
+        relations = candidate.getList()
+        
+        original = randrange(len(relations))
+        s, oldProf = relations[original]
+        change = randrange(len(prof))
+        newProf = prof[change]
+        while(oldProf==newProf):
+            change = randrange(len(prof))
+            newProf = prof[change]
+        
+        relations[original]=[s,newProf]
+        newCand = Candidate()
+        newCand.setList(relations)
+        
+        return newCand
                  
     # Generate new solutions from the current Feasible population
     def offspringF(self, solutionsNoPop, solutionsF, prof, pctMut, pctRouletteCross, numCand):
@@ -161,7 +183,7 @@ class UCTP:
             while(childSolFeas < objectiveCrosNum):
                 i1 = i
                 i2 = len(parentsSolFeas)-1-i
-                newCand1, newCand2 = self.crossover(list[r1], list[r2])  
+                newCand1, newCand2 = self.crossoverF(list[r1], list[r2])  
                 childSolFeas.append(newCand1)
                 childSolFeas.append(newCand2)
                 i = i+2
@@ -170,13 +192,13 @@ class UCTP:
             for cand in newSolFeas:
                 r = float(randrange(100)/100.0)
                 if(r<=(pctMut/100.0)):
-                    newCand = self.mutation(cand, prof)
+                    newCand = self.mutationF(cand, prof)
                     solutionsNoPop.addCand(newCand)
                 else:
                     solutionsNoPop.addCand(cand)    
                     
     # Make a mutation into a solution
-    def mutation(self, candidate, prof):
+    def mutationF(self, candidate, prof):
         relations = candidate.getList()
         
         original = randrange(len(relations))
@@ -194,7 +216,7 @@ class UCTP:
         return newCand
     
     # Make a crossover between two solutions    
-    def crossover(self, cand1, cand2):
+    def crossoverF(self, cand1, cand2):
         relations1 = cand1.getList()
         relations2 = cand2.getList()
         
@@ -203,6 +225,14 @@ class UCTP:
         rel1 = relations1[originalRand1]
         rel2 = relations2[originalRand2]
         
+        s1, p1 = rel1
+        s2, p2 = rel2
+        
+        while(originalRand1==originalRand2 and p1==p2):
+            originalRand2 = randrange(len(relations2))
+            rel2 = relations2[originalRand2]
+            s2, p2 = rel2
+            
         relations1[originalRand1] = rel2
         relations2[originalRand2] = rel1
         
