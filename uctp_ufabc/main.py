@@ -23,7 +23,7 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 1000
+    iterations = 10
     # number of candidates in a generation (same for each Feas/Inf.)
     numCand = 100
     # Percentage of candidates from Feasible Pop. that will pass through Roullete (Crossover) -> Mutation
@@ -35,8 +35,8 @@ class main:
     
     # First generation
     uctp.start(solutionsNoPop, subj, prof, numCand)
-    uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof, subj)
-    uctp.calc_fit(solutionsI, solutionsF, prof, subj)
+    uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj)
+    uctp.calcFit(solutionsI, solutionsF, prof, subj)
     outDataMMA(solutionsI, solutionsF)
     printAllFit(solutionsI, solutionsF)
     
@@ -50,8 +50,8 @@ class main:
         uctp.offspringI(solutionsNoPop, solutionsI, prof) 
         uctp.offspringF(solutionsNoPop, solutionsF, prof, pctMut, pctRouletteCross, numCand) 
         #uctp.resetPop(solutionsNoPop, solutionsI, solutionsF)
-        uctp.two_pop(solutionsNoPop, solutionsI, solutionsF, prof, subj)
-        uctp.calc_fit(solutionsI, solutionsF, prof, subj)
+        uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj)
+        uctp.calcFit(solutionsI, solutionsF, prof, subj)
         uctp.selectionI(solutionsI, numCand)
         uctp.selectionF(solutionsF, numCand)
         

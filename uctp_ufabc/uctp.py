@@ -30,7 +30,7 @@ class UCTP:
         solutionsF.resetList()
             
     # Separation of solutions into 2 populations
-    def two_pop(self, solutionsNoPop, solutionsI, solutionsF, prof, subj):
+    def twoPop(self, solutionsNoPop, solutionsI, solutionsF, prof, subj):
         for cand in solutionsNoPop.getList():
             pop = self.in_feasible(cand, prof, subj)
             if(pop=="feasible"):
@@ -84,11 +84,13 @@ class UCTP:
         return "feasible"
     
     # Calculate the Fitness of the candidate
-    def calc_fit(self, solutionsI, solutionsF, prof, subj):
+    def calcFit(self, solutionsI, solutionsF, prof, subj):
         for cand in solutionsI.getList():
-            cand.setFitness(self.calc_fitInfeas(cand, prof, subj))
+            if(cand.getFitness() == 0.0):
+                cand.setFitness(self.calc_fitInfeas(cand, prof, subj))
         for cand in solutionsF.getList():
-            cand.setFitness(self.calc_fitFeas(cand, prof, subj))
+            if(cand.getFitness() == 0.0):
+                cand.setFitness(self.calc_fitFeas(cand, prof, subj))
     
     # Calculate Fitness of Feasible Candidates 
     def calc_fitFeas(self, cand, prof, subj):
