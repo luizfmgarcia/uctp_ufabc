@@ -1,12 +1,3 @@
-#OPERADORES!!! de crossover e mutation, elitismo...
-
-# filter subjects graduation and computing only;
-# So....level = 'G' and code = {'MCTA', 'MCZA'} 'BCM'?, 'MCTB'?;
-# Code where 2 first letters (period 'D' or 'N', class 'A' or 'B' etc);
-# and maybe one number before the code itself of subjects;
-# Example: DA1MCTA0001;
-
-
 from objects import *
 from uctp import *
 from ioData import *

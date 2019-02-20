@@ -2,20 +2,23 @@
 
 # Keep the details of a professor
 class Prof:
-    def __init__(self, name, period, charge, quadriSabbath):
+    def __init__(self, name, period, charge, quadriSabbath, prefCampus, prefSubjQ1List, prefSubjQ2List, prefSubjQ3List, prefSubjLimList):
         self.name = name
         self.period = period
         self.charge = charge
         self.quadriSabbath = quadriSabbath
-        #self.prefSubject = prefSubject
-        #self.prefCampus = prefCampus
+        self.prefCampus = prefCampus
+        self.prefSubjQ1List = prefSubjQ1List
+        self.prefSubjQ2List = prefSubjQ2List
+        self.prefSubjQ3List = prefSubjQ3List
+        self.prefSubjLimList = prefSubjLimList
      
     def get(self):
-        return self.name, self.period, self.charge, self.quadriSabbath
+        return self.name, self.period, self.charge, self.quadriSabbath, self.prefCampus, self.prefSubjQ1List, self.prefSubjQ2List, self.prefSubjQ3List, self.prefSubjLimList
 
 # Keep the details of a subject
 class Subject:
-    def __init__(self, level, code, name, quadri, period, campus, charge):
+    def __init__(self, level, code, name, quadri, period, campus, charge, timetableList):
         self.level = level
         self.code = code
         self.name = name
@@ -23,11 +26,10 @@ class Subject:
         self.period = period
         self.campus = campus
         self.charge = charge
-        #self.daysList = daysList
-        #self.hoursList = hoursList
+        self.timetableList = timetableList
     
     def get(self):
-        return self.level, self.code, self.name, self.quadri, self.period, self.charge    
+        return self.level, self.code, self.name, self.quadri, self.period, self.charge, self.timetableList    
 
 # Keep the details of a Candidate
 class Candidate:

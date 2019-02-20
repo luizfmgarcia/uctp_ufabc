@@ -5,32 +5,81 @@ import csv
 import os
 import sys
 import shutil
+from string import split
     
 # Get all data to work
 def getData(subj, prof): 
-    # Read the data of professors and subjects and create the respective objects
-    print "Getting datas of Professors...",
+    # Read the data of professors and create the respective objects
+    print "Getting data of Professors...",
     with open('professors.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         print "Setting Professors..."
         for row in spamreader:
-            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper()]
-            if(not datas.__contains__('')):
-                prof.append(Prof(datas[0], datas[1], datas[2], datas[3]))
+            # Transform every letter to upper case to impose a pattern
+            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
+            # Verify if exist some important blank data (datas 0 to 4) 
+            if(not datas[0]=='' and not datas[1]=='' and not datas[2]=='' and not datas[3]=='' and not datas[4]==''):
+                # Separating the Subjects Pref., transforming into lists (datas 5 to 8)
+                datas[5] = split(datas[5], '/')
+                datas[6] = split(datas[6], '/')
+                datas[7] = split(datas[7], '/')
+                datas[8] = split(datas[8], '/')
+                # Creating and saving a new Prof.
+                prof.append(Prof(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7], datas[8]))
                 print datas
+            else:
+                print "This professor register has some missing data! It will not be used."
+                print datas    
     csvfile.close() 
-        
+    
+    # Read the data of subjects and create the respective objects    
     print(" ")
     print "Getting datas of Subjects...",
     with open('subjects.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         print "Setting Subjects..."
         for row in spamreader:
-            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper()]
-            if(not datas.__contains__('') and row[0] == 'G' and ('MCTA' in row[1] or 'MCZA' in row[1])):
-                subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6]))
-                print datas       
-    csvfile.close()    
+            # Transform every letter to upper case to impose a pattern
+            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
+            # Verify if exist some important blank data (rows 0 to 8) 
+            if(not datas[0]=='' and not datas[1]=='' and not datas[2]=='' and not datas[3]=='' and not datas[4]=='' and not datas[5]=='' and not datas[6]=='' and not datas[7]=='#N/D' and not datas[8]=='#N/D'):
+                # Choose some specifics subjects
+                if(datas[0]=='G' and ('MCTA' in datas[1] or 'MCZA' in datas[1])):
+                    # Separating the Timetables of Subj. and transforming into lists of lists: day/hour/frequency - (data 7 and 8)
+                    t0 = []
+                    if(not datas[7]=='0'):
+                        t1 = split(datas[7], '/')   
+                        for r in t1:
+                            day_rest = split(r, ' DAS ')
+                            hour_room_freq = split(day_rest[1], ', ')
+                            # Take only: day, hour and freq.
+                            if(' E ' in hour_room_freq[2]): 
+                                final = [day_rest[0], hour_room_freq[0], 'SEMANAL']
+                            else:
+                                final = [day_rest[0], hour_room_freq[0], hour_room_freq[2]]    
+                            t0.append(final)
+                    if(not datas[8]=='0'):    
+                        t2 = split(datas[8], '/')
+                        for r in t2:
+                            day_rest = split(r, ' DAS ')
+                            hour_room_freq = split(day_rest[1], ', ')
+                            # Take only: day, hour and freq. 
+                            if(' E ' in hour_room_freq[2]): 
+                                final = [day_rest[0], hour_room_freq[0], 'SEMANAL']
+                            else:
+                                final = [day_rest[0], hour_room_freq[0], hour_room_freq[2]]  
+                            t0.append(final)
+                    
+                    datas[7] = t0
+                    datas.pop(8)
+                    # Creating and saving a new Subj.
+                    subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
+                    print datas
+            else:
+                print "This subject register has some missing data! It will not be used."
+                #print datas            
+    csvfile.close()
+        
     print ("Data Obtained!")
     startOutFolders()
     
