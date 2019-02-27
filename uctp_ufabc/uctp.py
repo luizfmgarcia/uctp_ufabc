@@ -32,7 +32,7 @@ class UCTP:
     # Separation of solutions into 2 populations
     def twoPop(self, solutionsNoPop, solutionsI, solutionsF, prof, subj):
         for cand in solutionsNoPop.getList():
-            pop = self.in_feasible(cand, prof, subj)
+            pop = self.checkFeasibility(cand, prof, subj)
             if(pop=="feasible"):
                 solutionsF.addCand(cand)
             elif(pop=="infeasible"):
@@ -41,7 +41,7 @@ class UCTP:
         solutionsNoPop.resetList()
         
     # Detect the violation of a Restriction into a candidate
-    def in_feasible(self, candidate, prof, subj):
+    def checkFeasibility(self, candidate, prof, subj):
         # Lists used to relate with the position of Professors in 'prof' list 
         prof_total_charge = []
         prof_total_exist = []
@@ -84,16 +84,23 @@ class UCTP:
         return "feasible"
     
     # Calculate the Fitness of the candidate
-    def calcFit(self, solutionsI, solutionsF, prof, subj):
-        for cand in solutionsI.getList():
+    def calcFit(self, infeasibles, feasibles, prof, subj, weights):
+        for cand in infeasibles.getList():
             if(cand.getFitness() == 0.0):
-                cand.setFitness(self.calc_fitInfeas(cand, prof, subj))
-        for cand in solutionsF.getList():
+                cand.setFitness(self.calc_fitInfeas(cand, prof, subj, weights[0], weights[1], weights[2]))
+        for cand in feasibles.getList():
             if(cand.getFitness() == 0.0):
-                cand.setFitness(self.calc_fitFeas(cand, prof, subj))
-    
+                cand.setFitness(self.calc_fitFeas(cand, prof, subj, weights[3], weights[4], weights[5], weights[6], weights[7]))
+   
+    # Calculate Fitness of Infeasible Candidates 
+    def calc_fitInfeas(self, cand, prof, subj, w_alpha, w_beta, w_gamma):
+        # ha todos os prof com materias (c) - quantos faltam
+        # quantas materias(no mesmo quadri) (1)ha no mesmo dia/mesmo horario, (2)mesmo dia/Campus diferentes
+        result = 1.0
+        return ((-1)*result)
+     
     # Calculate Fitness of Feasible Candidates 
-    def calc_fitFeas(self, cand, prof, subj):
+    def calc_fitFeas(self, cand, prof, subj, w_delta, w_omega, w_sigma, w_pi, w_rho):
         # quao balanceada esta a dispribuicao de materias para cada Prof (levando em consideracao a carga escolhida por cada) calcular variancia
         # quantas materias sao da preferencia do prof
         # QuadriSabath - minimizar a quantidade de materias no quadriSabath
@@ -101,13 +108,6 @@ class UCTP:
         # Preferencia de campus do prof
         result = 1.0
         return result
-    
-    # Calculate Fitness of Infeasible Candidates 
-    def calc_fitInfeas(self, cand, prof, subj):
-        # ha todos os prof com materias (c) - quantos faltam
-        # quantas materias(no mesmo quadri) (1)ha no mesmo dia/mesmo horario, (2)mesmo dia/Campus diferentes
-        result = 1.0
-        return ((-1)*result)
             
     # Generate new solutions from the current Infeasible population
     def offspringI(self, solutionsNoPop, solutionsI, prof):
@@ -246,7 +246,7 @@ class UCTP:
         return newCand1, newCand2 
         
     # Make a Roulette Wheel selection of the solutions from Infeasible Pop.
-    def selectionI(self, solutionsI, numCand):
+    def selectionI(self, infPool, solutionsI, numCand):
         if(len(solutionsI.getList())>numCand):
             newSolInf = []
             totalFitInf = 0.0
@@ -284,7 +284,7 @@ class UCTP:
             solutionsI.setList(newSolInf)            
     
     # Make a Selection of the best solutions from Feasible Pop.
-    def selectionF(self, solutionsF, numCand):
+    def selectionF(self, feaPool, solutionsF, numCand):
         if(len(solutionsF.getList())>numCand):
             bestFeas = []
             listFit = []

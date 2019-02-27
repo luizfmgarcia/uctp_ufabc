@@ -152,7 +152,7 @@ def outData(solutionsI, solutionsF, num):
         outName = newDir + 'finalGen_candInf' +  str(i) + '.csv'
         with open(outName, 'wb') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-            spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge', 'pQuadriSabbath'])
+            spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList'])
             # All relations in a Candidate of a Generation
             for s, p in cand.getList():
                 row = s.get() + p.get()
@@ -169,7 +169,7 @@ def outData(solutionsI, solutionsF, num):
         outName = newDir + 'finalGen_candFea' +  str(i) + '.csv'
         with open(outName, 'wb') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-            spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCharge', 'pName', 'pPeriod', 'pCharge', 'pQuadriSabbath'])
+            spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList'])
             # All relations in a Candidate of a Generation
             for s, p in cand.getList():
                 row = s.get() + p.get()
@@ -212,7 +212,20 @@ def printAllCand(solutionsI, solutionsF):
 
 def printOneFit(candidate):
     print (': Infeasible, ', str(candidate.getFitness()), ' / ')
-            
+
+def printMMAFit(solutionsI, solutionsF):
+    min = 0
+    max = 0
+    for cand in solutionsI.getList():             
+        if(cand.getFitness() < min):
+            min = cand.getFitness()
+    
+    for cand in solutionsF.getList():             
+        if(cand.getFitness() > max):
+            max = cand.getFitness()
+    
+    print 'Min:', min, 'Max:', max, 'Med:', (min+max)/2
+                            
 def printAllFit(solutionsI, solutionsF):
     n = 0
     for cand in solutionsI.getList():
