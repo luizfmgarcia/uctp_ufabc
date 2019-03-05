@@ -3,6 +3,7 @@ from uctp import *
 from ioData import *
         
 #==============================================================================================================            
+## LOOK TO QUINZENAL
             
 # main
 class main:
@@ -22,7 +23,7 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 10
+    iterations = 2
     # number of candidates in a generation (same for each Feas/Inf.)
     numCand = 100
     # Percentage of candidates from Feasible Pop. that will be selected through a Roulette to make after, a Crossover
@@ -30,15 +31,15 @@ class main:
     # Percentage of mutation that maybe each offspring will suffer 
     pctMut = 15
     
-    # Weights
-    w_alpha = 1
-    w_beta = 1
-    w_gamma = 1
-    w_delta = 1
-    w_omega = 1
-    w_sigma = 1
-    w_pi = 1
-    w_rho = 1
+    # Weights (!!!must be float!!!)
+    w_alpha = 1.0
+    w_beta = 1.0
+    w_gamma = 1.0
+    w_delta = 1.0
+    w_omega = 1.0
+    w_sigma = 1.0
+    w_pi = 1.0
+    w_rho = 1.0
     weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
     
     # Start of the works

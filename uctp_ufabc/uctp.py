@@ -142,16 +142,121 @@ class UCTP:
 #==============================================================================================================            
    
     # Calculate Fitness of Infeasible Candidates 
-    def calc_fitInfeas(self, cand, prof, subj, w_alpha, w_beta, w_gamma):
-        result = 1.0
-        return ((-1)*result)
+    def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
+        # It is similar to 'checkFeasibility' method, checking same restrictions, but counting the number of occurrences of each violated restriction
+        # i1: penalty to how many Professors does not have at least one relation with a Subject 
+        # i2: penalty to how many Subjects, related to the same Professor, are teach in the same day, hour and quadri
+        # i3: penalty to how many Subjects, related to the same Professor, are teach in the same day and quadri but in different campus
+        
+        # Auxiliary variables to main ones (i1, i2 and i3)
+        p_p=0.0
+        n_n=0.0
+        s_s=0.0
+        
+        # List of lists of Subjects that are related to the same Professor, where the position in this list is the same of the same professor in 'prof' list 
+        prof_relations = []
+        
+        # Initializing the list
+        n=0
+        for n in range(len(prof)):
+            prof_relations.append([])
+            n = n+1
+        
+        # Filling the list according to the candidate    
+        for s, p in candidate.getList():            
+            indexp = prof.index(p)
+            indexs = subj.index(s)
+            prof_relations[indexp].append(indexs)
+        
+        # Search (p) Professors that does not exists on the Candidate - empty list in the 'prof_relations' list   
+        p_p = float(prof_relations.count([]))
+        
+        # Searching, in each professor (one at a time), conflicts of schedules between subjects related to it
+        for list_subj in prof_relations:
+            # Check if the professor has more than 1 relation Prof-Subj to analyze
+            if(len(list_subj)!=1):
+                # Getting the data of all Subjects related to actual Professor in analysis (the same position in all 3 lists it is from the same subj) 
+                timetableList_List = []
+                quadri_List = []
+                campus_List = []
+                for subj_index in list_subj:
+                    sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[subj_index].get()
+                    timetableList_List.append(sTimetableList)
+                    quadri_List.append(sQuadri)
+                    campus_List.append(sCampus)
+                
+                # Comparing the data of one Subject (i) with all next subjects listed, and do the same with next ones
+                i=0
+                for timeTable in  timetableList_List:
+                    # all [day/hour/frequency] of the Timetable of the Subject (i) in 'timetableList_List'
+                    i_day = []
+                    i_hour = []
+                    i_frequency = []
+                    for j in timeTable:
+                        i_day.append(j[0])
+                        i_hour.append(j[1])
+                        i_frequency.append(j[2])
+                    
+                    # Now, comparing actual (i) subject data with next ones (k), one at a time
+                    k = i+1
+                    rest = timetableList_List[k:]
+                    # repeat this 'len(rest)' times
+                    for next in rest:
+                        # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
+                        inext_day = []
+                        inext_hour = []
+                        inext_frequency = []
+                        for j in timeTable:
+                            inext_day.append(j[0])
+                            inext_hour.append(j[1])
+                            inext_frequency.append(j[2])
+                        
+                        # Finally comparing one-to-one timetables - between i and k subjects
+                        for a in i_day:
+                            for b in inext_day:                                
+                                if(a==b):
+                                    if(quadri_List[i]==quadri_List[k]):
+                                        # There is, at least, two subjects teach in the same day, hour and quadri
+                                        if(i_hour[i_day.index(a)]==inext_hour[inext_day.index(b)]):
+                                            n_n = n_n + 1.0 
+                                        # There is, at least, two subjects teach in the same day and quadri, but in different campus
+                                        if(campus_List[i]==campus_List[k]):
+                                            s_s = s_s + 1.0
+                        
+                        #Going to the next Subject (k+1) to compare with the same, actual, main, Subject (i)
+                        k = k+1    
+                    
+                    # Going to the next Subject (i+1) related to the same Professor   
+                    i = i+1
+        
+        # Calculating main variables
+        i1 = p_p/(float(len(prof))-1.0)
+        i2 = n_n/float(len(subj))
+        i3 = s_s/float(len(subj))
+        
+        # Final Infeasible Function
+        Fi = (-1.0)*(((w_alpha*i1)+(w_beta*i2)+(w_gamma*i3))/(w_alpha + w_beta + w_gamma))
+        
+        # Returning the result calculated
+        return Fi
         
 #==============================================================================================================            
      
     # Calculate Fitness of Feasible Candidates 
     def calc_fitFeas(self, cand, prof, subj, w_delta, w_omega, w_sigma, w_pi, w_rho):
-        result = 1.0
-        return result
+        
+        # Calculating main variables
+        f1=0
+        f2=0
+        f3=0
+        f4=0
+        f5=0
+        
+        # Final Feasible Function
+        Ff = ((w_delta*f1)+(w_omega*f2)+(w_sigma*f3)+(w_pi*f4)+(w_rho*f5))/(w_delta + w_omega + w_sigma + w_pi + w_rho)
+        
+        # Returning the result calculated
+        return Ff
          
 #==============================================================================================================            
            
