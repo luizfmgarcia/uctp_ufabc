@@ -3,8 +3,14 @@
 from objects import *
 from ioData import *
 from random import *
+        
+#==============================================================================================================            
 
+#sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = s.get()
+#pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = p.get()
 class UCTP:
+        
+#==============================================================================================================            
         
     # Create the first generation of solutions
     def start(self, solutionsNoPop, subj, prof, init):        
@@ -12,26 +18,20 @@ class UCTP:
         n = 0
         while(n!=init):
             candidate = Candidate()
+            # Follow the subjects in 'subj' list, in order, and for each one, choose a professor randomly 
             for sub in subj:
                 candidate.addRelation(sub, prof[randrange(len(prof))])
             solutionsNoPop.addCand(candidate)
             n = n+1
         print ("Created first generation!")    
         #printAllCand(solutions)
+        
+#==============================================================================================================            
     
-    # Reset Populations Separation to allow new separation
-    def resetPop(self, solutionsNoPop, solutionsI, solutionsF):
-        for cand in solutionsI.getList():
-            solutionsNoPop.addCand(cand)
-        for cand in solutionsF.getList():
-            solutionsNoPop.addCand(cand)
-            
-        solutionsI.resetList()
-        solutionsF.resetList()
-            
     # Separation of solutions into 2 populations
     def twoPop(self, solutionsNoPop, solutionsI, solutionsF, prof, subj):
         for cand in solutionsNoPop.getList():
+            # classification by checking feasibility
             pop = self.checkFeasibility(cand, prof, subj)
             if(pop=="feasible"):
                 solutionsF.addCand(cand)
@@ -40,75 +40,121 @@ class UCTP:
                    
         solutionsNoPop.resetList()
         
+#==============================================================================================================            
+        
     # Detect the violation of a Restriction into a candidate
     def checkFeasibility(self, candidate, prof, subj):
-        # Lists used to relate with the position of Professors in 'prof' list 
-        prof_total_charge = []
-        prof_total_exist = []
+        # List of lists of Subjects that are related to the same Professor, where the position in this list is the same of the same professor in 'prof' list 
+        prof_relations = []
         
-        # Initializing the lists 
+        # Initializing the list
         n=0
         for n in range(len(prof)):
-            prof_total_charge.append(0.0)
-            prof_total_exist.append(0.0)
+            prof_relations.append([])
             n = n+1
-            
-        for s, p in candidate.getList():
-            sLevel, sCode, sName, sQuadri, sPeriod, sCharge = s.get()
-            pName, pPeriod, pCharge, pQuadriSabbath = p.get()
-            # Period chosed by a Prof is not equal of a Subject
-            #if(('NEGOCI' not in pPeriod) and (pPeriod != sPeriod)):
-            #    return "infeasible"
-            # ?? Subject is on a Quadri where the Prof chosed to be your Sabbath Quadri
-            #elif(pQuadriSabbath == sQuadri):
-            #    return "infeasible"
-            
-            # Searchs a Prof that dont exists on the Candidate
-            index = prof.index(p)
-            prof_total_exist[index] = 1
-            # ?? Sera que a distribuicao balanceada de materias eh uma resticao??
-            #prof_total_charge[index] = (prof_total_charge[index]+ float(sCharge.replace(",", ".")))
-
-        # Count how many Prof doesnt has a Subject
-        if(prof_total_exist.count(0)!=0):
+        
+        # Filling the list according to the candidate    
+        for s, p in candidate.getList():            
+            indexp = prof.index(p)
+            indexs = subj.index(s)
+            prof_relations[indexp].append(indexs)
+        
+        # Search a Professor that do not exists on the Candidate - empty list in the 'prof_relations' list   
+        if(prof_relations.count([])!=0):
             return "infeasible"
         
-        # ??
-        #n=0
-        #for n in range(len(prof)):
-        #    pName, pPeriod, pCharge, pQuadriSabbath = prof[n].get()
-        #    if(pCharge < prof_total_charge[n]):
-        #        return "infeasible"
-        #    n = n+1
+        # Searching, in each professor (one at a time), conflicts of schedules between subjects related to it
+        for list_subj in prof_relations:
+            # Check if the professor has more than 1 relation Prof-Subj to analyze
+            if(len(list_subj)!=1):
+                # Getting the data of all Subjects related to actual Professor in analysis (the same position in all 3 lists it is from the same subj) 
+                timetableList_List = []
+                quadri_List = []
+                campus_List = []
+                for subj_index in list_subj:
+                    sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[subj_index].get()
+                    timetableList_List.append(sTimetableList)
+                    quadri_List.append(sQuadri)
+                    campus_List.append(sCampus)
+                
+                # Comparing the data of one Subject (i) with all next subjects listed, and do the same with next ones
+                i=0
+                for timeTable in  timetableList_List:
+                    # all [day/hour/frequency] of the Timetable of the Subject (i) in 'timetableList_List'
+                    i_day = []
+                    i_hour = []
+                    i_frequency = []
+                    for j in timeTable:
+                        i_day.append(j[0])
+                        i_hour.append(j[1])
+                        i_frequency.append(j[2])
+                    
+                    # Now, comparing actual (i) subject data with next ones (k), one at a time
+                    k = i+1
+                    rest = timetableList_List[k:]
+                    # repeat this 'len(rest)' times
+                    for next in rest:
+                        # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
+                        inext_day = []
+                        inext_hour = []
+                        inext_frequency = []
+                        for j in timeTable:
+                            inext_day.append(j[0])
+                            inext_hour.append(j[1])
+                            inext_frequency.append(j[2])
                         
+                        # Finally comparing one-to-one timetables - between i and k subjects
+                        for a in i_day:
+                            for b in inext_day:                                
+                                if(a==b):
+                                    if(quadri_List[i]==quadri_List[k]):
+                                        # There is, at least, two subjects teach in the same day, hour and quadri
+                                        if(i_hour[i_day.index(a)]==inext_hour[inext_day.index(b)]):
+                                            return "infeasible" 
+                                        # There is, at least, two subjects teach in the same day and quadri, but in different campus
+                                        if(campus_List[i]==campus_List[k]):
+                                            return "infeasible"
+                        
+                        #Going to the next Subject (k+1) to compare with the same, actual, main, Subject (i)
+                        k = k+1    
+                    
+                    # Going to the next Subject (i+1) related to the same Professor   
+                    i = i+1
+                    
+        # If all Relations Prof-Subj in this Candidate passed through the restrictions
         return "feasible"
-    
+         
+#==============================================================================================================            
+   
     # Calculate the Fitness of the candidate
     def calcFit(self, infeasibles, feasibles, prof, subj, weights):
+        # All Infeasible Candidates
         for cand in infeasibles.getList():
             if(cand.getFitness() == 0.0):
+                # Setting the Fitness with the return of calc_fitInfeas() method
                 cand.setFitness(self.calc_fitInfeas(cand, prof, subj, weights[0], weights[1], weights[2]))
+        # All Feasible Candidates
         for cand in feasibles.getList():
             if(cand.getFitness() == 0.0):
+                # Setting the Fitness with the return of calc_fitFeas() method
                 cand.setFitness(self.calc_fitFeas(cand, prof, subj, weights[3], weights[4], weights[5], weights[6], weights[7]))
+        
+#==============================================================================================================            
    
     # Calculate Fitness of Infeasible Candidates 
     def calc_fitInfeas(self, cand, prof, subj, w_alpha, w_beta, w_gamma):
-        # ha todos os prof com materias (c) - quantos faltam
-        # quantas materias(no mesmo quadri) (1)ha no mesmo dia/mesmo horario, (2)mesmo dia/Campus diferentes
         result = 1.0
         return ((-1)*result)
+        
+#==============================================================================================================            
      
     # Calculate Fitness of Feasible Candidates 
     def calc_fitFeas(self, cand, prof, subj, w_delta, w_omega, w_sigma, w_pi, w_rho):
-        # quao balanceada esta a dispribuicao de materias para cada Prof (levando em consideracao a carga escolhida por cada) calcular variancia
-        # quantas materias sao da preferencia do prof
-        # QuadriSabath - minimizar a quantidade de materias no quadriSabath
-        # materia turno por professor (a) - quantos ferem 
-        # Preferencia de campus do prof
         result = 1.0
         return result
-            
+         
+#==============================================================================================================            
+           
     # Generate new solutions from the current Infeasible population
     def offspringI(self, solutionsNoPop, solutionsI, prof):
         if(len(solutionsI.getList())!=0):
@@ -116,6 +162,8 @@ class UCTP:
             for cand in solutionsI.getList():
                 newCand = self.mutationI(cand, prof)
                 solutionsNoPop.addCand(newCand)
+        
+#==============================================================================================================            
     
     # Make a mutation into a solution
     def mutationI(self, candidate, prof):
@@ -138,6 +186,8 @@ class UCTP:
         newCand.setList(relations)
         
         return newCand
+        
+#==============================================================================================================            
                  
     # Generate new solutions from the current Feasible population
     def offspringF(self, solutionsNoPop, solutionsF, prof, pctMut, pctRouletteCross, numCand):
@@ -198,6 +248,8 @@ class UCTP:
                     solutionsNoPop.addCand(newCand)
                 else:
                     solutionsNoPop.addCand(cand)    
+        
+#==============================================================================================================            
                     
     # Make a mutation into a solution
     def mutationF(self, candidate, prof):
@@ -216,6 +268,8 @@ class UCTP:
         newCand.setList(relations)
         
         return newCand
+        
+#==============================================================================================================            
     
     # Make a crossover between two solutions    
     def crossoverF(self, cand1, cand2):
@@ -244,6 +298,8 @@ class UCTP:
         newCand2.setList(relations2)
         
         return newCand1, newCand2 
+        
+#==============================================================================================================            
         
     # Make a Roulette Wheel selection of the solutions from Infeasible Pop.
     def selectionI(self, infPool, solutionsI, numCand):
@@ -282,6 +338,8 @@ class UCTP:
                     index = index + 1
             
             solutionsI.setList(newSolInf)            
+        
+#==============================================================================================================            
     
     # Make a Selection of the best solutions from Feasible Pop.
     def selectionF(self, feaPool, solutionsF, numCand):
@@ -301,6 +359,8 @@ class UCTP:
                     bestFeas.append(solutionsF.getList()[i])
                     
             solutionsF.setList(bestFeas)        
+        
+#==============================================================================================================            
                 
     # Detect the stop condition
     def stop(self, iteration, total, solutionsI, solutionsF):
@@ -311,4 +371,5 @@ class UCTP:
             return False
         else:
             return True
-    
+        
+#==============================================================================================================    

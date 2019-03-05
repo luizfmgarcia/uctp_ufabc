@@ -1,6 +1,8 @@
 # Objects used on UCTP algorithm
+        
+#==============================================================================================================            
 
-# Keep the details of a professor
+# Keep the data of a professor
 class Prof:
     def __init__(self, name, period, charge, quadriSabbath, prefCampus, prefSubjQ1List, prefSubjQ2List, prefSubjQ3List, prefSubjLimList):
         self.name = name
@@ -12,11 +14,13 @@ class Prof:
         self.prefSubjQ2List = prefSubjQ2List
         self.prefSubjQ3List = prefSubjQ3List
         self.prefSubjLimList = prefSubjLimList
-     
+    
     def get(self):
         return self.name, self.period, self.charge, self.quadriSabbath, self.prefCampus, self.prefSubjQ1List, self.prefSubjQ2List, self.prefSubjQ3List, self.prefSubjLimList
+        
+#==============================================================================================================            
 
-# Keep the details of a subject
+# Keep the data of a subject
 class Subject:
     def __init__(self, level, code, name, quadri, period, campus, charge, timetableList):
         self.level = level
@@ -29,9 +33,11 @@ class Subject:
         self.timetableList = timetableList
     
     def get(self):
-        return self.level, self.code, self.name, self.quadri, self.period, self.charge, self.timetableList    
+        return self.level, self.code, self.name, self.quadri, self.period, self.campus, self.charge, self.timetableList    
+        
+#==============================================================================================================            
 
-# Keep the details of a Candidate
+# Keep the data of a Candidate
 class Candidate:
     def __init__(self):
         self.listRelations = []
@@ -55,6 +61,8 @@ class Candidate:
         
     def removeRelation(self, relation):
         self.listRelations.remove(relation)       
+        
+#==============================================================================================================            
                 
 # Keep all Candidates obtained during a run of the algorithm
 class Solutions:
@@ -76,3 +84,4 @@ class Solutions:
     def removeCand(self, candidate):
         self.listCandidates.remove(candidate) 
         
+#==============================================================================================================        
