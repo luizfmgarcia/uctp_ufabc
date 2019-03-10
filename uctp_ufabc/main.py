@@ -6,7 +6,7 @@ from ioData import *
 #RESOLVER: Problema das cargas (v1) no calculo de fitness dos feasibles
 
 # main
-class main:
+class main:    
     # to access UCTP Main methods and creating Solutions (List of Candidates)
     uctp = UCTP()
     # Main candidates of a generation
@@ -23,12 +23,14 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 100
-    # number of candidates in a generation (same for each Feas/Inf.)
+    iterations = 1
+    # Number of candidates in a generation (same for each Feas/Inf.)
     numCand = 100
-    # Percentage of candidates from Feasible Pop. that will be selected through a Roulette to make after, a Crossover
+    # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
+    # Must be between '0' and '100'
     pctRouletteCross = 50
-    # Percentage of mutation that maybe each offspring will suffer 
+    # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer
+    # Must be between '0' and '100' 
     pctMut = 15
     
     # Weights (!!!must be float!!!)
@@ -83,6 +85,5 @@ class main:
      
     # Export last generation of candidates (with a Solution)  
     outData(solutionsI, solutionsF, t)        
-    print("FIM")
-            
+    print("FIM")       
 #==============================================================================================================
