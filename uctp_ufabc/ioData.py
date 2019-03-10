@@ -257,14 +257,25 @@ def printMMAFit(solutionsI, solutionsF):
 
 # Print the Fitness of all candidates in a generation                
 def printAllFit(solutionsI, solutionsF):
-    n = 0
-    for cand in solutionsI.getList():
-        print str(n), ': Infeasible, ', str(cand.getFitness()), ' / ',
-        n = n + 1
+    # Infeasible ones
+    if(len(solutionsI.getList())!=0):
+        print 'Infeasibles Solutions:'
+        n = 0
+        for cand in solutionsI.getList():
+            print str(n), ': ', str(cand.getFitness()), ',',
+            n = n + 1
+        print(" ")
+    else:
+        print 'No Infeasibles Solutions!'
     
-    n = 0
-    for cand in solutionsF.getList():
-        print str(n), ': Feasible, ', str(cand.getFitness()), ' / ',
-        n = n + 1    
-        
+    # Feasible ones        
+    if(len(solutionsF.getList())!=0):
+        print 'Feasibles Solutions:'
+        n = 0
+        for cand in solutionsF.getList():
+            print str(n), ': ', str(cand.getFitness()), ',',
+            n = n + 1    
+        print(" ")
+    else:
+        print 'No Feasibles Solutions!'           
 #==============================================================================================================        

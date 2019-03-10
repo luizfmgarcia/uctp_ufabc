@@ -43,11 +43,24 @@ class Candidate:
         self.listRelations = []
         self.fitness = 0.0
         
+        # Variables used if the Candidate is classified as "Infeasible"
+        prof_relations = []
+        final_n_n = []
+        final_s_s = []
+        
     def getFitness(self): 
         return self.fitness
             
     def setFitness(self, fit): 
-        self.fitness = fit   
+        self.fitness = fit
+    
+    def getInfVariables(self):
+        return  self.prof_relations, self.final_n_n, self.final_s_s
+    
+    def setInfVariables(self, prof_relations, final_n_n, final_s_s):
+        self.prof_relations = prof_relations
+        self.final_n_n = final_n_n
+        self.final_s_s = final_s_s    
     
     def getList(self):
         return self.listRelations
