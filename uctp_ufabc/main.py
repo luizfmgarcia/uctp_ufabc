@@ -6,7 +6,7 @@ from ioData import *
 #RESOLVER: Problema das cargas (v1) no calculo de fitness dos feasibles
 
 # main
-class main:    
+class main: 
     # to access UCTP Main methods and creating Solutions (List of Candidates)
     uctp = UCTP()
     # Main candidates of a generation
@@ -23,9 +23,9 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 1
+    iterations = 1000
     # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 100
+    numCand = 200
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     # Must be between '0' and '100'
     pctRouletteCross = 50
@@ -35,12 +35,12 @@ class main:
     
     # Weights (!!!must be float!!!)
     w_alpha = 1.0
-    w_beta = 1.0
-    w_gamma = 1.0
+    w_beta = 3.0
+    w_gamma = 2.0
     w_delta = 1.0
     w_omega = 1.0
-    w_sigma = 2.0
-    w_pi = 3.0
+    w_sigma = 1.0
+    w_pi = 1.0
     w_rho = 1.0
     weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
     
