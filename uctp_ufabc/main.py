@@ -23,7 +23,7 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 1000
+    iterations = 20000
     # Number of candidates in a generation (same for each Feas/Inf.)
     numCand = 200
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
@@ -76,8 +76,6 @@ class main:
         uctp.selectionF(feaPool, solutionsF, numCand)
         # Print and export generated data
         outDataMMA(solutionsI, solutionsF)
-        if(t % 10 == 0):
-            printAllFit(solutionsI, solutionsF)
         print(" ")
         # Next Iteration
         t = t+1

@@ -43,6 +43,8 @@ class UCTP:
         # Granting that the List will be empty to next operations          
         solutionsNoPop.resetList()
         
+        print "Checked feasibility,",
+        
 #==============================================================================================================            
         
     # Detect the violation of a Restriction into a candidate
@@ -209,11 +211,14 @@ class UCTP:
             if(cand.getFitness() == 0.0):
                 # Setting the Fitness with the return of calc_fitInfeas() method
                 cand.setFitness(self.calc_fitInfeas(cand, prof, subj, weights[0], weights[1], weights[2]))
+        print "Fitness of all Inf.,",
+        
         # All Feasible Candidates
         for cand in feasibles.getList():
             if(cand.getFitness() == 0.0):
                 # Setting the Fitness with the return of calc_fitFeas() method
                 cand.setFitness(self.calc_fitFeas(cand, prof, subj, weights[3], weights[4], weights[5], weights[6], weights[7]))
+        print "Fitness of all Feas.,",
         
 #==============================================================================================================            
    
@@ -407,18 +412,16 @@ class UCTP:
         # Initializing vectors
         i=0
         for i in range(len(prof)):
-            charges_AllRelations[i] = 0
-            charges_EachProf[i] = 0
-            num_NotSameQuadriSab[i] = 0
-            num_SamePeriod[i] = 0
-            num_sameCampus[i] = 0
-            q1_relations[i] = []
-            q2_relations[i] = []
-            q3_relations[i] = []
+            charges_AllRelations.append(0)
+            num_NotSameQuadriSab.append(0)
+            num_SamePeriod.append(0)
+            num_sameCampus.append(0)
+            q1_relations.append([])
+            q2_relations.append([])
+            q3_relations.append([])
         
         # Initializing qX_relations Lists of Lists (in each one appends "pPrefSubjQXList" with "pPrefSubjLimList" to have the length of the subList)
-        i=0
-        for i in range(len(prof)):
+        for relations in prof_relations:
             # Setting Index of actual Prof
             pIndex = prof_relations.index(relations)
             # Getting data of actual Prof
@@ -446,8 +449,8 @@ class UCTP:
             # Getting data of actual Prof
             pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
             
-            # Collecting each Professors Charge  
-            charges_EachProf[pIndex] = pCharge
+            # Collecting each Professors Charge 
+            charges_EachProf.append(int(pCharge))
             
             # All Relations of one Prof
             for subj_related in relations:
@@ -458,7 +461,7 @@ class UCTP:
                 sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[sIndex].get()
                 
                 # Collecting and summing Subjects Charges related to same Prof
-                charges_AllRelations[sIndex] = charges_AllRelations[sIndex] + sCharge
+                charges_AllRelations[sIndex] = charges_AllRelations[sIndex] + float(sCharge)
                 
                 # Adding to count if the Subj is not in the same 'pQuadriSabbath' (if Prof choose 'nenhum' he does not have a 'pQuadriSabbath')
                 if(sQuadri!=pQuadriSabbath):
@@ -525,12 +528,17 @@ class UCTP:
         # For f1
         # Relative weigh of excess or missing charge for each Prof
         charges_relative = []
+        
+        # Initializing vector
+        for p in range(len(prof)):
+            charges_relative.append(0.0)
+            
         # Calculating and filling vector
         for pCharge in charges_EachProf:
             # Setting Index of actual Prof
-            actual_index = charges_EachProf.index(pcharge)
+            actual_index = charges_EachProf.index(pCharge)
             # Finding relative charge based on the credit difference module between the credits requested by the Prof and the sum off all Subj related to it
-            charges_relative[actual_index] = float(abs(pCharge - charges_AllRelations[actual_index]))/float(pCharge)
+            charges_relative[actual_index] = abs(float(pCharge) - float(charges_AllRelations[actual_index]))/float(pCharge)
         
         # The arithmetic average of charge discrepancies of all professors;  
         u_u = 0.0
@@ -547,6 +555,7 @@ class UCTP:
         finalQ2 = []
         finalQ3 = []
         
+        
         # Calculating the Satisfaction from Q1 relations for all Professors
         for list_choice_relation in q1_relations:
             # Setting actual Prof Index and actual List Relations-Preference
@@ -554,13 +563,13 @@ class UCTP:
             len_actual_list = len(list_choice_relation)
             
             # Initialing actual position and total weight that will be calculated next
-            finalQ1[prof_index] = 0.0
+            finalQ1.append(0.0)
             total_weight = 0
             
             # Checking if the Relations-Preference List is empty
             if(len_actual_list == 0):
                 finalQ1[prof_index] = 1.0
-            # It is needed to be calculate (is not empty)
+            # If is needed to be calculated (is not empty)
             else:
                 # Q1 Relations of each Professor
                 for h in list_choice_relation:
@@ -584,7 +593,7 @@ class UCTP:
             len_actual_list = len(list_choice_relation)
             
             # Initialing actual position and total weight that will be calculated next
-            finalQ2[prof_index] = 0.0
+            finalQ2.append(0.0)
             total_weight = 0
             
             # Checking if the Relations-Preference List is empty
@@ -614,7 +623,7 @@ class UCTP:
             len_actual_list = len(list_choice_relation)
             
             # Initialing actual position and total weight that will be calculated next
-            finalQ3[prof_index] = 0.0
+            finalQ3.append(0.0)
             total_weight = 0
             
             # Checking if the Relations-Preference List is empty
@@ -639,8 +648,8 @@ class UCTP:
         
         # Calculate the final value of a Prof "satisfaction" summing all 3 values (from finalQ1, finalQ2 and finalQ3 lists) and normalizing it
         final_Satisf = []
-        for i in len(finalQ3):
-            final_Satisf[i] = (finalQ1[i]+finalQ2[i]+finalQ3[i])/3.0
+        for i in range(len(finalQ3)):
+            final_Satisf.append((finalQ1[i]+finalQ2[i]+finalQ3[i])/3.0)
         
         # Finally, calculating all Professors Satisfaction summing all final values    
         m_m = 0.0
@@ -686,6 +695,8 @@ class UCTP:
                 newCand = self.mutationI(cand, prof, subj)
                 # Adding the new Candidate generated by Mutation to 'solutionsNoPop'
                 solutionsNoPop.addCand(newCand)
+                
+        print "Inf. Offspring,",
         
 #==============================================================================================================            
     
@@ -834,7 +845,7 @@ class UCTP:
         # Check if the Feasible pop. is empty
         if(len(solutionsF.getList())!=0):
             # 'objectiveNum': number of solutions to become parents - based on 'pctRouletteCross'
-            objectiveNum = (pctRouletteCross*len(solutionsF)/100)
+            objectiveNum = (pctRouletteCross*len(solutionsF.getList())/100)
             
             # Turning 'objectiveNum' to Even if it is Odd -> summing +1 to it only if the new 'objectiveNum' is not bigger then len(solutionsF)
             if(objectiveNum % 2 != 0):
@@ -932,7 +943,9 @@ class UCTP:
                     else:
                         # Adding the generated by crossover Candidate to 'solutionsNoPop'
                         solutionsNoPop.addCand(cand)    
-        
+  
+        print "Feas. Offspring,",
+                        
 #==============================================================================================================            
                     
     # Make a mutation into a solution
@@ -1067,6 +1080,8 @@ class UCTP:
             # Setting the new 'solutionsI' list to go to the next generation    
             solutionsI.setList(newSolInf)
             
+        print "Inf. Selection,",
+           
 #==============================================================================================================            
     
     # Make a Selection of the best solutions from Feasible Pop.
@@ -1100,6 +1115,8 @@ class UCTP:
             
             # Setting the new 'solutionsF' list to go to the next generation        
             solutionsF.setList(feasibles_List)        
+        
+        print "Feas. Selection,",
         
 #==============================================================================================================            
                 
