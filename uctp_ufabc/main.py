@@ -26,9 +26,9 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 20
+    iterations = 50000
     # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 200
+    numCand = 400
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     # Must be between '0' and '100'
     pctRouletteCross = 50
@@ -57,7 +57,7 @@ class main:
     uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights)
     uctp.calcFit(solutionsI, solutionsF, prof, subj, weights)
     # Print and export generated data
-    if(prt==1): print 'Iteration: 0'
+    if(prt==1): print('Iteration: 0')
     outDataMMA(solutionsI, solutionsF, 0)
     # printAllFit(solutionsI, solutionsF)
     
@@ -69,7 +69,7 @@ class main:
     
     t = 1;
     while(uctp.stop(t, iterations, solutionsI, solutionsF)):
-        if(prt==1): print 'Iteration:', t
+        if(prt==1): print('Iteration:', t)
         # Choosing Parents to generate children (solutionsNoPop) 
         uctp.offspringI(solutionsNoPop, solutionsI, prof, subj) 
         uctp.offspringF(solutionsNoPop, solutionsF, prof, subj, pctMut, pctRouletteCross, numCand)
