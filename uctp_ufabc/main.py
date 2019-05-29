@@ -1,8 +1,11 @@
 from objects import *
 from uctp import *
 from ioData import *
-        
+  
+prt = 1
+      
 #==============================================================================================================            
+# Run with <python -m cProfile -s cumtime main.py>
 #RESOLVER: Problema das cargas (v1) no calculo de fitness dos feasibles
 
 # main
@@ -23,7 +26,7 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 20000
+    iterations = 20
     # Number of candidates in a generation (same for each Feas/Inf.)
     numCand = 200
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
@@ -54,17 +57,19 @@ class main:
     uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights)
     uctp.calcFit(solutionsI, solutionsF, prof, subj, weights)
     # Print and export generated data
-    print 'Iteration: 0'
-    outDataMMA(solutionsI, solutionsF)
-    printAllFit(solutionsI, solutionsF)
+    if(prt==1): print 'Iteration: 0'
+    outDataMMA(solutionsI, solutionsF, 0)
+    # printAllFit(solutionsI, solutionsF)
     
     # Main work - iterations of GA-Algorithm to find a solution
-    print(" ")
-    print("Starting hard work...")
-    print(" ")
+    if(prt==1): 
+        print(" ")
+        print("Starting hard work...")
+        print(" ")
+    
     t = 1;
     while(uctp.stop(t, iterations, solutionsI, solutionsF)):
-        print 'Iteration:', t
+        if(prt==1): print 'Iteration:', t
         # Choosing Parents to generate children (solutionsNoPop) 
         uctp.offspringI(solutionsNoPop, solutionsI, prof, subj) 
         uctp.offspringF(solutionsNoPop, solutionsF, prof, subj, pctMut, pctRouletteCross, numCand)
@@ -75,13 +80,14 @@ class main:
         uctp.selectionI(infPool, solutionsI, numCand)
         uctp.selectionF(feaPool, solutionsF, numCand)
         # Print and export generated data
-        outDataMMA(solutionsI, solutionsF)
-        print(" ")
+        outDataMMA(solutionsI, solutionsF, t)
+        if(prt==1): print(" ")
         # Next Iteration
         t = t+1
     # End While (Iterations) - Stop condition verified
      
     # Export last generation of candidates (with a Solution)  
     outData(solutionsI, solutionsF, t)        
-    print("FIM")       
+    if(prt==1): print("End of works")
+          
 #==============================================================================================================

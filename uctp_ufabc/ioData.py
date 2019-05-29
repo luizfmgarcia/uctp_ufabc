@@ -6,16 +6,17 @@ import os
 import sys
 import shutil
 from string import split
-        
+
+prt = 1        
 #==============================================================================================================            
     
 # Get all data to work
 def getData(subj, prof): 
     # Read the data of Professors and create the respective objects
-    print "Getting data of Professors...",
+    if(prt == 1): print "Getting data of Professors...",
     with open('professors.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
-        print "Setting Professors..."
+        if(prt == 1): print "Setting Professors..."
         for row in spamreader:
             # Transform every letter to upper case to impose a pattern
             datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
@@ -28,18 +29,18 @@ def getData(subj, prof):
                 datas[8] = split(datas[8], '/')
                 # Creating and saving a new Prof.
                 prof.append(Prof(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7], datas[8]))
-                print datas
+                if(prt == 1): print datas
             else:
-                print "This professor register has some missing data! It will not be used."
-                print datas    
+                if(prt == 1): print "This professor register has some missing data! It will not be used."
+                if(prt == 1): print datas    
     csvfile.close() 
     
     # Read the data of Subjects and create the respective objects    
-    print(" ")
-    print "Getting datas of Subjects...",
+    if(prt == 1): print(" ")
+    if(prt == 1): print "Getting datas of Subjects...",
     with open('subjects.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
-        print "Setting Subjects..."
+        if(prt == 1): print "Setting Subjects..."
         for row in spamreader:
             # Transform every letter to upper case to impose a pattern
             datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
@@ -80,13 +81,13 @@ def getData(subj, prof):
                     datas.pop(8)
                     # Creating and saving the new Subj.
                     subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
-                    print datas
+                    if(prt == 1): print datas
             else:
-                print "This subject register has some missing data! It will not be used."
-                #print datas            
+                if(prt == 1): print "This subject register has some missing data! It will not be used."
+                #if(prt == 1): print datas            
     csvfile.close()
         
-    print ("Data Obtained!")
+    if(prt == 1): print ("Data Obtained!")
     startOutFolders()
         
 #==============================================================================================================            
@@ -105,31 +106,33 @@ def startOutFolders():
     outName = newDir + 'totalMinMaxAvg.csv'                
     with open(outName, 'wb') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(['min', 'max', 'avg'])  
-    # print("Created: " + outName + "in" + newDir + "...")
+        spamwriter.writerow(['Pop', 'Iter','min', 'max', 'avg'])  
+    # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
         
 #==============================================================================================================            
 
 # Put out on 'totalMinMaxAvg.csv' the current generation Min/Max/Avg Fitness
-def outDataMMA(solutionsI, solutionsF):
-    print "Exporting data....",
+def outDataMMA(solutionsI, solutionsF, iter):
+    if(prt == 1): print "Exporting data...."
     
-    min = 0
-    max = -1
-    
-    # Find Max Fitness in the Infeasible Pop. (in case of Feasible Pop. is empty)
-    # Find Min Fitness in the Infeasible Pop.          
+    minInf = 0
+    maxInf = -1
+    # Find Min/Max Fitness in the Infeasible Pop.          
     for cand in solutionsI.getList():
-        if(cand.getFitness() > max):
-            max = cand.getFitness()             
-        if(cand.getFitness() < min):
-            min = cand.getFitness()
+        if(cand.getFitness() > maxInf):
+            maxInf = cand.getFitness()             
+        if(cand.getFitness() < minInf):
+            minInf = cand.getFitness()
     
-    # Find Max Fitness in the Feasible Pop.    
+    minFea = 1
+    maxFea = 0 
+    # Find Min/Max Fitness in the Feasible Pop.    
     for cand in solutionsF.getList():             
-        if(cand.getFitness() > max):
-            max = cand.getFitness()        
+        if(cand.getFitness() > maxFea):
+            maxFea = cand.getFitness()        
+        if(cand.getFitness() < minFea):
+            minFea = cand.getFitness()
     
     # get current directory, 'generationsCSV' dir., and CSV file to be modified with current generation Min/Max Fitness
     currentDir = os.getcwd()
@@ -137,18 +140,28 @@ def outDataMMA(solutionsI, solutionsF):
     outName = newDir + 'totalMinMaxAvg.csv'                
     with open(outName, 'ab') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow([min, max, ((min+max)/2)])  
+        
+        if(minInf!=0):
+            spamwriter.writerow(['Inf', iter, minInf, maxInf, ((minInf+maxInf)/2)])
+            if(prt == 1): print 'Infeasibles - Num:', len(solutionsI.getList()), 'Min:', minInf, 'Max:', maxInf, 'Med:', (minInf+maxInf)/2
+        else:
+            if(prt == 1): print 'No Infeasibles Solutions!'
+        
+        if(minFea!=1):
+            spamwriter.writerow(['Fea', iter, minFea, maxFea, ((minFea+maxFea)/2)])
+            if(prt == 1): print 'Feasibles - Num:', len(solutionsF.getList()), 'Min:', minFea, 'Max:', maxFea, 'Med:', (minFea+maxFea)/2
+        else:
+            if(prt == 1): print 'No Feasibles Solutions!'
+              
     csvfile.close()
-    print ("Data Exported!")
-    
-    print 'Min:', min, 'Max:', max, 'Med:', (min+max)/2        
+    if(prt == 1): print ("Data Exported!")        
         
 #==============================================================================================================                
     
 # Export all Candidates in a generation into CSV files
 # Create a CSV File for each Candidate and one CSV for all Fitness of the Candidates: 
 def outData(solutionsI, solutionsF, num):
-    print "Exporting data....",
+    if(prt == 1): print "Exporting data....",
 
     # get current directory and create, if necessary, new 'generationsCSV' dir
     currentDir = os.getcwd()
@@ -174,7 +187,7 @@ def outData(solutionsI, solutionsF, num):
                 spamwriter.writerow(row)
             spamwriter.writerow(" ")
             spamwriter.writerow(['Infeasible', cand.getFitness()])
-        # print("Created: " + outName + "in" + newDir + "...")
+        # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
         i = i + 1
         csvfile.close()
     
@@ -191,7 +204,7 @@ def outData(solutionsI, solutionsF, num):
                 spamwriter.writerow(row)
             spamwriter.writerow(" ")
             spamwriter.writerow(['Feasible', cand.getFitness()])
-        # print("Created: " + outName + "in" + newDir + "...")
+        # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
         i = i + 1
         csvfile.close()
             
@@ -209,10 +222,10 @@ def outData(solutionsI, solutionsF, num):
         for cand in solutionsF.getList():            
             spamwriter.writerow([i,'Feasible', cand.getFitness()])
             i = i + 1            
-    # print("Created: " + outName + "in" + newDir + "...")
+    # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
             
-    print ("Data Exported!")   
+    if(prt == 1): print ("Data Exported!")   
         
 #==============================================================================================================            
 
