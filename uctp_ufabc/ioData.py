@@ -83,13 +83,14 @@ def getData(subj, prof):
                     # Removing datas[8] that is not useful
                     datas.pop(8)
                     # Creating and saving the new Subj.
-                    subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
-                    if(prt == 1): print(datas)
+                    if(len(subj)<100): # Total 91
+                        subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
+                        if(prt == 1): print(datas)
             else:
                 if(prt == 1): print("This subject register has some missing data! It will not be used.")
                 #if(prt == 1): print(datas)            
     csvfile.close()
-        
+       
     if(prt == 1): print("Data Obtained!")
     startOutFolders()
         
@@ -109,7 +110,7 @@ def startOutFolders():
     outName = newDir + 'totalMinMaxAvg.csv'                
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(['Pop', 'Iter','min', 'max', 'avg'])  
+        spamwriter.writerow(['Pop', 'Iter','Min', 'Max', 'Avg'])  
     # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
         
@@ -156,9 +157,9 @@ def outDataMMA(solutionsI, solutionsF, iter):
     csvfile.close()
 
     if(prt == 1):
-        if(minInf!=0): print('Infeasibles - Num:', len(solutionsI.getList()), 'Min:', minInf, 'Max:', maxInf, 'Med:', medInf)
+        if(minInf!=0): print('Infeasibles (', len(solutionsI.getList()), ') Min:', minInf, 'Max:', maxInf, 'Avg:', medInf)
         else: print('No Infeasibles Solutions!')
-        if(minFea!=1): print('Feasibles - Num:', len(solutionsF.getList()), 'Min:', minFea, 'Max:', maxFea, 'Med:', medFea)
+        if(minFea!=1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', medFea)
         else: print('No Feasibles Solutions!')        
         print("Data Exported!")        
         
@@ -184,7 +185,7 @@ def outData(solutionsI, solutionsF, num):
     i = 0
     for cand in solutionsI.getList():            
         outName = newDir + 'Gen' + str(num) + '_candInf' +  str(i) + '.csv'
-        with open(outName, 'w') as csvfile:
+        with open(outName, 'w', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
             spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList'])
             # All relations in a Candidate of a Generation
@@ -201,7 +202,7 @@ def outData(solutionsI, solutionsF, num):
     i = 0
     for cand in solutionsF.getList():            
         outName = newDir + 'Gen' + str(num) + '_candFea' +  str(i) + '.csv'
-        with open(outName, 'w') as csvfile:
+        with open(outName, 'w', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
             spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList'])
             # All relations in a Candidate of a Generation
@@ -216,7 +217,7 @@ def outData(solutionsI, solutionsF, num):
             
     # All Fitness in a Generation
     outName = newDir + 'gen' +  str(num) + '.csv'
-    with open(outName, 'w') as csvfile:
+    with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(['Candidate', 'Population', 'Fitness'])
         i = 0
@@ -279,9 +280,9 @@ def printMMAFit(solutionsI, solutionsF):
             minFea = cand.getFitness()
     if(len(solutionsF.getList())!=0): medFea = medFea/len(solutionsF.getList())
 
-    if(minInf!=0): print('Infeasibles - Num:', len(solutionsI.getList()), 'Min:', minInf, 'Max:', maxInf, 'Med:', medInf)
+    if(minInf!=0): print('Infeasibles - Num:', len(solutionsI.getList()), 'Min:', minInf, 'Max:', maxInf, 'Avg:', medInf)
     else: print('No Infeasibles Solutions!')
-    if(minFea!=1): print('Feasibles - Num:', len(solutionsF.getList()), 'Min:', minFea, 'Max:', maxFea, 'Med:', medFea)
+    if(minFea!=1): print('Feasibles - Num:', len(solutionsF.getList()), 'Min:', minFea, 'Max:', maxFea, 'Avg:', medFea)
     else: print('No Feasibles Solutions!')
         
 #==============================================================================================================            
