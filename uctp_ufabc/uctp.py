@@ -36,7 +36,7 @@ class UCTP:
         
         for cand in solutionsNoPop.getList():
             # Classification by checking feasibility
-            pop = self.checkFeasibility(cand, prof, subj, weights[0], weights[1], weights[2])
+            pop = self.checkFeasibility(cand, prof, subj, weights)
             if(pop=="feasible"):
                 solF.addCand(cand)
             elif(pop=="infeasible"):
@@ -50,165 +50,24 @@ class UCTP:
 #==============================================================================================================            
         
     # Detect the violation of a Restriction into a candidate
-    def checkFeasibility(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
-        # As part of the Candidate's Prof-Subj relations with both the Feasible and the Infeasible will be traversed to check his Feasibility here, 
-        # instead of having to pass the entire Infeasible Candidate again in the 'calc_fitInfeas', the calculation of Infeasible Fitness
-        # will already be done only one time here. Only the Feasible ones will have to pass through 'calc_fitFeas' later.
-        
-        # Restrictions to be verified:
-        # i1: penalty to how many Professors does not have at least one relation with a Subject 
-        # i2: penalty to how many Subjects, related to the same Professor, are teach in the same day, hour and quadri
-        # i3: penalty to how many Subjects, related to the same Professor, are teach in the same day and quadri but in different campus
-        
-        # Auxiliary variables to main ones (i1, i2 and i3)
-        p_p=0
-        # List of the subjects that have a conflict between them - always the two conflicts are added, that is, there can be repetitions of subjects
-        conflicts_n_n = []
-        conflicts_s_s = []
-        
-        # List of lists of Subjects that are related to the same Professor, where the position in this list is the same of the same professor in 'prof' list 
-        prof_relations = []
-        
-        # Initializing the list
-        n=0
-        for n in range(len(prof)):
-            prof_relations.append([])
-            n = n+1
-        
-        # Filling the list according to the candidate    
-        for s, p in candidate.getList():            
-            indexp = prof.index(p)
-            indexs = subj.index(s)
-            prof_relations[indexp].append(indexs)
-        
-        # Search (p) Professors that does not exists on the Candidate - empty list in the 'prof_relations' list   
-        p_p = prof_relations.count([])
-        
-        # Searching, in each professor (one at a time), conflicts of schedules between subjects related to it
-        for list_subj in prof_relations:
-            # Check if the professor has more than 1 relation Prof-Subj to analyze
-            if(len(list_subj)!=1):
-                # Getting the data of all Subjects related to actual Professor in analysis (the same position in all 3 lists it is from the same subj) 
-                timetableList_List = []
-                quadri_List = []
-                campus_List = []
-                for subj_index in list_subj:
-                    sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[subj_index].get()
-                    timetableList_List.append(sTimetableList)
-                    quadri_List.append(sQuadri)
-                    campus_List.append(sCampus)
-                
-                # Comparing the data of one Subject (i) with all next subjects listed, and do the same with next ones
-                i=0
-                for timeTable in  timetableList_List:
-                    # all [day/hour/frequency] of the Timetable of the Subject (i) in 'timetableList_List'
-                    i_day = []
-                    i_hour = []
-                    i_frequency = []
-                    for j in timeTable:
-                        i_day.append(j[0])
-                        i_hour.append(j[1])
-                        i_frequency.append(j[2])
-                    
-                    # Now, comparing actual (i) subject data with next ones (k), one at a time
-                    k = i+1
-                    rest = timetableList_List[k:]
-                    # repeat this 'len(rest)' times
-                    for next in rest:
-                        # Variables that flags if a conflict was already detected (do not count 2 or more times same 2 subjects in conflict)
-                        verified_n_n = False
-                        verified_s_s = False
-                        
-                        # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
-                        inext_day = []
-                        inext_hour = []
-                        inext_frequency = []
-                        for j in timeTable:
-                            inext_day.append(j[0])
-                            inext_hour.append(j[1])
-                            inext_frequency.append(j[2])
-                        
-                        # Finally comparing one-to-one timetables - between i and k subjects
-                        for a in i_day:
-                            for b in inext_day:                                
-                                if(a==b):
-                                    if(quadri_List[i]==quadri_List[k]):
-                                        # There is, at least, two subjects teach in the same day, hour and quadri
-                                        if(i_hour[i_day.index(a)]==inext_hour[inext_day.index(b)]):
-                                            # if one 'frequency' is "QUINZENAL I" and the other is "QUINZENAL II" then DO NOT count
-                                            if('SEMANAL' in i_frequency[i_day.index(a)] or 'SEMANAL' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
-                                                    verified_n_n = True
-                                            elif('QUINZENAL I' in i_frequency[i_day.index(a)] and 'QUINZENAL I' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
-                                                    verified_n_n = True
-                                            elif('QUINZENAL II' in i_frequency[i_day.index(a)] and'QUINZENAL II' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
-                                                    verified_n_n = True
-                                        # There is, at least, two subjects teach in the same day and quadri, but in different campus
-                                        if(campus_List[i]==campus_List[k]):
-                                            # if one 'frequency' is "QUINZENAL I" and the other is "QUINZENAL II" then DO NOT count
-                                            if('SEMANAL' in i_frequency[i_day.index(a)] or 'SEMANAL' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_s_s == False):
-                                                    conflicts_s_s.append(list_subj[i])
-                                                    conflicts_s_s.append(list_subj[k])
-                                                    verified_s_s = True
-                                            elif('QUINZENAL I' in i_frequency[i_day.index(a)] and 'QUINZENAL I' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_s_s == False):
-                                                    conflicts_s_s.append(list_subj[i])
-                                                    conflicts_s_s.append(list_subj[k])
-                                                    verified_s_s = True
-                                            elif('QUINZENAL II' in i_frequency[i_day.index(a)] and'QUINZENAL II' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_s_s == False):
-                                                    conflicts_s_s.append(list_subj[i])
-                                                    conflicts_s_s.append(list_subj[k])
-                                                    verified_s_s = True
-                        
-                        # Going to the next Subject (k+1) to compare with the same, actual, main, Subject (i)
-                        k = k+1    
-                    
-                    # Going to the next Subject (i+1) related to the same Professor   
-                    i = i+1
-        
-        # Checking if occurred violations of restrictions on the Candidate
-        if(prof_relations.count([])!=0 or len(conflicts_n_n)!=0 or len(conflicts_s_s)!=0):
-            # Removing from 'conflicts_s_s' and 'conflicts_n_n' duplicates
-            final_n_n = []
-            final_s_s = []
-            for n in conflicts_n_n:
-                if(final_n_n.count(n)==0):
-                    final_n_n.append(n)
-            for s in conflicts_s_s:
-                if(final_s_s.count(s)==0):
-                    final_s_s.append(s)    
-            
-            # Calculating main variables
-            i1 = float(p_p)/(float(len(prof))-1.0)
-            i2 = float(len(final_n_n))/float(len(subj))
-            i3 = float(len(final_s_s))/float(len(subj))
-            # Final Infeasible Function
-            Fi = (-1.0)*(((w_alpha*i1)+(w_beta*i2)+(w_gamma*i3))/(w_alpha + w_beta + w_gamma))
-            
-            # Setting main variables of a Infeasible Candidate
-            candidate.setFitness(Fi)
-            candidate.setInfVariables(prof_relations, final_n_n, final_s_s)
+    def checkFeasibility(self, candidate, prof, subj, weights):
+        # As part of the Candidate's Prof-Subj relations (with both Feasible and the Infeasible) will be traversed to check they Feasibility here, 
+        # instead of repass an entire Infeasible Candidate again in the 'calc_fitInfeas', the calculation of its Fitness will already be done
+        # only one time here. Only the Feasible ones will have to pass through 'calc_fitFeas' later.
+        fit = -1
+        fit = self.calc_fitInfeas(candidate, prof, subj, weights[0], weights[1], weights[2])
+        if(fit<0):
+            candidate.setFitness(fit)
             return "infeasible"
-                    
-        # If all Relations Prof-Subj in this Candidate passed through the restrictions
-        candidate.setFeaVariables(prof_relations)
+            
         return "feasible"
          
 #==============================================================================================================            
    
     # Calculate the Fitness of the candidate
     def calcFit(self, infeasibles, feasibles, prof, subj, weights):
-        # All Infeasible Candidates
+        # All Infeasible Candidates - is here this code only for the representation of the default/original algorithm`s work
+        # The Inf. Fitness calc was already done in 'checkFeasibility()' method
         for cand in infeasibles.getList():
             if(cand.getFitness() == 0.0):
                 # Setting the Fitness with the return of calc_fitInfeas() method
@@ -226,7 +85,7 @@ class UCTP:
    
     # Calculate Fitness of Infeasible Candidates 
     def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
-        # It is similar to 'checkFeasibility' method, checking same "Restrictions", but counting the number of occurrences of each violated restriction
+        # If there are violated restrictions, will return a negative Fitness, if not, will return 1.0
         # i1: penalty to how many Professors does not have at least one relation with a Subject 
         # i2: penalty to how many Subjects, related to the same Professor, are teach in the same day, hour and quadri
         # i3: penalty to how many Subjects, related to the same Professor, are teach in the same day and quadri but in different campus
@@ -258,7 +117,7 @@ class UCTP:
         # Searching, in each professor (one at a time), conflicts of schedules between subjects related to it
         for list_subj in prof_relations:
             # Check if the professor has more than 1 relation Prof-Subj to analyze
-            if(len(list_subj)!=1):
+            if(len(list_subj)>1):
                 # Getting the data of all Subjects related to actual Professor in analysis (the same position in all 3 lists it is from the same subj) 
                 timetableList_List = []
                 quadri_List = []
@@ -323,53 +182,46 @@ class UCTP:
                                                     conflicts_n_n.append(list_subj[k])
                                                     verified_n_n = True
                                         # There is, at least, two subjects teach in the same day and quadri, but in different campus
-                                        if(campus_List[i]==campus_List[k]):
-                                            # if one 'frequency' is "QUINZENAL I" and the other is "QUINZENAL II" then DO NOT count
-                                            if('SEMANAL' in i_frequency[i_day.index(a)] or 'SEMANAL' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_s_s == False):
-                                                    conflicts_s_s.append(list_subj[i])
-                                                    conflicts_s_s.append(list_subj[k])
-                                                    verified_s_s = True
-                                            elif('QUINZENAL I' in i_frequency[i_day.index(a)] and 'QUINZENAL I' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_s_s == False):
-                                                    conflicts_s_s.append(list_subj[i])
-                                                    conflicts_s_s.append(list_subj[k])
-                                                    verified_s_s = True
-                                            elif('QUINZENAL II' in i_frequency[i_day.index(a)] and'QUINZENAL II' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_s_s == False):
-                                                    conflicts_s_s.append(list_subj[i])
-                                                    conflicts_s_s.append(list_subj[k])
-                                                    verified_s_s = True
+                                        if(campus_List[i]!=campus_List[k]):
+                                            if(verified_s_s == False):
+                                                conflicts_s_s.append(list_subj[i])
+                                                conflicts_s_s.append(list_subj[k])
+                                                verified_s_s = True
                         
                         # Going to the next Subject (k+1) to compare with the same, actual, main, Subject (i)
                         k = k+1    
                     
                     # Going to the next Subject (i+1) related to the same Professor   
                     i = i+1
-        
+
+        # Checking if occurred violations of restrictions on the Candidate
+        if(prof_relations.count([])!=0 or len(conflicts_n_n)!=0 or len(conflicts_s_s)!=0):
         # Removing from 'conflicts_s_s' and 'conflicts_n_n' duplicates
-        final_n_n = []
-        final_s_s = []
-        for n in conflicts_n_n:
-            if(final_n_n.count(n)==0):
-                final_n_n.append(n)
-        for s in conflicts_s_s:
-            if(final_s_s.count(s)==0):
-                final_s_s.append(s)    
-        
-        # Calculating main variables
-        i1 = float(p_p)/(float(len(prof))-1.0)
-        i2 = float(len(final_n_n))/float(len(subj))
-        i3 = float(len(final_s_s))/float(len(subj))
-        
-        # Final Infeasible Function
-        Fi = (-1.0)*(((w_alpha*i1)+(w_beta*i2)+(w_gamma*i3))/(w_alpha + w_beta + w_gamma))
-        
-        # Setting main variables of a Infeasible Candidate
-        candidate.setInfVariables(prof_relations, final_n_n, final_s_s)
-        
-        # Returning the result calculated
-        return Fi
+            final_n_n = []
+            final_s_s = []
+            for n in conflicts_n_n:
+                if(final_n_n.count(n)==0):
+                    final_n_n.append(n) 
+            for s in conflicts_s_s:
+                if(final_s_s.count(s)==0):
+                    final_s_s.append(s)    
+            
+            # Calculating main variables
+            i1 = float(p_p)/(float(len(prof))-1.0)
+            i2 = float(len(final_n_n))/float(len(subj))
+            i3 = float(len(final_s_s))/float(len(subj))
+            # Final Infeasible Function
+            Fi = (-1.0)*(((w_alpha*i1)+(w_beta*i2)+(w_gamma*i3))/(w_alpha + w_beta + w_gamma))
+
+            # Setting main variables of a Infeasible Candidate
+            candidate.setInfVariables(prof_relations, final_n_n, final_s_s)
+            
+            # Returning the result calculated
+            return Fi
+
+        # If all Relations Prof-Subj in this Candidate passed through the restrictions
+        candidate.setFeaVariables(prof_relations)
+        return 1.0
         
 #==============================================================================================================            
     
@@ -704,9 +556,10 @@ class UCTP:
     
     # Make a mutation into a solution
     def mutationI(self, candidate, prof, subj):
+        # (0) No repair
         # (1) Prof without relations with Subjects in 'prof_relations'
-        # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', day and hour in 'final_n_n'
-        # (3) 2 or more Subjects (related to the same Prof) with same 'day but different 'quadri' in 'final_s_s'
+        # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'final_n_n'
+        # (3) 2 or more Subjects (related to the same Prof) with same 'day' but different 'campus' in 'final_s_s'
         
         # Getting data to work with
         relations = candidate.getList()
@@ -716,9 +569,26 @@ class UCTP:
         flag_repair_done = False   
         while(flag_repair_done == False):
             # Choosing one type of restriction repair
-            errorType =  randrange(1,4)
-                   
-            if(errorType==1):
+            errorType =  randrange(0,4)
+            
+            if(errorType==0):
+                # Do not granting that the 'errorType' do not change good relations without restrictions to repair
+                # Choosing the relation to be modified
+                relation_will_change_index = randrange(len(subj))
+                
+                # Choosing new Prof to be in the relation with the Subj selected
+                subj, oldProf = relations[relation_will_change_index]
+                change = randrange(len(prof))
+                newProf = prof[change]
+                # Granting that the new Prof is different of the old one
+                while(oldProf==newProf):
+                    change = randrange(len(prof))
+                    newProf = prof[change]
+                    
+                # Setting the flag to finish the while
+                flag_repair_done = True
+
+            elif(errorType==1):
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
                 if(prof_relations.count([])!=0):
                     # Creating a list with only the index of Prof without Relations and an other one only with Prof with Relations
@@ -741,7 +611,7 @@ class UCTP:
                     for p in prof_With_Relations:
                         Weights.append(float(len(prof_relations[p])))
                         
-                    # Find the total Number of Relations of the population (has to be the same of number of Subjects
+                    # Find the total Number of Relations of the population (has to be the same of the number of Subjects)
                     totalRelations = 0.0
                     for w in Weights:
                         totalRelations = totalRelations + w
@@ -834,6 +704,7 @@ class UCTP:
                     flag_repair_done = True                
         
         # Setting the new relation, creating new Candidate and returning it
+        print(prof_relations.count([]),len(final_n_n), len(final_s_s))
         relations[relation_will_change_index]=[subj,newProf]
         newCand = Candidate()
         newCand.setList(relations)

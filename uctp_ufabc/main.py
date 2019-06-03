@@ -28,7 +28,7 @@ class main:
     # Max Number of iterations to get a solution
     iterations = 50000
     # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 400
+    numCand = 2
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     # Must be between '0' and '100'
     pctRouletteCross = 50
@@ -38,7 +38,7 @@ class main:
     
     # Weights (!!!must be float!!!)
     w_alpha = 1.0
-    w_beta = 3.0
+    w_beta = 4.0
     w_gamma = 2.0
     w_delta = 1.0
     w_omega = 1.0
