@@ -157,7 +157,7 @@ class UCTP:
                         inext_day = []
                         inext_hour = []
                         inext_frequency = []
-                        for j in timeTable:
+                        for j in next:
                             inext_day.append(j[0])
                             inext_hour.append(j[1])
                             inext_frequency.append(j[2])
@@ -319,7 +319,7 @@ class UCTP:
                 sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[sIndex].get()
                 
                 # Collecting and summing Subjects Charges related to same Prof
-                charges_AllRelations[sIndex] = charges_AllRelations[sIndex] + float(sCharge)
+                charges_AllRelations[sIndex] = charges_AllRelations[sIndex] + float(str(sCharge).replace(",","."))
                 
                 # Adding to count if the Subj is not in the same 'pQuadriSabbath' (if Prof choose 'nenhum' he does not have a 'pQuadriSabbath')
                 if(sQuadri!=pQuadriSabbath):
@@ -573,7 +573,7 @@ class UCTP:
         flag_repair_done = False   
         while(flag_repair_done == False):
             # Choosing one type of restriction repair
-            errorType = randrange(0,4)
+            errorType = randrange(1,4)
             
             if(errorType==0):
                 # Do not granting that the 'errorType' do not change good relations without restrictions to repair
@@ -708,11 +708,13 @@ class UCTP:
                     flag_repair_done = True                
         
         # Setting the new relation, creating new Candidate and returning it
-        #print(prof_relations.count([]),len(final_n_n), len(final_s_s))
         relations[relation_will_change_index]=[subj,newProf]
         newCand = Candidate()
         newCand.setList(relations)
         
+        #print(prof_relations.count([]),len(final_n_n), len(final_s_s))
+        #print(final_n_n, final_s_s)
+
         return newCand
         
 #==============================================================================================================            

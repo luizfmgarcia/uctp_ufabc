@@ -27,9 +27,9 @@ class main:
     subj = []
     
     # Max Number of iterations to get a solution
-    iterations = 10000
+    iterations = 200
     # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 50
+    numCand = 1
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     # Must be between '0' and '100'
     pctRouletteCross = 50
@@ -71,7 +71,10 @@ class main:
     firstFeasSol = -1
     t = 1;
     while(uctp.stop(t, iterations, solutionsI, solutionsF)):
-        if(prt==1): print('Iteration:', t, 'of', iterations, '/ Working with (Prof/Subj):', len(prof), '/', len(subj))
+        # Some good information to follow the run
+        if(prt==1): 
+            print('Iteration:', t, 'of', iterations, '/ Working with (Prof/Subj):', len(prof), '/', len(subj))
+            if(firstFeasSol!=-1): print('First Feasible Sol. at (iteration): ', firstFeasSol)
         # Choosing Parents to generate children (solutionsNoPop) 
         uctp.offspringI(solutionsNoPop, solutionsI, prof, subj) 
         uctp.offspringF(solutionsNoPop, solutionsF, prof, subj, pctMut, pctRouletteCross, numCand)
@@ -88,11 +91,9 @@ class main:
                 firstFeasSol=t
                 beep = lambda x: os.system("echo -n '\a';sleep 0.2;" * x)
                 beep(3)
-        if(prt==1): 
-            if(firstFeasSol!=-1): print('First Feasible Sol. at (iteration): ', firstFeasSol)
-            print(" ")
         # Next Iteration
         t = t+1
+        if(prt==1): print(" ")
     # End While (Iterations) - Stop condition verified
      
     # Export last generation of candidates (with a Solution)  

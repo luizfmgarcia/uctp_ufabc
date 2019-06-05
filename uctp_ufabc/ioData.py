@@ -238,8 +238,10 @@ def outData(solutionsI, solutionsF, num):
 
 # Print all data of a Candidate (Professor-Subject Relations)    
 def printOneCand(candidate):
+    i=0
     for s, p in candidate.getList():
-        print(s.get(), p.get())
+        print(i, s.get(), p.get())
+        i=i+1
         
 #==============================================================================================================            
 
