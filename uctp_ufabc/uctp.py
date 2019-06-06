@@ -951,7 +951,8 @@ class UCTP:
     # Make a Selection of the best solutions from Feasible Pop.
     def selectionF(self, feaPool, solutionsF, numCand):
         # Check if the Feasible pop. is empty
-        if(len(solutionsF.getList())!=0):
+        #import pdb; pdb.set_trace()
+        if(len(feaPool.getList())!=0):
             # New list with both lists (feaPool and solutions)
             feasibles_List = []
             feasibles_List = solutionsF.getList()+feaPool.getList()
