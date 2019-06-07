@@ -1,16 +1,19 @@
+# Main Class - Algorithm
+
 from objects import *
 from uctp import *
 from ioData import *
-import os
 
+# Set '1' to see, during the run, some steps
 prt = 1
       
 #==============================================================================================================            
-# Run with <python -m cProfile -s cumtime main.py>
-#RESOLVER: Problema das cargas (v1) no calculo de fitness dos feasibles
+# Run with <python -m cProfile -s cumtime main.py> to see the main time spent of the algorithm
 
 # main
 class main: 
+    #import pdb; pdb.set_trace()
+
     # to access UCTP Main methods and creating Solutions (List of Candidates)
     uctp = UCTP()
     # Main candidates of a generation
@@ -63,10 +66,7 @@ class main:
     # printAllFit(solutionsI, solutionsF)
     
     # Main work - iterations of GA-Algorithm to find a solution
-    if(prt==1): 
-        print(" ")
-        print("Starting hard work...")
-        print(" ")
+    if(prt==1): print("\nStarting hard work...\n")
     
     firstFeasSol = -1
     t = 1;
@@ -80,22 +80,17 @@ class main:
         uctp.offspringF(solutionsNoPop, solutionsF, prof, subj, pctMut, pctRouletteCross, numCand)
         # Classification and calculating this new candidates  
         uctp.twoPop(solutionsNoPop, infPool, feaPool, prof, subj, weights)
-        print(len(solutionsNoPop.getList()), len(infPool.getList()))
         uctp.calcFit(infPool, feaPool, prof, subj, weights)
-        print(len(solutionsNoPop.getList()), len(infPool.getList()))
         # Selecting between parents (old generation) and children (new candidates) to create the new generation
         uctp.selectionI(infPool, solutionsI, numCand)
         uctp.selectionF(feaPool, solutionsF, numCand)
         # Print and export generated data
         outDataMMA(solutionsI, solutionsF, t)
         # Register of the Iteration when appears the first Feas Sol
-        if(firstFeasSol==-1 and len(solutionsF.getList())!=0):
-                firstFeasSol=t
-                beep = lambda x: os.system("echo -n '\a';sleep 0.2;" * x)
-                beep(3)
+        if(firstFeasSol==-1 and len(solutionsF.getList())!=0): firstFeasSol=t
         # Next Iteration
         t = t+1
-        if(prt==1): print(" ")
+        if(prt==1): print("\n")
     # End While (Iterations) - Stop condition verified
      
     # Export last generation of candidates (with a Solution)  

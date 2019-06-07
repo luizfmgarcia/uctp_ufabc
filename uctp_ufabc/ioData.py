@@ -5,8 +5,8 @@ import csv
 import os
 import sys
 import shutil
-#from string import split
 
+# Set '1' to see, during the run, some steps
 prt = 1
 
 #==============================================================================================================            
@@ -83,9 +83,8 @@ def getData(subj, prof):
                     # Removing datas[8] that is not useful
                     datas.pop(8)
                     # Creating and saving the new Subj.
-                    if(len(subj)<100): # Total 91
-                        subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
-                        if(prt == 1): print(datas)
+                    subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
+                    if(prt == 1): print(datas)
             else:
                 if(prt == 1): print("This subject register has some missing data! It will not be used.")
                 #if(prt == 1): print(datas)            

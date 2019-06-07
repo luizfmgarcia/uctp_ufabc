@@ -4,6 +4,7 @@ from objects import *
 from ioData import *
 from random import *
 
+# Set '1' to see, during the run, some steps
 prt = 1
 
 #==============================================================================================================            
@@ -334,11 +335,11 @@ class UCTP:
                     num_sameCampus[sIndex] = num_sameCampus[sIndex] + 1
                 
                 # Finding the Subject 'sName' in "pPrefSubjQ1List+pPrefSubjLimList" list
-                list = pPrefSubjQ1List+pPrefSubjLimList
+                sumList = pPrefSubjQ1List+pPrefSubjLimList
                 # Checking if the List is not empty
-                if(len(list)>0):
+                if(len(sumList)>0):
                     try:
-                        index_value = list.index(sName)
+                        index_value = sumList.index(sName)
                     except ValueError:
                         index_value = -1
                     # If the Subj name appears in the list
@@ -350,11 +351,11 @@ class UCTP:
                         q1_relations[pIndex] = subList
                 
                 # Finding the Subject 'sName' in "pPrefSubjQ2List+pPrefSubjLimList" list
-                list = pPrefSubjQ2List+pPrefSubjLimList
+                sumList = pPrefSubjQ2List+pPrefSubjLimList
                 # Checking if the List is not empty
-                if(len(list)>0):
+                if(len(sumList)>0):
                     try:
-                        index_value = list.index(sName)
+                        index_value = sumList.index(sName)
                     except ValueError:
                         index_value = -1
                     # If the Subj name appears in the list
@@ -366,11 +367,11 @@ class UCTP:
                         q2_relations[pIndex] = subList
                 
                 # Finding the Subject 'sName' in "pPrefSubjQ3List+pPrefSubjLimList" list
-                list = pPrefSubjQ3List+pPrefSubjLimList
+                sumList = pPrefSubjQ3List+pPrefSubjLimList
                 # Checking if the List is not empty
-                if(len(list)>0):
+                if(len(sumList)>0):
                     try:
-                        index_value = list.index(sName)
+                        index_value = sumList.index(sName)
                     except ValueError:
                         index_value = -1
                     # If the Subj name appears in the list    
@@ -690,11 +691,6 @@ class UCTP:
         relations[relation_will_change_index]=[subj,newProf]
         newCand = Candidate()
         newCand.setList(relations)
-        
-        #print(errorType, relation_will_change_index)
-        #print(prof_relations.count([]),len(final_n_n), len(final_s_s))
-        #if(prof_relations.count([])!=0): print(prof_relations, final_n_n, final_s_s)
-        #else: print(final_n_n, final_s_s)
 
         return newCand
         
@@ -886,8 +882,6 @@ class UCTP:
             infeasibles_List = []
             infeasibles_List = solutionsI.getList()+infPool.getList()
             
-            print(len(solutionsI.getList()), len(infPool.getList()), len(infeasibles_List))
-            
             # Check if there are more or less Candidates then it is possible to have into a generation
             if(len(infeasibles_List)<=numCand):            
                 # Is not needed to make the whole process
@@ -951,7 +945,6 @@ class UCTP:
     # Make a Selection of the best solutions from Feasible Pop.
     def selectionF(self, feaPool, solutionsF, numCand):
         # Check if the Feasible pop. is empty
-        #import pdb; pdb.set_trace()
         if(len(feaPool.getList())!=0):
             # New list with both lists (feaPool and solutions)
             feasibles_List = []

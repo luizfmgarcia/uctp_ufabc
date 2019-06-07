@@ -73,8 +73,8 @@ class Candidate:
     def getList(self):
         return self.listRelations
     
-    def setList(self, list):
-        self.listRelations = list
+    def setList(self, List):
+        self.listRelations = List
             
     def addRelation(self, Subject, Prof):
         relation = [Subject, Prof]
@@ -93,8 +93,8 @@ class Solutions:
     def getList(self):
         return self.listCandidates
     
-    def setList(self, list):
-        self.listCandidates = list 
+    def setList(self, List):
+        self.listCandidates = List 
             
     def resetList(self):
         self.listCandidates = []
