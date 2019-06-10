@@ -45,7 +45,7 @@ class Candidate:
         self.listRelations = []
         self.fitness = 0.0
         
-        # 3 Variables used if the Candidate is classified as "Infeasible" and, only "Feasible" use only 'prof_relations'
+        # 3 Variables used if the Candidate is classified as "Infeasible" and, if "Feasible", use only 'prof_relations'
         prof_relations = []
         final_n_n = []
         final_s_s = []

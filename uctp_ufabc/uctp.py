@@ -4,7 +4,7 @@ from objects import *
 from ioData import *
 from random import *
 
-# Set '1' to see, during the run, some steps
+# Set '1' to allow, during the run, the output of some steps
 prt = 1
 
 #==============================================================================================================            
@@ -701,7 +701,7 @@ class UCTP:
         # Check if the Feasible pop. is empty
         if(len(solutionsF.getList())!=0):
             # 'objectiveNum': number of solutions to become parents - based on 'pctRouletteCross'
-            objectiveNum = (pctRouletteCross*len(solutionsF.getList())/100)
+            objectiveNum = int(pctRouletteCross*len(solutionsF.getList())/100)
             
             # Turning 'objectiveNum' to Even if it is Odd -> summing +1 to it only if the new 'objectiveNum' is not bigger then len(solutionsF)
             if(objectiveNum % 2 != 0):
@@ -709,7 +709,7 @@ class UCTP:
                     objectiveNum = objectiveNum + 1
                 else:
                     objectiveNum = objectiveNum - 1
-            
+
             # Granting that are solutions enough to became fathers (more than or equal 2)
             if(objectiveNum<2):
                 # If do not have at least 2 solutions - all solutions will generate a child through mutation  
@@ -877,7 +877,7 @@ class UCTP:
     # Make a selection of the solutions from all Infeasible Pop.('infPool' and 'solutionsI')
     def selectionI(self, infPool, solutionsI, numCand):
         # Check if the Infeasible pop. is empty
-        if(len(solutionsI.getList())!=0):
+        if(len(solutionsI.getList())!=0 or len(infPool.getList())!=0):
             # New list with both lists (infPool and solutionsI)
             infeasibles_List = []
             infeasibles_List = solutionsI.getList()+infPool.getList()
@@ -945,7 +945,7 @@ class UCTP:
     # Make a Selection of the best solutions from Feasible Pop.
     def selectionF(self, feaPool, solutionsF, numCand):
         # Check if the Feasible pop. is empty
-        if(len(feaPool.getList())!=0):
+        if(len(solutionsF.getList())!=0 or len(feaPool.getList())!=0):
             # New list with both lists (feaPool and solutions)
             feasibles_List = []
             feasibles_List = solutionsF.getList()+feaPool.getList()

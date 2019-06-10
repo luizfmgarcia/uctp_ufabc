@@ -6,7 +6,7 @@ import os
 import sys
 import shutil
 
-# Set '1' to see, during the run, some steps
+# Set '1' to allow, during the run, the output of some steps
 prt = 1
 
 #==============================================================================================================            
@@ -95,7 +95,7 @@ def getData(subj, prof):
         
 #==============================================================================================================            
     
-# Get current directory and (re)create new 'generationsCSV' directory - delete everything is there
+# Get current directory and (re)create new 'generationsCSV' directory - delete past runs' data
 def startOutFolders():    
     currentDir = os.getcwd()
     newDir = currentDir + os.sep + 'generationsCSV' + os.sep
@@ -121,27 +121,27 @@ def outDataMMA(solutionsI, solutionsF, iter):
     
     minInf = 0
     maxInf = -1
-    medInf = 0
+    avgInf = 0
     # Find Min/Max Fitness in the Infeasible Pop.          
     for cand in solutionsI.getList():
-        medInf = medInf + cand.getFitness()
+        avgInf = avgInf + cand.getFitness()
         if(cand.getFitness() > maxInf):
             maxInf = cand.getFitness()             
         if(cand.getFitness() < minInf):
             minInf = cand.getFitness()
-    if(len(solutionsI.getList())!=0): medInf = medInf/len(solutionsI.getList())
+    if(len(solutionsI.getList())!=0): avgInf = avgInf/len(solutionsI.getList())
     
     minFea = 1
     maxFea = 0
-    medFea = 0
+    avgFea = 0
     # Find Min/Max Fitness in the Feasible Pop.    
     for cand in solutionsF.getList():
-        medFea = medFea + cand.getFitness()
+        avgFea = avgFea + cand.getFitness()
         if(cand.getFitness() > maxFea):
             maxFea = cand.getFitness()        
         if(cand.getFitness() < minFea):
             minFea = cand.getFitness()
-    if(len(solutionsF.getList())!=0): medFea = medFea/len(solutionsF.getList())
+    if(len(solutionsF.getList())!=0): avgFea = avgFea/len(solutionsF.getList())
     
     # get current directory, 'generationsCSV' dir., and CSV file to be modified with current generation Min/Max Fitness
     currentDir = os.getcwd()
@@ -150,15 +150,15 @@ def outDataMMA(solutionsI, solutionsF, iter):
     with open(outName, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         if(minInf!=0):
-            spamwriter.writerow(['Inf', iter, minInf, maxInf, medInf])
+            spamwriter.writerow(['Inf', iter, minInf, maxInf, avgInf])
         if(minFea!=1):
-            spamwriter.writerow(['Fea', iter, minFea, maxFea, medFea])
+            spamwriter.writerow(['Fea', iter, minFea, maxFea, avgFea])
     csvfile.close()
 
     if(prt == 1):
-        if(minInf!=0): print('Infeasibles (', len(solutionsI.getList()), ') Min:', minInf, 'Max:', maxInf, 'Avg:', medInf)
+        if(minInf!=0): print('Infeasibles (', len(solutionsI.getList()), ') Min:', minInf, 'Max:', maxInf, 'Avg:', avgInf)
         else: print('No Infeasibles Solutions!')
-        if(minFea!=1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', medFea)
+        if(minFea!=1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', avgFea)
         else: print('No Feasibles Solutions!')        
         print("Data Exported!")        
         
@@ -254,36 +254,36 @@ def printAllCand(solutionsI, solutionsF):
         
 #==============================================================================================================            
 
-# Print MinMaxMed Fitness of a generation
+# Print MinMaxAvg Fitness of a generation
 def printMMAFit(solutionsI, solutionsF):
 
     minInf = 0
     maxInf = -1
-    medInf = 0
+    avgInf = 0
     # Find Min/Max Fitness in the Infeasible Pop.          
     for cand in solutionsI.getList():
-        medInf = medInf + cand.getFitness()
+        avgInf = avgInf + cand.getFitness()
         if(cand.getFitness() > maxInf):
             maxInf = cand.getFitness()             
         if(cand.getFitness() < minInf):
             minInf = cand.getFitness()
-    if(len(solutionsI.getList())!=0): medInf = medInf/len(solutionsI.getList())
+    if(len(solutionsI.getList())!=0): avgInf = avgInf/len(solutionsI.getList())
     
     minFea = 1
     maxFea = 0
-    medFea = 0
+    avgFea = 0
     # Find Min/Max Fitness in the Feasible Pop.    
     for cand in solutionsF.getList():
-        medFea = medFea + cand.getFitness()
+        avgFea = avgFea + cand.getFitness()
         if(cand.getFitness() > maxFea):
             maxFea = cand.getFitness()        
         if(cand.getFitness() < minFea):
             minFea = cand.getFitness()
-    if(len(solutionsF.getList())!=0): medFea = medFea/len(solutionsF.getList())
+    if(len(solutionsF.getList())!=0): avgFea = avgFea/len(solutionsF.getList())
 
-    if(minInf!=0): print('Infeasibles - Num:', len(solutionsI.getList()), 'Min:', minInf, 'Max:', maxInf, 'Avg:', medInf)
+    if(minInf!=0): print('Infeasibles - Num:', len(solutionsI.getList()), 'Min:', minInf, 'Max:', maxInf, 'Avg:', avgInf)
     else: print('No Infeasibles Solutions!')
-    if(minFea!=1): print('Feasibles - Num:', len(solutionsF.getList()), 'Min:', minFea, 'Max:', maxFea, 'Avg:', medFea)
+    if(minFea!=1): print('Feasibles - Num:', len(solutionsF.getList()), 'Min:', minFea, 'Max:', maxFea, 'Avg:', avgFea)
     else: print('No Feasibles Solutions!')
         
 #==============================================================================================================            
