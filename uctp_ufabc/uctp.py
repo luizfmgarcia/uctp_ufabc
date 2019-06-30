@@ -397,7 +397,9 @@ class UCTP:
             # Setting Index of actual Prof
             actual_index = charges_EachProf.index(pCharge)
             # Finding relative charge based on the credit difference module between the credits requested by the Prof and the sum off all Subj related to it
-            charges_relative[actual_index] = abs(float(pCharge) - float(charges_AllRelations[actual_index]))/float(pCharge)
+            res = abs(float(pCharge) - float(charges_AllRelations[actual_index]))/float(pCharge)
+            if(res>1.0): charges_relative[actual_index] = 1.0
+            else: charges_relative[actual_index] = res    
         
         # The arithmetic average of charge discrepancies of all professors;  
         u_u = 0.0

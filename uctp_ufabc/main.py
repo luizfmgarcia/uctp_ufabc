@@ -14,7 +14,7 @@ prt = 1
 # main
 class main: 
     # CREATION OF MAIN VARIABLES
-
+    
     # to access UCTP Main methods and creating Solutions (List of Candidates)
     uctp = UCTP()
     # Main candidates of a generation
