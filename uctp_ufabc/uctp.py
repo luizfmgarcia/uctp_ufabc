@@ -87,28 +87,12 @@ class UCTP:
             if(prt==1): print("Fitness of all Feas./", end='')
         
 #==============================================================================================================            
-   
-    # Calculate Fitness of Infeasible Candidates 
-    def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
-        # If there are violated restrictions, will return a negative Fitness, if not, will return 1.0
-        # i1: penalty to how many Professors does not have at least one relation with a Subject 
-        # i2: penalty to how many Subjects, related to the same Professor, are teach in the same day, hour and quadri
-        # i3: penalty to how many Subjects, related to the same Professor, are teach in the same day and quadri but in different campus
-        
-        # Auxiliary variables to main ones (i1, i2 and i3)
-        p_p=0.0
-        # List of the subjects that have a conflict between them - always the two conflicts are added, that is, there can be repetitions of subjects
-        conflicts_n_n = []
-        conflicts_s_s = []
-        
+    
+    # i1: penalty to how many Professors does not have at least one relation with a Subject
+    def i1(this, candidate, prof, subj):
         # List of lists of Subjects that are related to the same Professor, where the position in this list is the same of the same professor in 'prof' list 
-        prof_relations = []
-        
-        # Initializing the list
-        n=0
-        for n in range(len(prof)):
-            prof_relations.append([])
-            n = n+1
+        # Empty list in this list means that some Professor (p) does not exists on the Candidate
+        prof_relations = [[] for i in range(len(prof))]
         
         # Filling the list according to the candidate    
         for s, p in candidate.getList():            
@@ -116,14 +100,24 @@ class UCTP:
             indexs = subj.index(s)
             prof_relations[indexp].append(indexs)
         
-        # Search (p) Professors that does not exists on the Candidate - empty list in the 'prof_relations' list   
-        p_p = prof_relations.count([])
+        return prof_relations        
+    
+    #-------------------------------------------------------
+
+    # i2: penalty to how many Subjects, related to the same Professor, are teach in the same day, hour and quadri
+    # i3: penalty to how many Subjects, related to the same Professor, are teach in the same day and quadri but in different campus
+    def i2_i3(this, prof_relations, subj):
+        # List of the subjects that have a conflict between them - always the two conflicts are added, that is, 
+        # there can be repetitions of subjects
+        conflicts_n_n = []
+        conflicts_s_s = []
         
         # Searching, in each professor (one at a time), conflicts of schedules between subjects related to it
         for list_subj in prof_relations:
             # Check if the professor has more than 1 relation Prof-Subj to analyze
             if(len(list_subj)>1):
-                # Getting the data of all Subjects related to actual Professor in analysis (the same position in all 3 lists it is from the same subj) 
+                # Getting the data of all Subjects related to actual Professor in analysis (the same position 
+                # in all 3 lists it is from the same subj) 
                 timetableList_List = []
                 quadri_List = []
                 campus_List = []
@@ -198,8 +192,20 @@ class UCTP:
                     
                     # Going to the next Subject (i+1) related to the same Professor   
                     i = i+1
+        
+        return conflicts_n_n, conflicts_s_s
+    
+    #-------------------------------------------------------
 
+    # Calculate Fitness of Infeasible Candidates 
+    def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
+        # Getting information about the Candidate
+        prof_relations = self.i1(candidate, prof, subj)
+        conflicts_n_n, conflicts_s_s = self.i2_i3(prof_relations, subj)
+        
         # Checking if occurred violations of restrictions on the Candidate
+        # If there are violated restrictions, this Cadidate is Infeasible and then will calculate return a negative Fitness, 
+        # if not, is Feasible, and then will return 1.0 as Fitness
         if(prof_relations.count([])!=0 or len(conflicts_n_n)!=0 or len(conflicts_s_s)!=0):
         # Removing from 'conflicts_s_s' and 'conflicts_n_n' duplicates
             final_n_n = []
@@ -212,7 +218,7 @@ class UCTP:
                     final_s_s.append(s)    
             
             # Calculating main variables
-            i1 = float(p_p)/(float(len(prof))-1.0)
+            i1 = float(prof_relations.count([]))/(float(len(prof))-1.0)
             i2 = float(len(final_n_n))/float(len(subj))
             i3 = float(len(final_s_s))/float(len(subj))
             # Final Infeasible Function
@@ -221,7 +227,7 @@ class UCTP:
             # Setting main variables of a Infeasible Candidate
             candidate.setInfVariables(prof_relations, final_n_n, final_s_s)
             
-            # Returning the result calculated
+            # Returning the calculated result 
             return Fi
 
         # If all Relations Prof-Subj in this Candidate passed through the restrictions
@@ -242,7 +248,6 @@ class UCTP:
         
         # Auxiliary variables to main ones (f1, f2,...,f5) they have the Index related to "prof" list index
         # Use to all of them
-        prof_relations = []
         prof_relations = candidate.getFeaVariables()
         
         # Use to f1

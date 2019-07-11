@@ -3,16 +3,42 @@
 from objects import *
 from uctp import *
 from ioData import *
-
-# Set '1' to allow, during the run, the output of some steps
-prt = 1
       
 #==============================================================================================================            
 # Run with <python -m cProfile -s cumtime main.py> to see the main time spent of the algorithm
 # Debug <import pdb; pdb.set_trace()>
 
 # main
-class main: 
+class main:     
+    #----------------------------------------------------------------------------------------------------------
+    # CONFIGURATION
+
+    # Set '1' to allow, during the run, the output of some steps
+    prt = 1
+
+    # Max Number of iterations to get a solution
+    iterations = 10
+    # Number of candidates in a generation (same for each Feas/Inf.)
+    numCand = 100
+    # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
+    # Must be between '0' and '100'
+    pctRouletteCross = 50
+    # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer
+    # Must be between '0' and '100' 
+    pctMut = 15
+    
+    # Weights (!!!must be float!!!)
+    w_alpha = 2.0   # Prof without Subj
+    w_beta = 10.0   # Subjs (same Prof), same quadri and timetable conflicts
+    w_gamma = 1.0   # Subjs (same Prof), same quadri and day but in different campus
+    w_delta = 6.0   # Balance of distribution of Subjs between Profs
+    w_omega = 10.0   # Profs preference Subjects
+    w_sigma = 5.0   # Profs with Subjs in quadriSabbath
+    w_pi = 1.0      # Profs with Subjs in Period
+    w_rho = 1.0     # Profs with Subjs in Campus
+    weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
+    
+    #----------------------------------------------------------------------------------------------------------
     # CREATION OF MAIN VARIABLES
     
     # to access UCTP Main methods and creating Solutions (List of Candidates)
@@ -29,32 +55,7 @@ class main:
     # Base Lists of Professors and Subjects - never modified through the run
     prof = []
     subj = []
-    
-    #----------------------------------------------------------------------------------------------------------
-    # CONFIGURATION
 
-    # Max Number of iterations to get a solution
-    iterations = 100
-    # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 100
-    # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    # Must be between '0' and '100'
-    pctRouletteCross = 50
-    # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer
-    # Must be between '0' and '100' 
-    pctMut = 15
-    
-    # Weights (!!!must be float!!!)
-    w_alpha = 2.0
-    w_beta = 10.0
-    w_gamma = 1.0
-    w_delta = 0.1
-    w_omega = 2.0
-    w_sigma = 1.0
-    w_pi = 1.0
-    w_rho = 1.0
-    weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
-    
     #----------------------------------------------------------------------------------------------------------
     # START OF THE WORK
     
@@ -109,8 +110,11 @@ class main:
         t = t+1
         if(prt==1): print("\n")
     # End of While (Iterations) - Stop condition verified
-     
-    # Export last generation of candidates (with a Solution)  
+    
+    #----------------------------------------------------------------------------------------------------------
+    # Final - last processing of the data
+
+    # Export last generation of candidates  
     outData(solutionsI, solutionsF, t, maxFeaIndex)      
     if(prt==1): print("End of works") 
           

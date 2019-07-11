@@ -20,6 +20,7 @@ class Prof:
 
     def getName(self):
         return self.name
+        
 #==============================================================================================================            
 
 # Keep the data of a subject

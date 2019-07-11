@@ -172,9 +172,8 @@ def outDataMMA(solutionsI, solutionsF, iter):
 
 # Extract information - auxiliar function to "outData" function
 def extractInfo(datas):
-    prof = []
-    info = []
-    indexs = []
+    # Collecting Profs names in 'prof' and putting Subj index related to same Prof in same index of 'indexs' list
+    prof, indexs = [], []
     for data in range(len(datas)):
         sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[data]
         try:
@@ -186,9 +185,11 @@ def extractInfo(datas):
             prof.append(pName)
             indexs.append([data])
     
-    for i in range(len(prof)):
-        info.append([])
-
+    # Initializing 'info' List
+    info = [[] for i in range(len(prof))]
+    
+    # Extracting the number of each occurence
+    # info = [profName, numSubjs, numSubjNotPrefered, numPeriodNotPrefered, numQuadriSabbathPrefered, numCampusNotPrefered, SubtractProfCharge(SumSubjCharges)]
     for i in range(len(prof)):
         info[i] = info[i]+[prof[i], len(indexs[i]), 0, 0, 0, 0, 0]
         k=0
@@ -214,9 +215,17 @@ def extractInfo(datas):
             if(k==0): info[i][6] = float(pCharge)-float(sCharge)
             else: info[i][6] = info[i][6]-float(sCharge)
             k=k+1
+
+    # Last line sums total data
+    total = ['Total', 0, 0, 0, 0, 0, 0]
+    for i in info:
+        for j in range(1,7):
+            total[j] = total[j] + i[j]
+    info.append(total)
+
     return  info
 
-#---------------------------------------------
+#-------------------------------------------------------
 
 # Export all Candidates in a generation into CSV files
 # Create a CSV File for each Candidate and one CSV for all Fitness of the Candidates: 
@@ -294,7 +303,6 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=0):
             
             # Extracting some good info to analyse the quality of the solution           
             info = extractInfo(datas)
-            # print(pandas.DataFrame(data=info, index=None, columns=titles2))
 
             # Output extra information for analisys
             spamwriter.writerow(titles2)
