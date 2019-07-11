@@ -15,7 +15,7 @@ prt = 1
 def getData(subj, prof): 
     # Read the data of Professors and create the respective objects
     if(prt == 1): print("Getting data of Professors...", end='')
-    with open('professors.csv') as csvfile:
+    with open('professors.csv', encoding = 'unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         if(prt == 1): print("Setting Professors...")
         for row in spamreader:
@@ -41,7 +41,7 @@ def getData(subj, prof):
     if(prt == 1):
         print(" ")
         print("Getting datas of Subjects...", end='')
-    with open('subjects.csv') as csvfile:
+    with open('subjects.csv', encoding = 'unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         if(prt == 1): print("Setting Subjects...")
         for row in spamreader:
@@ -134,11 +134,15 @@ def outDataMMA(solutionsI, solutionsF, iter):
     minFea = 1
     maxFea = 0
     avgFea = 0
+    maxFeaIndex = [] # Recording the best solutions found
     # Find Min/Max Fitness in the Feasible Pop.    
     for cand in solutionsF.getList():
         avgFea = avgFea + cand.getFitness()
+        if(cand.getFitness() == maxFea):
+            maxFeaIndex.append(solutionsF.getList().index(cand))
         if(cand.getFitness() > maxFea):
-            maxFea = cand.getFitness()        
+            maxFea = cand.getFitness()
+            maxFeaIndex = [solutionsF.getList().index(cand)]        
         if(cand.getFitness() < minFea):
             minFea = cand.getFitness()
     if(len(solutionsF.getList())!=0): avgFea = avgFea/len(solutionsF.getList())
@@ -160,13 +164,63 @@ def outDataMMA(solutionsI, solutionsF, iter):
         else: print('No Infeasibles Solutions!')
         if(minFea!=1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', avgFea)
         else: print('No Feasibles Solutions!')        
-        print("Data Exported!")        
+        print("Data Exported!")
+    
+    return maxFeaIndex        
         
 #==============================================================================================================                
+
+# Extract information - auxiliar function to "outData" function
+def extractInfo(datas):
+    prof = []
+    info = []
+    indexs = []
+    for data in range(len(datas)):
+        sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[data]
+        try:
+            i = prof.index(pName)
+        except ValueError:
+            i = -1
+        if(i!=-1): indexs[i].append(data)
+        else:
+            prof.append(pName)
+            indexs.append([data])
     
+    for i in range(len(prof)):
+        info.append([])
+
+    for i in range(len(prof)):
+        info[i] = info[i]+[prof[i], len(indexs[i]), 0, 0, 0, 0, 0]
+        k=0
+        for j in indexs[i]:
+            sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[j]    
+            if('1' in sQuadri):
+                if(pPrefSubjQ1List.count(sName)==0 and pPrefSubjLimList.count(sName)==0):
+                    info[i][2] = info[i][2]+1
+            elif('2' in sQuadri):
+                if(pPrefSubjQ2List.count(sName)==0 and pPrefSubjLimList.count(sName)==0):
+                    info[i][2] = info[i][2]+1
+            elif('3' in sQuadri):
+                if(pPrefSubjQ3List.count(sName)==0 and pPrefSubjLimList.count(sName)==0):
+                    info[i][2] = info[i][2]+1                
+            if('NEGOCI' not in pPeriod and sPeriod!=pPeriod):
+                info[i][3] = info[i][3]+1
+            if(pQuadriSabbath!='NENHUM' and sQuadri==pQuadriSabbath):
+                info[i][4] = info[i][4]+1 
+            if(sCampus!=pPrefCampus):
+                info[i][5] = info[i][5]+1
+            if(',' in pCharge): pCharge = pCharge.replace(",", ".")
+            if(',' in sCharge): sCharge = sCharge.replace(",", ".")
+            if(k==0): info[i][6] = float(pCharge)-float(sCharge)
+            else: info[i][6] = info[i][6]-float(sCharge)
+            k=k+1
+    return  info
+
+#---------------------------------------------
+
 # Export all Candidates in a generation into CSV files
 # Create a CSV File for each Candidate and one CSV for all Fitness of the Candidates: 
-def outData(solutionsI, solutionsF, num):
+def outData(solutionsI, solutionsF, num, maxFeaIndex=0):
     if(prt == 1): print("Exporting data....", end='')
 
     # get current directory and create, if necessary, new 'generationsCSV' dir
@@ -180,39 +234,82 @@ def outData(solutionsI, solutionsF, num):
     if not os.path.exists(newDir):
         os.makedirs(newDir)
     
+    # Main titles to output datas 
+    titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
+    titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'difCharge']
+        
     # All  Infeasible Candidates of a Generation
     i = 0
-    for cand in solutionsI.getList():            
+    for cand in solutionsI.getList():      
+        datas = []  
+        # Start output info of the solution
         outName = newDir + 'Gen' + str(num) + '_candInf' +  str(i) + '.csv'
         with open(outName, 'w', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-            spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList'])
+            spamwriter.writerow(titles1)
+            
             # All relations in a Candidate of a Generation
             for s, p in cand.getList():
                 row = s.get() + p.get()
+                datas.append(row)
                 spamwriter.writerow(row)
             spamwriter.writerow(" ")
+            
+            # Fitness information
             spamwriter.writerow(['Infeasible', cand.getFitness()])
+            spamwriter.writerow(" ")
+            
+            # Extracting some good info to analyse the quality of the solution           
+            info = extractInfo(datas)
+
+            # Output extra information for analisys
+            spamwriter.writerow(titles2)
+            for row in info:
+                spamwriter.writerow(row)       
+        
         # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
-        i = i + 1
         csvfile.close()
+        i = i + 1
     
     # All Feasible Candidates of a Generation
     i = 0
-    for cand in solutionsF.getList():            
+    for cand in solutionsF.getList():
+        datas = []
+        # Start output info of the solution            
         outName = newDir + 'Gen' + str(num) + '_candFea' +  str(i) + '.csv'
         with open(outName, 'w', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-            spamwriter.writerow(['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList'])
+            spamwriter.writerow(titles1)
+            
             # All relations in a Candidate of a Generation
             for s, p in cand.getList():
                 row = s.get() + p.get()
+                datas.append(row)
                 spamwriter.writerow(row)
             spamwriter.writerow(" ")
+            
+            # Fitness information
             spamwriter.writerow(['Feasible', cand.getFitness()])
+            spamwriter.writerow(" ")
+            
+            # Extracting some good info to analyse the quality of the solution           
+            info = extractInfo(datas)
+            # print(pandas.DataFrame(data=info, index=None, columns=titles2))
+
+            # Output extra information for analisys
+            spamwriter.writerow(titles2)
+            for row in info:
+                spamwriter.writerow(row)
+        
         # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
-        i = i + 1
         csvfile.close()
+        
+        # If we are on the last iteration of the algorithm
+        if(maxFeaIndex!=0):
+            if(maxFeaIndex[0]==i):
+                maxData = datas
+                maxInfo = info
+        i = i + 1
             
     # All Fitness in a Generation
     outName = newDir + 'gen' +  str(num) + '.csv'
@@ -231,7 +328,21 @@ def outData(solutionsI, solutionsF, num):
     # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
             
-    if(prt == 1): print("Data Exported!")   
+    if(prt == 1):
+        print("Data Exported!")
+        # Printing one of the best solutions found
+        if(maxFeaIndex!=0):
+            print("")
+            print("These are the best solutions found:", maxFeaIndex)
+            print("This is the first of them:")
+            import pandas
+            newData=[]
+            for row in maxData:
+                newData.append([row[2],row[8]])
+            with pandas.option_context('display.max_rows', 999):   
+                print(pandas.DataFrame(data=newData, index=None, columns=[titles1[2], titles1[8]]), '\n')
+                
+                print(pandas.DataFrame(data=maxInfo, index=None, columns=titles2), '\n')
         
 #==============================================================================================================            
 
@@ -247,9 +358,9 @@ def printOneCand(candidate):
 # Print the data of all Candidates (Professor-Subject Relations) of a generation
 def printAllCand(solutionsI, solutionsF):
     for cand in solutionsI.getList():
-        self.printOneCand(cand)
+        printOneCand(cand)
     for cand in solutionsF.getList():
-        self.printOneCand(cand)    
+        printOneCand(cand)    
         print("--------")    
         
 #==============================================================================================================            

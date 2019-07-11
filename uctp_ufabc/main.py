@@ -34,7 +34,7 @@ class main:
     # CONFIGURATION
 
     # Max Number of iterations to get a solution
-    iterations = 20000
+    iterations = 100
     # Number of candidates in a generation (same for each Feas/Inf.)
     numCand = 100
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
@@ -70,7 +70,7 @@ class main:
     
     # Print and export generated data
     if(prt==1): print('Iteration: 0')
-    outDataMMA(solutionsI, solutionsF, 0)
+    maxFeaIndex = outDataMMA(solutionsI, solutionsF, 0)
 
     #----------------------------------------------------------------------------------------------------------
     # MAIN WORK - iterations of GA-Algorithm to find a solution
@@ -80,7 +80,7 @@ class main:
     # Flag to mark when appears the first Feasible Solution during a run
     firstFeasSol = -1
     
-    t = 1;
+    t = 1
     while(uctp.stop(t, iterations, solutionsI, solutionsF)):
         # Some good information to follow during the run
         if(prt==1): 
@@ -100,7 +100,7 @@ class main:
         uctp.selectionF(feaPool, solutionsF, numCand)
         
         # Print and export generated data
-        outDataMMA(solutionsI, solutionsF, t)
+        maxFeaIndex = outDataMMA(solutionsI, solutionsF, t)
         
         # Register of the 'Iteration' that appeared the first Feas Sol
         if(firstFeasSol==-1 and len(solutionsF.getList())!=0): firstFeasSol=t
@@ -111,7 +111,7 @@ class main:
     # End of While (Iterations) - Stop condition verified
      
     # Export last generation of candidates (with a Solution)  
-    outData(solutionsI, solutionsF, t)        
-    if(prt==1): print("End of works")
+    outData(solutionsI, solutionsF, t, maxFeaIndex)      
+    if(prt==1): print("End of works") 
           
 #==============================================================================================================
