@@ -3,7 +3,14 @@
 from objects import *
 from uctp import *
 from ioData import *
-      
+
+"""  
+refatoracao do calc_fitFeas verificando se esta correto o codigo 
+criar funcao de Roulette Wheel padrao: usada mutationI, offspringF, selectionI
+rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, ou outra coisa
+havendo acumulo de disciplinas em poucos prof e muitas materias n sao de pref
+"""
+
 #==============================================================================================================            
 # Run with <python -m cProfile -s cumtime main.py> to see the main time spent of the algorithm
 # Debug <import pdb; pdb.set_trace()>
@@ -17,15 +24,15 @@ class main:
     prt = 1
 
     # Max Number of iterations to get a solution
-    iterations = 10
+    iterations = 100
     # Number of candidates in a generation (same for each Feas/Inf.)
     numCand = 100
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     # Must be between '0' and '100'
-    pctRouletteCross = 50
+    pctRouletteCross = 20
     # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer
     # Must be between '0' and '100' 
-    pctMut = 15
+    pctMut = 80
     
     # Weights (!!!must be float!!!)
     w_alpha = 2.0   # Prof without Subj

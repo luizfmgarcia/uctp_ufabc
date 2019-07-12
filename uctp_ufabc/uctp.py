@@ -116,20 +116,21 @@ class UCTP:
         for list_subj in prof_relations:
             # Check if the professor has more than 1 relation Prof-Subj to analyze
             if(len(list_subj)>1):
-                # Getting the data of all Subjects related to actual Professor in analysis (the same position 
-                # in all 3 lists it is from the same subj) 
+                # Getting the data of all Subjects related to actual Professor in analysis
                 timetableList_List = []
                 quadri_List = []
                 campus_List = []
+                period_List = []
                 for subj_index in list_subj:
                     sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[subj_index].get()
                     timetableList_List.append(sTimetableList)
                     quadri_List.append(sQuadri)
                     campus_List.append(sCampus)
+                    period_List.append(sPeriod)
                 
                 # Comparing the data of one Subject (i) with all next subjects listed, and do the same with next ones
                 i=0
-                for timeTable in  timetableList_List:
+                for timeTable in timetableList_List:
                     # all [day/hour/frequency] of the Timetable of the Subject (i) in 'timetableList_List'
                     i_day = []
                     i_hour = []
@@ -143,49 +144,55 @@ class UCTP:
                     k = i+1
                     rest = timetableList_List[k:]
                     # repeat this 'len(rest)' times
-                    for next in rest:
-                        # Variables that flags if a conflict was already detected (do not count 2 or more times same 2 subjects in conflict)
-                        verified_n_n = False
-                        verified_s_s = False
-                        
-                        # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
-                        inext_day = []
-                        inext_hour = []
-                        inext_frequency = []
-                        for j in next:
-                            inext_day.append(j[0])
-                            inext_hour.append(j[1])
-                            inext_frequency.append(j[2])
-                        
-                        # Finally comparing one-to-one timetables - between i and k subjects
-                        for a in i_day:
-                            for b in inext_day:                                
-                                if(a==b):
-                                    if(quadri_List[i]==quadri_List[k]):
-                                        # There is, at least, two subjects teach in the same day, hour and quadri
-                                        if(i_hour[i_day.index(a)]==inext_hour[inext_day.index(b)]):
-                                            # if one 'frequency' is "QUINZENAL I" and the other is "QUINZENAL II" then DO NOT count
-                                            if('SEMANAL' in i_frequency[i_day.index(a)] or 'SEMANAL' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
-                                                    verified_n_n = True
-                                            elif('QUINZENAL I' in i_frequency[i_day.index(a)] and 'QUINZENAL I' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
-                                                    verified_n_n = True
-                                            elif('QUINZENAL II' in i_frequency[i_day.index(a)] and'QUINZENAL II' in inext_frequency[inext_day.index(a)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
-                                                    verified_n_n = True
+                    for nextK in rest:
+                        # Alredy check if both Subj (i, k) is on same Quadri
+                        if(quadri_List[i]==quadri_List[k]):
+                            # Variables that flags if a conflict was already detected (do not count 2 or more times same 2 subjects in conflict)
+                            verified_n_n = False
+                            verified_s_s = False
+                            
+                            # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
+                            inext_day = []
+                            inext_hour = []
+                            inext_frequency = []
+                            for j in nextK:
+                                inext_day.append(j[0])
+                                inext_hour.append(j[1])
+                                inext_frequency.append(j[2])
+                            
+                            # Finally comparing one-to-one timetables - between i and k subjects
+                            for a in i_day:
+                                for b in inext_day:                                
+                                    if(a==b):
                                         # There is, at least, two subjects teach in the same day and quadri, but in different campus
                                         if(campus_List[i]!=campus_List[k]):
                                             if(verified_s_s == False):
                                                 conflicts_s_s.append(list_subj[i])
                                                 conflicts_s_s.append(list_subj[k])
                                                 verified_s_s = True
+
+                                        # There is, at least, two subjects teach in the same day, hour and quadri
+                                        # First check if they have the same Period
+                                        if(period_List[i]==period_List[k] and i_hour[i_day.index(a)]==inext_hour[inext_day.index(b)]):
+                                            # if one 'frequency' is "QUINZENAL I" and the other is "QUINZENAL II" then DO NOT count
+                                            if('SEMANAL' in i_frequency[i_day.index(a)] or 'SEMANAL' in inext_frequency[inext_day.index(b)]):
+                                                if(verified_n_n == False):
+                                                    conflicts_n_n.append(list_subj[i])
+                                                    conflicts_n_n.append(list_subj[k])
+                                                    #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
+                                                    verified_n_n = True
+                                            elif('QUINZENAL I' in i_frequency[i_day.index(a)] and 'QUINZENAL I' in inext_frequency[inext_day.index(b)]):
+                                                if(verified_n_n == False):
+                                                    conflicts_n_n.append(list_subj[i])
+                                                    conflicts_n_n.append(list_subj[k])
+                                                    #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
+                                                    verified_n_n = True
+                                            elif('QUINZENAL II' in i_frequency[i_day.index(a)] and'QUINZENAL II' in inext_frequency[inext_day.index(b)]):
+                                                if(verified_n_n == False):
+                                                    conflicts_n_n.append(list_subj[i])
+                                                    conflicts_n_n.append(list_subj[k])
+                                                    #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
+                                                    verified_n_n = True
                         
                         # Going to the next Subject (k+1) to compare with the same, actual, main, Subject (i)
                         k = k+1    
@@ -549,7 +556,13 @@ class UCTP:
         
         # Returning the result calculated
         return Ff
-         
+
+#==============================================================================================================            
+           
+    # Make selectio of objects
+    def rouletteWheel(repos=True):
+        pass
+
 #==============================================================================================================            
            
     # Generate new solutions from the current Infeasible population
@@ -568,11 +581,6 @@ class UCTP:
     
     # Make a mutation into a solution
     def mutationI(self, candidate, prof, subj):
-        # (0) No repair
-        # (1) Prof without relations with Subjects in 'prof_relations'
-        # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'final_n_n'
-        # (3) 2 or more Subjects (related to the same Prof) with same 'day' but different 'campus' in 'final_s_s'
-        
         # Getting data to work with
         relations = candidate.getList()
         prof_relations, final_n_n, final_s_s = candidate.getInfVariables()
@@ -583,6 +591,7 @@ class UCTP:
             # Choosing one type of restriction repair
             errorType = randrange(1,4)
             
+            # (0) No repair -> Random Change
             if(errorType==0):
                 # Do not granting that the 'errorType' do not change good relations without restrictions to repair
                 # Choosing the relation to be modified
@@ -591,6 +600,7 @@ class UCTP:
                 # Setting the flag to finish the while
                 flag_repair_done = True
 
+            # (1) Prof without relations with Subjects in 'prof_relations'
             if(errorType==1):
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
                 if(prof_relations.count([])!=0):
@@ -665,6 +675,7 @@ class UCTP:
                     # Setting the flag to finish the while
                     flag_repair_done = True       
             
+            # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'final_n_n'
             if(errorType==2):
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
                 if(len(final_n_n)!=0):
@@ -674,7 +685,8 @@ class UCTP:
                     
                     # Setting the flag to finish the while
                     flag_repair_done = True    
-                
+
+            # (3) 2 or more Subjects (related to the same Prof) with same 'day' but different 'campus' in 'final_s_s'    
             if(errorType==3):
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
                 if(len(final_s_s)!=0):
@@ -719,7 +731,7 @@ class UCTP:
 
             # Granting that are solutions enough to became fathers (more than or equal 2)
             if(objectiveNum<2):
-                # If do not have at least 2 solutions - all solutions will generate a child through mutation  
+                # If have at most 2 solutions - all solutions will generate a child through mutation  
                 for cand in solutionsF.getList():
                     newCand = self.mutationF(cand, prof)
                     solutionsNoPop.addCand(newCand)
@@ -897,7 +909,7 @@ class UCTP:
             
             # Is needed to make the selection process with Roulette Wheel without Reposition
             else:
-                # List whit the selected Solutions
+                # List with the selected Solutions
                 newSolInf = []
                 
                 # Updating the data for the next Roullete Round without the solution that was recent selected and added to 'newSolInf' on the past round 
