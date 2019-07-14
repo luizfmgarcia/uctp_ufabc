@@ -47,9 +47,9 @@ class Candidate:
         self.fitness = 0.0
         
         # 3 Variables used if the Candidate is classified as "Infeasible" and, if "Feasible", use only 'prof_relations'
-        prof_relations = []
-        final_n_n = []
-        final_s_s = []
+        self.prof_relations = []
+        self.final_n_n = []
+        self.final_s_s = []
         
     def getFitness(self): 
         return self.fitness

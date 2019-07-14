@@ -88,8 +88,38 @@ class UCTP:
         
 #==============================================================================================================            
     
+    # Calculate Fitness of Infeasible Candidates 
+    def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
+        # Getting information about the Candidate
+        prof_relations = self.i1(candidate, prof, subj)
+        conflicts_n_n, conflicts_s_s = self.i2_i3(prof_relations, subj)
+        
+        # Checking if occurred violations of restrictions on the Candidate
+        # If there are violated restrictions, this Cadidate is Infeasible and then will calculate and return a negative Fitness, 
+        # if not, is Feasible, will return 1.0 as Fitness
+        if(prof_relations.count([])!=0 or len(conflicts_n_n)!=0 or len(conflicts_s_s)!=0):            
+            # Calculating main variables
+            i1 = float(prof_relations.count([]))/(float(len(prof))-1.0)
+            i2 = float(len(conflicts_n_n))/float(len(subj))
+            i3 = float(len(conflicts_s_s))/float(len(subj))
+            
+            # Final Infeasible Function Fitness Calc
+            Fi = (-1.0)*(((w_alpha*i1)+(w_beta*i2)+(w_gamma*i3))/(w_alpha + w_beta + w_gamma))
+
+            # Setting main variables of a Infeasible Candidate
+            candidate.setInfVariables(prof_relations, conflicts_n_n, conflicts_s_s)
+            
+            # Returning the calculated result 
+            return Fi
+
+        # If all Relations Prof-Subj in this Candidate passed through the restrictions
+        candidate.setFeaVariables(prof_relations)
+        return 1.0
+
+    #-------------------------------------------------------
+    
     # i1: penalty to how many Professors does not have at least one relation with a Subject
-    def i1(this, candidate, prof, subj):
+    def i1(self, candidate, prof, subj):
         # List of lists of Subjects that are related to the same Professor, where the position in this list is the same of the same professor in 'prof' list 
         # Empty list in this list means that some Professor (p) does not exists on the Candidate
         prof_relations = [[] for i in range(len(prof))]
@@ -106,7 +136,7 @@ class UCTP:
 
     # i2: penalty to how many Subjects, related to the same Professor, are teach in the same day, hour and quadri
     # i3: penalty to how many Subjects, related to the same Professor, are teach in the same day and quadri but in different campus
-    def i2_i3(this, prof_relations, subj):
+    def i2_i3(self, prof_relations, subj):
         # List of the subjects that have a conflict between them - always the two conflicts are added, that is, 
         # there can be repetitions of subjects
         conflicts_n_n = []
@@ -122,7 +152,7 @@ class UCTP:
                 campus_List = []
                 period_List = []
                 for subj_index in list_subj:
-                    sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[subj_index].get()
+                    _, _, _, sQuadri, sPeriod, sCampus, _, sTimetableList = subj[subj_index].get()
                     timetableList_List.append(sTimetableList)
                     quadri_List.append(sQuadri)
                     campus_List.append(sCampus)
@@ -200,210 +230,77 @@ class UCTP:
                     # Going to the next Subject (i+1) related to the same Professor   
                     i = i+1
         
-        return conflicts_n_n, conflicts_s_s
-    
-    #-------------------------------------------------------
-
-    # Calculate Fitness of Infeasible Candidates 
-    def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
-        # Getting information about the Candidate
-        prof_relations = self.i1(candidate, prof, subj)
-        conflicts_n_n, conflicts_s_s = self.i2_i3(prof_relations, subj)
-        
-        # Checking if occurred violations of restrictions on the Candidate
-        # If there are violated restrictions, this Cadidate is Infeasible and then will calculate return a negative Fitness, 
-        # if not, is Feasible, and then will return 1.0 as Fitness
-        if(prof_relations.count([])!=0 or len(conflicts_n_n)!=0 or len(conflicts_s_s)!=0):
         # Removing from 'conflicts_s_s' and 'conflicts_n_n' duplicates
-            final_n_n = []
-            final_s_s = []
-            for n in conflicts_n_n:
-                if(final_n_n.count(n)==0):
-                    final_n_n.append(n) 
-            for s in conflicts_s_s:
-                if(final_s_s.count(s)==0):
-                    final_s_s.append(s)    
-            
-            # Calculating main variables
-            i1 = float(prof_relations.count([]))/(float(len(prof))-1.0)
-            i2 = float(len(final_n_n))/float(len(subj))
-            i3 = float(len(final_s_s))/float(len(subj))
-            # Final Infeasible Function
-            Fi = (-1.0)*(((w_alpha*i1)+(w_beta*i2)+(w_gamma*i3))/(w_alpha + w_beta + w_gamma))
+        final_n_n = []
+        final_s_s = []
+        for n in conflicts_n_n:
+            if(final_n_n.count(n)==0):
+                final_n_n.append(n) 
+        for s in conflicts_s_s:
+            if(final_s_s.count(s)==0):
+                final_s_s.append(s)
 
-            # Setting main variables of a Infeasible Candidate
-            candidate.setInfVariables(prof_relations, final_n_n, final_s_s)
-            
-            # Returning the calculated result 
-            return Fi
-
-        # If all Relations Prof-Subj in this Candidate passed through the restrictions
-        candidate.setFeaVariables(prof_relations)
-        return 1.0
+        return final_n_n, final_s_s
         
 #==============================================================================================================            
     
     # Calculate Fitness of Feasible Candidates 
     def calc_fitFeas(self, candidate, prof, subj, w_delta, w_omega, w_sigma, w_pi, w_rho):
-        # This method looks for good Relations into the Candidate
-        # These are the "Quality Amplifiers"
-        # f1: how balanced is the distribution of Subjects, considering the "Charge" of each Professor (count the "Charge" of all Subj related to that Prof)
-        # f2: how many and which Subjects are the professors preference, considering "prefSubj..." Lists
-        # f3: how many Subjects are teach in a "Quadri" that is not the same of Professors 'quadriSabbath'
-        # f4: how many Subjects are teach in the same "Period" of the Professor
-        # f5: how many Subjects are teach in the same "Campus" of the Professor preference "prefCampus"
         
-        # Auxiliary variables to main ones (f1, f2,...,f5) they have the Index related to "prof" list index
-        # Use to all of them
         prof_relations = candidate.getFeaVariables()
         
-        # Use to f1
+        # Looking for good Relations into the Candidate using "Quality Amplifiers"
+        # Getting information about the Candidate
+        calcF1 = self.f1(subj, prof, prof_relations)
+        calcF2 = self.f2(subj, prof, prof_relations)
+        calcF3 = self.f3(subj, prof, prof_relations)
+        calcF4 = self.f4(subj, prof, prof_relations)
+        calcF5 = self.f5(subj, prof, prof_relations)
+
+        # Calculating main variables
+        f1 = 1.0 - float(calcF1)/float(len(prof))
+        f2 = float(calcF2)/float(len(prof))
+        f3 = float(calcF3)/float(len(subj)) 
+        f4 = float(calcF4)/float(len(subj)) 
+        f5 = float(calcF5)/float(len(subj)) 
+        
+        # Final Feasible Function Fitness Calc
+        Ff = ((w_delta*f1)+(w_omega*f2)+(w_sigma*f3)+(w_pi*f4)+(w_rho*f5))/(w_delta + w_omega + w_sigma + w_pi + w_rho)
+        
+        # Returning the result calculated
+        return Ff
+    
+    #-------------------------------------------------------
+    
+    # f1: how balanced is the distribution of Subjects, considering the "Charge" of each Professor (count the "Charge" of all Subj related to that Prof)
+    def f1(self, subj, prof, prof_relations):
         # List of all 'Effective Charges', that is, the sum of the charges of all the subjects related to the professor
-        charges_AllRelations = []
+        charges_AllRelations = [0 for i in range(len(prof))]
         # List of requested charges of each professor
         charges_EachProf = []
-        
-        # Use to f2
-        # These are Lists of Lists, each Index is the same of Prof index 
-        # In each List (inside the List) we have 1 if the same index Subject (from same Quadri Pref List) is related to Same Prof
-        # or we have 0 if it is not related 
-        q1_relations = []
-        q2_relations = []
-        q3_relations = []
-        
-        # Use to f3
-        num_NotSameQuadriSab = []
-        
-        # Use to f4
-        num_SamePeriod = []
-        
-        # Use to f5
-        num_sameCampus = []
-        
-        # Initializing vectors
-        i=0
-        for i in range(len(prof)):
-            charges_AllRelations.append(0)
-            num_NotSameQuadriSab.append(0)
-            num_SamePeriod.append(0)
-            num_sameCampus.append(0)
-            q1_relations.append([])
-            q2_relations.append([])
-            q3_relations.append([])
-        
-        # Initializing qX_relations Lists of Lists (in each one appends "pPrefSubjQXList" with "pPrefSubjLimList" to have the length of the subList)
+
+        # Counting the occurrences, filling the vectors
         for relations in prof_relations:
             # Setting Index of actual Prof
             pIndex = prof_relations.index(relations)
             # Getting data of actual Prof
-            pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
-            # Filling Q1 List of actual Prof
-            j=0
-            for j in range(len(pPrefSubjQ1List)+len(pPrefSubjLimList)):
-                q1_relations[pIndex].append(0)
-            
-            # Filling Q2 List of actual Prof
-            j=0
-            for j in range(len(pPrefSubjQ2List)+len(pPrefSubjLimList)):
-                q2_relations[pIndex].append(0)    
-            
-            # Filling Q3 List of actual Prof
-            j=0
-            for j in range(len(pPrefSubjQ3List)+len(pPrefSubjLimList)):
-                q3_relations[pIndex].append(0) 
-                    
-        # Counting every type of occurrence, filling the vectors
-        for relations in prof_relations:
-            # Setting Index of actual Prof
-            pIndex = prof_relations.index(relations)
-            
-            # Getting data of actual Prof
-            pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
+            _, _, pCharge, _, _, _, _, _, _ = prof[pIndex].get()
             
             # Collecting each Professors Charge 
             charges_EachProf.append(int(pCharge))
             
             # All Relations of one Prof
-            for subj_related in relations:
-                # Setting Index of actual Subj
-                sIndex = relations.index(subj_related)
-                
+            for sIndex in relations:
                 # Getting data of actual Subj
-                sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList = subj[sIndex].get()
-                
+                _, _, _, _, _, _, sCharge, _ = subj[sIndex].get()
                 # Collecting and summing Subjects Charges related to same Prof
-                charges_AllRelations[sIndex] = charges_AllRelations[sIndex] + float(str(sCharge).replace(",","."))
+                charges_AllRelations[pIndex] = charges_AllRelations[pIndex] + float(str(sCharge).replace(",","."))
                 
-                # Adding to count if the Subj is not in the same 'pQuadriSabbath' (if Prof choose 'nenhum' he does not have a 'pQuadriSabbath')
-                if(sQuadri!=pQuadriSabbath):
-                    num_NotSameQuadriSab[sIndex] = num_NotSameQuadriSab[sIndex] + 1
-                
-                # Adding to count if the Subj is in the same 'pPeriod' of if Prof do not care about 'pPeriod' equal to 'NEGOCIAVEL'
-                if(sPeriod==pPeriod or 'NEGOC' in pPeriod):
-                    num_SamePeriod[sIndex] = num_SamePeriod[sIndex] + 1
-                
-                # Adding to count if the Subj is in the same 'pPrefCampus'
-                if(sCampus==pPrefCampus):    
-                    num_sameCampus[sIndex] = num_sameCampus[sIndex] + 1
-                
-                # Finding the Subject 'sName' in "pPrefSubjQ1List+pPrefSubjLimList" list
-                sumList = pPrefSubjQ1List+pPrefSubjLimList
-                # Checking if the List is not empty
-                if(len(sumList)>0):
-                    try:
-                        index_value = sumList.index(sName)
-                    except ValueError:
-                        index_value = -1
-                    # If the Subj name appears in the list
-                    if(index_value!=-1):
-                        # Putting '1' in same position found 'index_value' in the subList (which this one, is in same position of prof) 
-                        subList = q1_relations[pIndex]
-                        subList[index_value] = 1
-                        # Updating the subList in 'q1_relations' List 
-                        q1_relations[pIndex] = subList
-                
-                # Finding the Subject 'sName' in "pPrefSubjQ2List+pPrefSubjLimList" list
-                sumList = pPrefSubjQ2List+pPrefSubjLimList
-                # Checking if the List is not empty
-                if(len(sumList)>0):
-                    try:
-                        index_value = sumList.index(sName)
-                    except ValueError:
-                        index_value = -1
-                    # If the Subj name appears in the list
-                    if(index_value!=-1):
-                        # Putting '1' in same position found 'index_value' in the subList (which this one, is in same position of prof) 
-                        subList = q2_relations[pIndex]
-                        subList[index_value] = 1
-                        # Updating the subList in 'q2_relations' List 
-                        q2_relations[pIndex] = subList
-                
-                # Finding the Subject 'sName' in "pPrefSubjQ3List+pPrefSubjLimList" list
-                sumList = pPrefSubjQ3List+pPrefSubjLimList
-                # Checking if the List is not empty
-                if(len(sumList)>0):
-                    try:
-                        index_value = sumList.index(sName)
-                    except ValueError:
-                        index_value = -1
-                    # If the Subj name appears in the list    
-                    if(index_value!=-1):
-                        # Putting '1' in same position found 'index_value' in the subList (which this one, is in same position of prof) 
-                        subList = q3_relations[pIndex]
-                        subList[index_value] = 1
-                        # Updating the subList in 'q1_relations' List 
-                        q3_relations[pIndex] = subList
-                
-        # Calculating intermediate variables
+        # Calculating intermediate variable
         
-        # For f1
         # Relative weigh of excess or missing charge for each Prof
-        charges_relative = []
-        
-        # Initializing vector
-        for p in range(len(prof)):
-            charges_relative.append(0.0)
-            
+        charges_relative = [0.0 for i in range(len(prof))]
+
         # Calculating and filling vector
         for pCharge in charges_EachProf:
             # Setting Index of actual Prof
@@ -414,154 +311,193 @@ class UCTP:
             else: charges_relative[actual_index] = res    
         
         # The arithmetic average of charge discrepancies of all professors;  
-        u_u = 0.0
+        sum_chargesRelative = 0.0
         # Calculating the value
         for charge in charges_relative:
-            u_u = u_u + float(charge)
+            sum_chargesRelative = sum_chargesRelative + float(charge)
         
-        # Normalizing value    
-        u_u = u_u/float(len(prof))
-             
-        # For f2
+        return sum_chargesRelative
+
+    #-------------------------------------------------------
+    
+    # f2: how many and which Subjects are the professors preference, considering "prefSubj..." Lists
+    def f2(self, subj, prof, prof_relations):
+        # These are Lists (each quadri - 3) of Lists (each professor) of Lists (each PrefList+LimList)
+        # In each List (inside the List inside the List) we have 1 if the same index Subject (from same Quadri X Pref List + Lim Pref List) is related to Same Prof
+        # or we have 0 if it is not related 
+        qX_relations = [[[] for i in range(len(prof))] for j in range(3)]
+
+        # Initializing qX_relations Lists of Lists (in each one appends "pPrefSubjQXList" with "pPrefSubjLimList" to have the length of the subList)
+        for relations in prof_relations:
+            # Setting Index of actual Prof
+            pIndex = prof_relations.index(relations)
+            
+            # Getting data of actual Prof
+            _, _, _, _, _, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
+            prefSubjLists = [pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList]
+            
+            # For each Quadri - Filling QX Lists of actual Prof
+            for i in range(3):
+                qX_relations[i][pIndex] = [0 for j in range(len(prefSubjLists[i])+len(prefSubjLists[3]))]   
+            
+        # Counting the occurrences, filling the vectors
+        for relations in prof_relations:
+            # Setting Index of actual Prof
+            pIndex = prof_relations.index(relations)
+            
+            # Getting data of actual Prof
+            _, _, _, _, _, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
+            prefSubjLists = [pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList]
+            
+            # All Relations of one Prof
+            for sIndex in relations:
+                # Getting data of actual Subj
+                _, _, sName, _, _, _, _, _ = subj[sIndex].get()
+                
+                # For each Quadri
+                for i in range(3):
+                    # Finding the Subject 'sName' in "pPrefSubjQXList+pPrefSubjLimList" list
+                    sumList = prefSubjLists[i]+prefSubjLists[3]
+                    # Checking if the List is not empty
+                    if(len(sumList)>0):
+                        try:
+                            index_value = sumList.index(sName)
+                        except ValueError:
+                            index_value = -1
+                        # If the Subj name appears in the list
+                        if(index_value!=-1):
+                            # Putting '1' in same position found 'index_value' in the subList (which this one, is in same position of prof) 
+                            qX_relations[i][pIndex][index_value] = 1
+        
+        # Calculating intermediate variables
         # Lists of the calculation of "satisfaction" based on the order of Subjects choose by a Professor (index = 0 has more weight)
-        finalQ1 = []
-        finalQ2 = []
-        finalQ3 = []
+        finalQX = [[] for i in range(3)]
         
-        
-        # Calculating the Satisfaction from Q1 relations for all Professors
-        for list_choice_relation in q1_relations:
-            # Setting actual Prof Index and actual List Relations-Preference
-            prof_index = q1_relations.index(list_choice_relation)
-            len_actual_list = len(list_choice_relation)
-            
-            # Initialing actual position and total weight that will be calculated next
-            finalQ1.append(0.0)
-            total_weight = 0
-            
-            # Checking if the Relations-Preference List is empty
-            if(len_actual_list == 0):
-                finalQ1[prof_index] = 1.0
-            # If is needed to be calculated (is not empty)
-            else:
-                # Q1 Relations of each Professor
-                for h in list_choice_relation:
-                    # Setting actual Subject Preference Position
-                    pref_index = list_choice_relation.index(h)
-                    # Summing the Total Weight of this list of preferences to normalize later (+1 because first index is 0)
-                    total_weight = total_weight + pref_index + 1
-                    
-                    # If the actual Subj, in this specific position on the Preference List of actual Prof, is related to it
-                    if(h==1):
-                        # Summing the respective weight the Subj has in the Prof List of Preferences
-                        finalQ1[prof_index] = finalQ1[prof_index] + (float(len_actual_list)-float(pref_index)+1.0)
+        # For each Qaudri
+        for i in range(3):
+            # Calculating the Satisfaction from QX relations for each Professor
+            for list_choice_relation in qX_relations[i]:
+                # Setting actual Prof Index and actual List Relations-Preference
+                prof_index = qX_relations[i].index(list_choice_relation)
+                len_actual_list = len(list_choice_relation)
                 
-                # Calculate the final value of "Satisfaction" normalized, after obtained and summed all weights from Subjects related to actual professor
-                finalQ1[prof_index] = float(finalQ1[prof_index])/float(total_weight)        
-        
-        # Calculating the Satisfaction from Q2 relations for all Professors
-        for list_choice_relation in q2_relations:
-            # Setting actual Prof Index and actual List Relations-Preference
-            prof_index = q2_relations.index(list_choice_relation)
-            len_actual_list = len(list_choice_relation)
-            
-            # Initialing actual position and total weight that will be calculated next
-            finalQ2.append(0.0)
-            total_weight = 0
-            
-            # Checking if the Relations-Preference List is empty
-            if(len_actual_list == 0):
-                finalQ2[prof_index] = 1.0
-            # It is needed to be calculate (is not empty)
-            else:
-                # Q1 Relations of each Professor
-                for h in list_choice_relation:
-                    # Setting actual Subject Preference Position
-                    pref_index = list_choice_relation.index(h)
-                    # Summing the Total Weight of this list of preferences to normalize later (+1 because first index is 0)
-                    total_weight = total_weight + pref_index + 1
-                    
-                    # If the actual Subj, in this specific position on the Preference List of actual Prof, is related to it
-                    if(h==1):
-                        # Summing the respective weight the Subj has in the Prof List of Preferences
-                        finalQ2[prof_index] = finalQ2[prof_index] + (float(len_actual_list)-float(pref_index)+1.0)
+                # Initializing actual position and total weight that will be calculated next
+                finalQX[i].append(0.0)
+                total_weight = 0
                 
-                # Calculate the final value of "Satisfaction" normalized, after obtained and summed all weights from Subjects related to actual professor
-                finalQ2[prof_index] = float(finalQ2[prof_index])/float(total_weight)
-        
-        # Calculating the Satisfaction from Q3 relations for all Professors
-        for list_choice_relation in q3_relations:
-            # Setting actual Prof Index and actual List Relations-Preference
-            prof_index = q3_relations.index(list_choice_relation)
-            len_actual_list = len(list_choice_relation)
-            
-            # Initialing actual position and total weight that will be calculated next
-            finalQ3.append(0.0)
-            total_weight = 0
-            
-            # Checking if the Relations-Preference List is empty
-            if(len_actual_list == 0):
-                finalQ3[prof_index] = 1.0
-            # It is needed to be calculate (is not empty)
-            else:
-                # Q1 Relations of each Professor
-                for h in list_choice_relation:
-                    # Setting actual Subject Preference Position
-                    pref_index = list_choice_relation.index(h)
-                    # Summing the Total Weight of this list of preferences to normalize later (+1 because first index is 0)
-                    total_weight = total_weight + pref_index + 1
+                # Checking if the Relations-Preference List is empty
+                if(len_actual_list == 0):
+                    finalQX[i][prof_index] = 1.0
+                # If is needed to be calculated (is not empty)
+                else:
+                    # Q1 Relations of each Professor
+                    for h in list_choice_relation:
+                        # Setting actual Subject Preference Position
+                        pref_index = list_choice_relation.index(h)
+                        # Summing the Total Weight of this list of preferences to normalize later (+1 because first index is 0)
+                        total_weight = total_weight + pref_index + 1
+                        
+                        # If the actual Subj, in this specific position on the Preference List of actual Prof, is related to it
+                        if(h==1):
+                            # Summing the respective weight the Subj has in the Prof List of Preferences
+                            finalQX[i][prof_index] = finalQX[i][prof_index] + (len_actual_list - pref_index + 1)
                     
-                    # If the actual Subj, in this specific position on the Preference List of actual Prof, is related to it
-                    if(h==1):
-                        # Summing the respective weight the Subj has in the Prof List of Preferences
-                        finalQ3[prof_index] = finalQ3[prof_index] + (float(len_actual_list)-float(pref_index)+1.0)
-                
-                # Calculate the final value of "Satisfaction" normalized, after obtained and summed all weights from Subjects related to actual professor
-                finalQ3[prof_index] = float(finalQ3[prof_index])/float(total_weight)
+                    # Calculate the final value of "Satisfaction" normalized, after obtained and summed all weights from Subjects related to actual professor
+                    finalQX[i][prof_index] = float(finalQX[i][prof_index])/float(total_weight)        
         
         # Calculate the final value of a Prof "satisfaction" summing all 3 values (from finalQ1, finalQ2 and finalQ3 lists) and normalizing it
-        final_Satisf = []
-        for i in range(len(finalQ3)):
-            final_Satisf.append((finalQ1[i]+finalQ2[i]+finalQ3[i])/3.0)
-        
+        final_Satisf = [float((finalQX[0][i]+finalQX[1][i]+finalQX[2][i])/3.0) for i in range(len(finalQX[0]))]
+                
         # Finally, calculating all Professors Satisfaction summing all final values    
-        m_m = 0.0
+        sum_Satisfaction = 0.0
         for value in final_Satisf:
-            m_m = m_m + value
+            sum_Satisfaction = sum_Satisfaction + value
         
-        # For f3
-        s_s = 0
-        for value in num_NotSameQuadriSab:
-            s_s = s_s + value
+        return sum_Satisfaction
         
-        # For f4
-        t_t = 0
-        for value in num_SamePeriod:
-            t_t = t_t + value
-            
-        # For f5
-        c_c = 0
-        for value in num_sameCampus:
-            c_c = c_c + value
-            
-        # Calculating main variables
-        f1 = 1.0 - u_u
-        f2 = float(m_m)/float(len(prof))
-        f3 = float(s_s)/float(len(subj)) 
-        f4 = float(t_t)/float(len(subj)) 
-        f5 = float(c_c)/float(len(subj)) 
-        
-        # Final Feasible Function
-        Ff = ((w_delta*f1)+(w_omega*f2)+(w_sigma*f3)+(w_pi*f4)+(w_rho*f5))/(w_delta + w_omega + w_sigma + w_pi + w_rho)
-        
-        # Returning the result calculated
-        return Ff
+    #-------------------------------------------------------
+    
+    # f3: how many Subjects are teach in a "Quadri" that is not the same of Professors 'quadriSabbath'
+    def f3(self, subj, prof, prof_relations):
+        num_NotSameQuadriSab = [0 for i in range(len(prof))]
 
-#==============================================================================================================            
-           
-    # Make selectio of objects
-    def rouletteWheel(repos=True):
-        pass
+        # Counting the occurrences, filling the vector
+        for relations in prof_relations:
+            # Setting Index of actual Prof
+            pIndex = prof_relations.index(relations)
+            # Getting data of actual Prof
+            _, _, _, pQuadriSabbath, _, _, _, _, _ = prof[pIndex].get()
+            
+            # All Relations of one Prof
+            for sIndex in relations:                
+                # Getting data of actual Subj
+                _, _, _, sQuadri, _, _, _, _ = subj[sIndex].get()
+                # Adding to count if the Subj is not in the same 'pQuadriSabbath' (if Prof choose 'nenhum' he does not have a 'pQuadriSabbath')
+                if(sQuadri!=pQuadriSabbath or 'NENHUM' in pQuadriSabbath):
+                    num_NotSameQuadriSab[pIndex] = num_NotSameQuadriSab[pIndex] + 1
+                
+        # Calculating intermediate variable
+        sum_NotSameQuadriSab = 0
+        for value in num_NotSameQuadriSab:
+            sum_NotSameQuadriSab = sum_NotSameQuadriSab + value
+
+        return sum_NotSameQuadriSab
+
+    #-------------------------------------------------------
+    
+    # f4: how many Subjects are teach in the same "Period" of the Professor preference "pPeriod"
+    def f4(self, subj, prof, prof_relations):
+        num_SamePeriod = [0 for i in range(len(prof))]
+
+        # Counting the occurrences, filling the vector
+        for relations in prof_relations:
+            # Setting Index of actual Prof
+            pIndex = prof_relations.index(relations)
+            # Getting data of actual Prof
+            _, pPeriod, _, _, _, _, _, _, _ = prof[pIndex].get()
+            
+            # All Relations of one Prof
+            for sIndex in relations:
+                # Getting data of actual Subj
+                _, _, _, _, sPeriod, _, _, _ = subj[sIndex].get()
+                # Adding to count if the Subj is in the same 'pPeriod' or if Prof do not care about 'pPeriod' equal to 'NEGOCIAVEL'
+                if(sPeriod==pPeriod or 'NEGOCI' in pPeriod):
+                    num_SamePeriod[pIndex] = num_SamePeriod[pIndex] + 1
+                
+        # Calculating intermediate variable
+        sum_SamePeriod = 0
+        for value in num_SamePeriod:
+            sum_SamePeriod = sum_SamePeriod + value
+        
+        return sum_SamePeriod
+        
+    #-------------------------------------------------------
+    
+    # f5: how many Subjects are teach in the same "Campus" of the Professor preference "prefCampus"
+    def f5(self, subj, prof, prof_relations):
+        num_sameCampus = [0 for i in range(len(prof))]
+
+        # Counting the occurrences, filling the vector
+        for relations in prof_relations:
+            # Setting Index of actual Prof
+            pIndex = prof_relations.index(relations)
+            # Getting data of actual Prof
+            _, _, _, _, pPrefCampus, _, _, _, _ = prof[pIndex].get()
+            
+            # All Relations of one Prof
+            for sIndex in relations:
+                # Getting data of actual Subj
+                _, _, _, _, _, sCampus, _, _ = subj[sIndex].get()
+                # Adding to count if the Subj is in the same 'pPrefCampus'
+                if(sCampus==pPrefCampus):    
+                    num_sameCampus[pIndex] = num_sameCampus[pIndex] + 1
+                
+        # Calculating intermediate variable
+        sum_sameCampus = 0
+        for value in num_sameCampus:
+            sum_sameCampus = sum_sameCampus + value
+
+        return sum_sameCampus
 
 #==============================================================================================================            
            
@@ -618,54 +554,9 @@ class UCTP:
                     change = prof_No_Relations[change_index]
                     newProf = prof[change]
                     
-                    # Choosing the Prof will lose a Relation to the new one using a Roulette Wheel
-                    # Creating a list of Weights based in the number of relations of each professor with relations
-                    Weights = []
-                    for p in prof_With_Relations:
-                        Weights.append(float(len(prof_relations[p])))
-                        
-                    # Find the total Number of Relations of the population (has to be the same of the number of Subjects)
-                    totalRelations = 0.0
-                    for w in Weights:
-                        totalRelations = totalRelations + w
-                        
-                    if(totalRelations != float(len(subj))):
-                        print("Error! Number of relation different of number of Subjects.")   
-                    
-                    # Calculate the prob. of a selection for each prof
-                    probList = []
-                    for w in Weights:
-                        p = float(w/totalRelations)
-                        probList.append(p) 
-                    
-                    # Calculate a cumulative prob. for each Professor
-                    cumulative=0.0
-                    cumulativeProbList = []
-                    for q in probList:
-                        qNew = q + cumulative
-                        cumulativeProbList.append(qNew)
-                        cumulative = qNew
-                    
-                    # Solutions selected by roullete and number of Solutions to be selected with the roulette
-                    selectedProf_Index = []
-                    objectiveNum = 1
-                    # MAIN Roulette Selection process - do it until choose the 'objectiveNum' of Solutions
-                    while(len(selectedProf_Index) < objectiveNum):    
-                        # Previous Probability / Actual Prob. Index / Random Number to do one Roullete Round 
-                        probPrev = 0.0
-                        index = 0
-                        r = float(randrange(100)/100.0)
-                        
-                        # Roullete round - find a unique solution in range 'probPrev' and 'q'
-                        for q in cumulativeProbList:
-                            if(probPrev < r and r <= q):
-                                # Add the selected Solution to 'selectedProf_Index' list and finish this roullete round
-                                selectedProf_Index.append(prof_With_Relations[index])
-                                break
-                            
-                            # Go to next solution updating the main data
-                            probPrev = q    
-                            index = index + 1
+                    # Roulette Wheel
+                    numRelationsList = [float(len(prof_relations[p])) for p in prof_With_Relations]
+                    selectedProf_Index = self.rouletteWheel(prof_With_Relations, numRelationsList, objectiveNum=1, repos=True, negative=False)
                     
                     # Selecting a subject related with the Selected Prof to lose this Relation
                     relations_choosed = prof_relations[selectedProf_Index[0]]
@@ -738,44 +629,9 @@ class UCTP:
                     
             # If we have at least 2 solutions, will have a Roulette Wheel with Reposition where the 'objectiveNum' of solutions will become Parents
             else:
-                # Find the total fitness of the population
-                totalFitFeas = 0.0
-                for cand in solutionsF.getList():
-                    totalFitFeas = totalFitFeas + cand.getFitness()
-                
-                # Calculate the prob. of a selection for each candidate
-                probFeas = []
-                for cand in solutionsF.getList():
-                    p = cand.getFitness()/totalFitFeas
-                    probFeas.append(p) 
-                
-                # Calculate a cumulative prob. for each candidate
-                cumulativeProbFeas = []
-                cumulative=0.0
-                for q in probFeas:
-                    qNew = q + cumulative
-                    cumulativeProbFeas.append(qNew)
-                    cumulative = qNew
-                
-                # Solutions selected by roullete to be parents
-                parentsSolFeas = []
-                # MAIN Roulette Selection process - do it until choose the 'objectiveNum' of Solutions
-                while(len(parentsSolFeas) != objectiveNum):
-                    # Previous Probability / Actual Prob. Index / Random Number to do one Roullete Round     
-                    probPrev = 0.0
-                    index = 0
-                    r = float(randrange(100)/100.0)
-                    
-                    # Roullete round - find a unique solution in range 'probPrev' and 'q'
-                    for q in cumulativeProbFeas:
-                        if(probPrev < r and r <= q):
-                            # Add the selected Solution to 'parentsSolFeas' list and finish this roullete round
-                            parentsSolFeas.append(solutionsF.getList()[index])
-                            break
-                        
-                        # Go to next solution updating the main data
-                        probPrev = q    
-                        index = index + 1        
+                # Roulette Wheel
+                fitnessList = [cand.getFitness() for cand in solutionsF.getList()]
+                parentsSolFeas = self.rouletteWheel(solutionsF.getList(), fitnessList, objectiveNum, repos=True, negative=False)
                 
                 # Solutions 'children' created by crossover
                 childSolFeas = []  
@@ -787,7 +643,7 @@ class UCTP:
                         parent1 = 0
                         parent2 = 1
                     
-                    # If there are more, choosing the parents Randomly  
+                    # If there are more then 2, choosing the parents Randomly  
                     else:
                         parent1 = randrange(len(parentsSolFeas))
                         parent2 = randrange(len(parentsSolFeas))
@@ -909,50 +765,9 @@ class UCTP:
             
             # Is needed to make the selection process with Roulette Wheel without Reposition
             else:
-                # List with the selected Solutions
-                newSolInf = []
-                
-                # Updating the data for the next Roullete Round without the solution that was recent selected and added to 'newSolInf' on the past round 
-                while(len(newSolInf) < numCand):         
-                    # Find the total fitness of the population
-                    totalFitInf = 0.0
-                    for cand in infeasibles_List:
-                        # Since the value of Fitness is in the range of '-1' and '0' it is needed to be modified
-                        # Modifying the values to put it into a range of '0' and '1'
-                        newFit = 1.0 + cand.getFitness()
-                        totalFitInf = totalFitInf + newFit
-                    
-                    # Calculate the prob. of a selection for each candidate
-                    probInf = []
-                    for cand in infeasibles_List:
-                        # Since the value of Fitness is in the range of '-1' and '0' it is needed to be modified
-                        # Modifying the values to put it into a range of '0' and '1'
-                        newFit = 1.0 + cand.getFitness()
-                        p = newFit/totalFitInf
-                        probInf.append(p) 
-                    
-                    # Calculate a cumulative prob. for each candidate
-                    cumulativeProbInf = []
-                    cumulative=0.0
-                    for q in probInf:
-                        qNew = q + cumulative
-                        cumulativeProbInf.append(qNew)
-                        cumulative = qNew
-                    
-                    # MAIN Roulette Wheel Selection process (no Reposition)    
-                    probPrev = 0.0
-                    index = 0
-                    r = float(randrange(100)/100.0)
-                    for q in cumulativeProbInf:
-                        if(probPrev < r and r <= q):
-                            # Adding the selected solution to 'newSolInf'
-                            newSolInf.append(infeasibles_List[index])
-                            # Removing the selected solution from 'infeasibles_List'
-                            infeasibles_List.pop(index)
-                            break
-                        
-                        probPrev = q    
-                        index = index + 1   
+                # Roulette Wheel
+                fitnessList = [cand.getFitness() for cand in infeasibles_List]
+                newSolInf = self.rouletteWheel(infeasibles_List, fitnessList, numCand, repos=False, negative=True)  
                 
                 # Setting the new 'solutionsI' list to go to the next generation    
                 solutionsI.setList(newSolInf)
@@ -996,9 +811,68 @@ class UCTP:
                 solutionsF.setList(feasibles_List)        
             
             if(prt==1): print("Feas. Selection/", end='')
+
+#==============================================================================================================            
+           
+    # Make selection of objects by Roulette Wheel
+    def rouletteWheel(self, objectsList, valuesList, objectiveNum, repos=True, negative=False):
+        # Num of objects will be selected: objectiveNum
+        # Type of wheel (with reposition): repos
+        # Since the value of Fitness is in the range of '-1' and '0' it is needed to be modified
+        # Modifying the values to put it into a range of '0' and '1'
+        # negative = True - modify de range of values
+
+        # List with the selected Objects
+        selectedObj = []
+        # Flag tha allows to make all important calcs at least one time when the Roulette is with Reposition
+        oneCalc = True
+
+        while(len(selectedObj) < objectiveNum):         
+            # Allow the Updating of the data for the next Roullete Round without the object that was recent selected on past round
+            if(repos==False or oneCalc==True):
+                # When the Roulette process does have reposition of objects 
+                if(repos==True): oneCalc = False
+                
+                # Find the total Value of the Objects
+                totalValue = 0.0
+                for value in valuesList:
+                    newValue = (1.0 if negative==True else 0.0) + value
+                    totalValue = totalValue + newValue
+                
+                # Calculate the prob. of a selection for each object
+                probObj = []
+                for value in valuesList:
+                    newValue = (1.0 if negative==True else 0.0) + value
+                    p = float(newValue/totalValue)
+                    probObj.append(p) 
+                
+                # Calculate a cumulative prob. for each object
+                cumulative = 0.0
+                cumulativeProbObj = []
+                for q in probObj:
+                    qNew = q + cumulative
+                    cumulativeProbObj.append(qNew)
+                    cumulative = qNew
+            
+            # MAIN Roulette Wheel Selection process (one round)    
+            probPrev = 0.0
+            index = 0
+            r = float(randrange(100)/100.0)
+            for q in cumulativeProbObj:
+                if(probPrev < r and r <= q):
+                    # Adding the selected Object to 'selectedObj'
+                    selectedObj.append(objectsList[index])
+                    if(repos==False):
+                        # Removing the selected solution from 'valuesList'
+                        valuesList.pop(index)
+                    break
+                probPrev = q    
+                index = index + 1
+
+        return  selectedObj
             
 #==============================================================================================================            
-                
+    
     # Detect the stop condition
     def stop(self, iteration, total, solutionsI, solutionsF):
         for cand in solutionsF.getList():

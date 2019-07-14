@@ -175,7 +175,7 @@ def extractInfo(datas):
     # Collecting Profs names in 'prof' and putting Subj index related to same Prof in same index of 'indexs' list
     prof, indexs = [], []
     for data in range(len(datas)):
-        sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[data]
+        _, _, sName, sQuadri, sPeriod, sCampus, sCharge, _, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[data]
         try:
             i = prof.index(pName)
         except ValueError:
@@ -194,7 +194,7 @@ def extractInfo(datas):
         info[i] = info[i]+[prof[i], len(indexs[i]), 0, 0, 0, 0, 0]
         k=0
         for j in indexs[i]:
-            sLevel, sCode, sName, sQuadri, sPeriod, sCampus, sCharge, sTimetableList, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[j]    
+            _, _, sName, sQuadri, sPeriod, sCampus, sCharge, _, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[j]    
             if('1' in sQuadri):
                 if(pPrefSubjQ1List.count(sName)==0 and pPrefSubjLimList.count(sName)==0):
                     info[i][2] = info[i][2]+1
@@ -206,7 +206,7 @@ def extractInfo(datas):
                     info[i][2] = info[i][2]+1                
             if('NEGOCI' not in pPeriod and sPeriod!=pPeriod):
                 info[i][3] = info[i][3]+1
-            if(pQuadriSabbath!='NENHUM' and sQuadri==pQuadriSabbath):
+            if('NENHUM' not in pQuadriSabbath and sQuadri==pQuadriSabbath):
                 info[i][4] = info[i][4]+1 
             if(sCampus!=pPrefCampus):
                 info[i][5] = info[i][5]+1

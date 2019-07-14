@@ -24,12 +24,12 @@ class main:
     prt = 1
 
     # Max Number of iterations to get a solution
-    iterations = 100
+    iterations = 600
     # Number of candidates in a generation (same for each Feas/Inf.)
     numCand = 100
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     # Must be between '0' and '100'
-    pctRouletteCross = 20
+    pctRouletteCross = 45
     # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer
     # Must be between '0' and '100' 
     pctMut = 80
