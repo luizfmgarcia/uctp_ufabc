@@ -229,7 +229,7 @@ def extractInfo(datas):
 
 # Export all Candidates in a generation into CSV files
 # Create a CSV File for each Candidate and one CSV for all Fitness of the Candidates: 
-def outData(solutionsI, solutionsF, num, maxFeaIndex=0):
+def outData(solutionsI, solutionsF, num, maxFeaIndex=[]):
     if(prt == 1): print("Exporting data....", end='')
 
     # get current directory and create, if necessary, new 'generationsCSV' dir
@@ -313,7 +313,7 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=0):
         csvfile.close()
         
         # If we are on the last iteration of the algorithm
-        if(maxFeaIndex!=0):
+        if(len(maxFeaIndex)!=0):
             if(maxFeaIndex[0]==i):
                 maxData = datas
                 maxInfo = info
@@ -339,7 +339,7 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=0):
     if(prt == 1):
         print("Data Exported!")
         # Printing one of the best solutions found
-        if(maxFeaIndex!=0):
+        if(len(maxFeaIndex)!=0):
             print("")
             print("These are the best solutions found:", maxFeaIndex)
             print("This is the first of them:")
