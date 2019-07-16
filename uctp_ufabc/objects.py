@@ -17,9 +17,6 @@ class Prof:
     
     def get(self):
         return self.name, self.period, self.charge, self.quadriSabbath, self.prefCampus, self.prefSubjQ1List, self.prefSubjQ2List, self.prefSubjQ3List, self.prefSubjLimList
-
-    def getName(self):
-        return self.name
         
 #==============================================================================================================            
 
