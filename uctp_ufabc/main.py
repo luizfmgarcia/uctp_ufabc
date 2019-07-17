@@ -4,13 +4,30 @@ from objects import *
 from uctp import *
 from ioData import *
 
-"""  
-Reformulado Crossover para não gerar 2 filhos iguais aos pais (que na maioria das vezes sao iguais)
+"""
+-Reformulado Crossover para não gerar 2 filhos iguais aos pais (que na maioria das vezes sao iguais)
 
-reformular funcao de Roulette Wheel padrao: opcao de escolher os piores valores?
-rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, ou outra coisa
-havendo acumulo de disciplinas em poucos prof
-muitas materias n sao de pref
+-Melhorar saida apresentando tmb a config do algoritmo
+-Reformular funcao de Roulette Wheel padrao: opcao de escolher os piores valores?
+-Criar funcoes mutation, crossover mais gerais para reutilizacao de codigo?
+-Criar X funcoes novas totalmente aleatorias toda rodada? 
+-Reformular SelectionF para ter uma parte elitista e outra com roleta? Exp. de codigo:
+----------------------------------------------------------------------
+    maxFeasible = [feasibles_List[listFit.index(max(listFit))]]
+    listFit.pop(listFit.index(max(listFit)))
+    feasibles_List.pop(listFit.index(max(listFit)))
+
+    # Roulette Wheel
+    newSolFea = self.rouletteWheel(feasibles_List, listFit, numCand-1, repos=True, negative=False)  
+    
+    # Setting the new 'solutionsF' list to go to the next generation        
+    solutionsF.setList(maxFeasible + newSolFea)
+----------------------------------------------------------------------
+
+-havendo acumulo de disciplinas em poucos prof
+-muitas materias n sao de pref
+    -rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, e/ou tirar materia de um
+        que nao tem pref e dar pra qm tem pref
 """
 
 #==============================================================================================================            
@@ -28,7 +45,7 @@ class main:
     # Max Number of iterations to get a solution
     iterations = 1000
     # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 600
+    numCand = 300
 
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     pctRouletteCross = 45 # Must be between '0' and '100'
@@ -65,14 +82,14 @@ class main:
     
     # Getting data to work with
     getData(subj, prof)
-    
+
     # Creating the first 'numCand' candidates (First Generation)
     uctp.start(solutionsNoPop, subj, prof, numCand)
 
     # Classification and Fitness calc of the first candidates
     uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights)
     uctp.calcFit(solutionsI, solutionsF, prof, subj, weights)
-    
+
     # Print and export generated data
     if(prt == 1): print('Iteration: 0')
     maxFeaIndex = outDataMMA(solutionsI, solutionsF, 0)
@@ -109,7 +126,7 @@ class main:
         
         # Register of the 'Iteration' that appeared the first Feas Sol
         if(firstFeasSol == -1 and len(solutionsF.getList()) != 0): firstFeasSol = t
-        
+
         # Next Iteration
         t = t + 1
         if(prt == 1): print("\n")

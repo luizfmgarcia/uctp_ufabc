@@ -18,15 +18,21 @@ class UCTP:
         if(prt == 1): print("Creating first generation...", end='')
         n = 0
         while(n != init):
-            candidate = Candidate()
-            # Follow the subjects in 'subj' list, in order, and for each one, choose a professor randomly 
-            for sub in subj: candidate.addRelation(sub, prof[randrange(len(prof))])
-            solutionsNoPop.addCand(candidate)
+            solutionsNoPop.addCand(self.newCandRand(subj, prof))
             n = n + 1
         if(prt == 1): print("Created first generation!")    
         #printAllCand(solutions)
         
 #==============================================================================================================            
+        
+    # Create new Candidate Full-Random
+    def newCandRand(self, subj, prof):        
+        candidate = Candidate()
+        # Follow the subjects in 'subj' list, in order, and for each one, choose a professor randomly 
+        for sub in subj: candidate.addRelation(sub, prof[randrange(len(prof))])
+        return candidate
+
+#==============================================================================================================
     
     # Separation of solutions into 2 populations
     def twoPop(self, solutionsNoPop, solI, solF, prof, subj, weights):
@@ -505,6 +511,16 @@ class UCTP:
                 # Do not granting that the 'errorType' do not change good relations without restrictions to repair
                 # Choosing the relation to be modified
                 relation_will_change_index = randrange(len(subj))
+                
+                # Choosing new Prof to be in the relation with the Subj selected
+                subj, oldProf = relations[relation_will_change_index]
+                change = randrange(len(prof))
+                newProf = prof[change]
+
+                # Granting that the new Prof is different of the old one
+                while(oldProf == newProf):
+                    change = randrange(len(prof))
+                    newProf = prof[change]
                     
                 # Setting the flag to finish the while
                 flag_repair_done = True
@@ -514,17 +530,12 @@ class UCTP:
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
                 if(prof_relations.count([]) != 0):
                     # Creating a list with only the index of Prof without Relations and an other one only with Prof with Relations
-                    prof_No_Relations, prof_With_Relations = [], []
+                    prof_Zero_Relations, prof_With_Relations = [], []
 
                     for p in prof_relations:
-                        if(p == []): prof_No_Relations.append(prof_relations.index(p))
+                        if(p == []): prof_Zero_Relations.append(prof_relations.index(p))
                         else: prof_With_Relations.append(prof_relations.index(p))    
-                    
-                    # Choosing one Prof to be included in one relation        
-                    change_index = randrange(len(prof_No_Relations))
-                    change = prof_No_Relations[change_index]
-                    newProf = prof[change]
-                    
+
                     # Roulette Wheel
                     numRelationsList = [float(len(prof_relations[p])) for p in prof_With_Relations]
                     selectedProf_Index = self.rouletteWheel(prof_With_Relations, numRelationsList, objectiveNum=1, repos=True, negative=False)
@@ -534,6 +545,12 @@ class UCTP:
                     index_relation_choosed = randrange(len(relations_choosed))
                     relation_will_change_index = relations_choosed[index_relation_choosed]
                     
+                    # Choosing one Prof to be included in one relation
+                    subj, oldProf = relations[relation_will_change_index]        
+                    change_index = randrange(len(prof_Zero_Relations))
+                    change = prof_Zero_Relations[change_index]
+                    newProf = prof[change]
+
                     # Setting the flag to finish the while
                     flag_repair_done = True       
             
@@ -544,7 +561,17 @@ class UCTP:
                     # Choosing the relation to be modified
                     will_change_index = randrange(len(final_n_n))
                     relation_will_change_index = final_n_n[will_change_index]
-                    
+
+                    # Choosing new Prof to be in the relation with the Subj selected
+                    subj, oldProf = relations[relation_will_change_index]
+                    change = randrange(len(prof))
+                    newProf = prof[change]
+
+                    # Granting that the new Prof is different of the old one
+                    while(oldProf == newProf):
+                        change = randrange(len(prof))
+                        newProf = prof[change]
+
                     # Setting the flag to finish the while
                     flag_repair_done = True    
 
@@ -555,18 +582,19 @@ class UCTP:
                     # Choosing the relation to be modified
                     will_change_index = randrange(len(final_s_s))
                     relation_will_change_index = final_s_s[will_change_index]
-                        
+
+                    # Choosing new Prof to be in the relation with the Subj selected
+                    subj, oldProf = relations[relation_will_change_index]
+                    change = randrange(len(prof))
+                    newProf = prof[change]
+
+                    # Granting that the new Prof is different of the old one
+                    while(oldProf == newProf):
+                        change = randrange(len(prof))
+                        newProf = prof[change]
+
                     # Setting the flag to finish the while
                     flag_repair_done = True                
-        
-        # Choosing new Prof to be in the relation with the Subj selected
-        subj, oldProf = relations[relation_will_change_index]
-        change = randrange(len(prof))
-        newProf = prof[change]
-        # Granting that the new Prof is different of the old one
-        while(oldProf == newProf):
-            change = randrange(len(prof))
-            newProf = prof[change]
 
         # Setting the new relation, creating new Candidate and returning it
         relations[relation_will_change_index]=[subj,newProf]
@@ -707,9 +735,9 @@ class UCTP:
             s1, p1 = relations1[point1]
             s2, p2 = relations2[point3]
             
-            # Making the exchange of relations
-            relations1[point1] = s2, p2 
-            relations2[point3] = s1, p1
+            # Making the exchange of relations (changing only professors)
+            relations1[point1] = s1, p2 
+            relations2[point3] = s2, p1
             
             # Next relation
             point1 = point1 + 1
@@ -777,10 +805,7 @@ class UCTP:
                     
                     # Removing from main lists this minimal Fitness Solution 
                     listFit.pop(minIndex)
-                    feasibles_List.pop(minIndex)
-                
-                # Setting the new 'solutionsF' list to go to the next generation        
-                solutionsF.setList(feasibles_List)        
+                    feasibles_List.pop(minIndex) 
             
             if(prt == 1): print("Feas. Selection/", end='')
 
