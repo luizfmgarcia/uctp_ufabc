@@ -216,7 +216,7 @@ def extractInfo(datas):
 
 # Export all Candidates in a generation into CSV files
 # Create a CSV File for each Candidate and one CSV for all Fitness of the Candidates: 
-def outData(solutionsI, solutionsF, num, maxFeaIndex=[]):
+def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
     if(prt == 1): print("Exporting data....", end='')
 
     # get current directory and create, if necessary, new 'generationsCSV' dir
@@ -231,7 +231,8 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[]):
     # Main titles to output datas 
     titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
     titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'difCharge']
-        
+    titles3 = ['iterations', 'numCand', 'pctRouletteCross', 'pctMut', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
+
     # All  Infeasible Candidates of a Generation
     i = 0
     for cand in solutionsI.getList():      
@@ -295,11 +296,18 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[]):
         # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
         csvfile.close()
         
-        # If we are on the last iteration of the algorithm
+        # If the Algorithm found feasibles solutions
         if(len(maxFeaIndex) != 0):
+            # If we are on the first best solution found
             if(maxFeaIndex[0] == i):
-                maxData = datas
-                maxInfo = info
+                # Recording its data
+                maxData, maxInfo = datas, info
+                # Resuming the result to showi only 'sName' and 'pName' of each relation
+                resumeMaxData = [[row[2], row[8]] for row in maxData]
+                # Getting Fitness of the first best solution found
+                fitMaxData = solutionsF.getList()[maxFeaIndex[0]].getFitness()
+        
+        # Next Solution Index        
         i = i + 1
             
     # All Fitness in a Generation
@@ -318,18 +326,58 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[]):
             i = i + 1            
     # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
+
+    # Output Run-Config and Final best result
+    currentDir = os.getcwd()
+    outName = currentDir + os.sep + 'generationsCSV' + os.sep + 'runConfigResult.csv'
+    with open(outName, 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        
+        # Config info
+        spamwriter.writerow(titles3)         
+        spamwriter.writerow(config)
+        spamwriter.writerow('')
+        
+        # If best solutions found
+        if(len(maxFeaIndex)!=0):
+            spamwriter.writerow(["Best solutions found:", maxFeaIndex])
+            spamwriter.writerow(["Index/Fit:", maxFeaIndex[0], fitMaxData])
+            spamwriter.writerow('')
             
+            # sName + pName
+            spamwriter.writerow(['index', titles1[2], titles1[8]])
+            i = 1
+            for row in resumeMaxData:       
+                spamwriter.writerow([i]+row)
+                i = i + 1 
+            
+            # Extracted Info of one of the best Solutions found
+            spamwriter.writerow('')
+            spamwriter.writerow(titles2)
+            i = 1
+            for row in maxInfo:       
+                spamwriter.writerow([i]+row)
+                i = i + 1
+        else: spamwriter.writerow("Do not found feasible solutions.")                   
+    # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
+    csvfile.close()
+
+    # Showing important Info in terminal for user         
     if(prt == 1):
-        print("Data Exported!")
+        print("Data Exported!", '\n')
+        
+        import pandas
+        # Printing the Run-Config
+        print("Run-Config of the Algorithm:")
+        with pandas.option_context('display.max_rows', 999):
+            print(pandas.DataFrame(data=[[titles3[i], config[i]] for i in range(len(config))], columns=['config', 'value'], index=None), '\n')
+
         # Printing one of the best solutions found
         if(len(maxFeaIndex)!=0):
-            print("")
             print("These are the best solutions found:", maxFeaIndex)
-            print("This is the first of them:")
-            newData = [[row[2], row[8]] for row in maxData]
-            import pandas
+            print("Index/Fit:", maxFeaIndex[0], '/', fitMaxData)
             with pandas.option_context('display.max_rows', 999):   
-                print(pandas.DataFrame(data=newData, index=None, columns=[titles1[2], titles1[8]]), '\n')
+                print(pandas.DataFrame(data=resumeMaxData, index=None, columns=[titles1[2], titles1[8]]), '\n')
                 print(pandas.DataFrame(data=maxInfo, index=None, columns=titles2), '\n')
         
 #==============================================================================================================            

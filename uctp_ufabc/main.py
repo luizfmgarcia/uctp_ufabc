@@ -7,10 +7,8 @@ from ioData import *
 """
 -Reformulado Crossover para não gerar 2 filhos iguais aos pais (que na maioria das vezes sao iguais)
 
--Melhorar saida apresentando tmb a config do algoritmo
 -Reformular funcao de Roulette Wheel padrao: opcao de escolher os piores valores?
--Criar funcoes mutation, crossover mais gerais para reutilizacao de codigo?
--Criar X funcoes novas totalmente aleatorias toda rodada? 
+-Criar funcoes mutation, crossover mais gerais para reutilizacao de codigo? 
 -Reformular SelectionF para ter uma parte elitista e outra com roleta? Exp. de codigo:
 ----------------------------------------------------------------------
     maxFeasible = [feasibles_List[listFit.index(max(listFit))]]
@@ -26,6 +24,7 @@ from ioData import *
 
 -havendo acumulo de disciplinas em poucos prof
 -muitas materias n sao de pref
+    -Criar X funcoes novas totalmente aleatorias toda rodada?
     -rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, e/ou tirar materia de um
         que nao tem pref e dar pra qm tem pref
 """
@@ -43,9 +42,9 @@ class main:
     prt = 1
 
     # Max Number of iterations to get a solution
-    iterations = 1000
+    iterations = 100
     # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 300
+    numCand = 30
 
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     pctRouletteCross = 45 # Must be between '0' and '100'
@@ -135,8 +134,9 @@ class main:
     #----------------------------------------------------------------------------------------------------------
     # Final - last processing of the data
 
-    # Export last generation of candidates  
-    outData(solutionsI, solutionsF, t, maxFeaIndex)      
+    # Export last generation of candidates and Config-Run Info
+    config = [iterations, numCand, pctRouletteCross, pctMut, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho] 
+    outData(solutionsI, solutionsF, t, maxFeaIndex, config)      
     if(prt == 1): print("End of works") 
           
 #==============================================================================================================
