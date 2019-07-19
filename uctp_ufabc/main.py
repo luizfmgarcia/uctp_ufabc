@@ -5,22 +5,13 @@ from uctp import *
 from ioData import *
 
 """
--Reformulado Crossover para não gerar 2 filhos iguais aos pais (que na maioria das vezes sao iguais)
+-Verificar se há variaveis/List importantes sendo modificadas quando n deveriam
+-Erros nos comments
+-Nomes de variavel ruins
 
--Reformular funcao de Roulette Wheel padrao: opcao de escolher os piores valores?
--Criar funcoes mutation, crossover mais gerais para reutilizacao de codigo? 
--Reformular SelectionF para ter uma parte elitista e outra com roleta? Exp. de codigo:
-----------------------------------------------------------------------
-    maxFeasible = [feasibles_List[listFit.index(max(listFit))]]
-    listFit.pop(listFit.index(max(listFit)))
-    feasibles_List.pop(listFit.index(max(listFit)))
-
-    # Roulette Wheel
-    newSolFea = self.rouletteWheel(feasibles_List, listFit, numCand-1, repos=True, negative=False)  
-    
-    # Setting the new 'solutionsF' list to go to the next generation        
-    solutionsF.setList(maxFeasible + newSolFea)
-----------------------------------------------------------------------
+-PErmitir maior variacao de individuos feasible?
+    -Reformular SelectionF para ter uma parte elitista e outra com roleta?
+-Problema no Crossover: não gerar 2 filhos iguais aos pais que na maioria das vezes sao iguais? Inserindo Assimetria
 
 -havendo acumulo de disciplinas em poucos prof
 -muitas materias n sao de pref
@@ -42,7 +33,7 @@ class main:
     prt = 1
 
     # Max Number of iterations to get a solution
-    iterations = 100
+    iterations = 5000
     # Number of candidates in a generation (same for each Feas/Inf.)
     numCand = 30
 
@@ -81,6 +72,7 @@ class main:
     
     # Getting data to work with
     getData(subj, prof)
+    startOutFolders()
 
     # Creating the first 'numCand' candidates (First Generation)
     uctp.start(solutionsNoPop, subj, prof, numCand)

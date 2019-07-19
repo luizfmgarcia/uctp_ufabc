@@ -22,7 +22,7 @@ def getData(subj, prof):
             # Transform every letter to upper case to impose a pattern
             datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
             # Verify if exist some important blank data (data 0 to 4) 
-            if(not datas[0] == '' and not datas[1] == '' and not datas[2] == '' and not datas[3] == '' and not datas[4] == ''):
+            if((not datas[0] == '') and (not datas[1] == '') and (not datas[2] == '') and (not datas[3] == '') and (not datas[4] == '')):
                 # Separating the Subjects Pref., transforming into lists (data 5 to 8)
                 datas[5] = datas[5].split('/')
                 datas[6] = datas[6].split('/')
@@ -48,7 +48,7 @@ def getData(subj, prof):
             # Transform every letter to upper case to impose a pattern
             datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
             # Verify if exist some important blank data (rows 0 to 8) 
-            if(not datas[0] == '' and not datas[1] == '' and not datas[2] == '' and not datas[3] == '' and not datas[4] == '' and not datas[5] == '' and not datas[6] == '' and not datas[7] == '#N/D' and not datas[8] == '#N/D'):
+            if((not datas[0] == '') and (not datas[1] == '') and (not datas[2] == '') and (not datas[3] == '') and (not datas[4] == '') and (not datas[5] == '') and (not datas[6] == '') and (not datas[7] == '#N/D') and (not datas[8] == '#N/D')):
                 # Choose some specifics subjects
                 if(datas[0] == 'G' and ('MCTA' in datas[1] or 'MCZA' in datas[1])):
                     # Separating the Timetables of Subj. and transforming into lists of lists: [...,[day/hour/frequency],...] - (data 7 and 8)
@@ -91,7 +91,6 @@ def getData(subj, prof):
     csvfile.close()
        
     if(prt == 1): print("Data Obtained!")
-    startOutFolders()
         
 #==============================================================================================================            
     
@@ -219,11 +218,9 @@ def extractInfo(datas):
 def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
     if(prt == 1): print("Exporting data....", end='')
 
-    # get current directory and create, if necessary, new 'generationsCSV' dir
+    # get current directory and go to 'generationsCSV' dir
     currentDir = os.getcwd()
     newDir = currentDir + os.sep + 'generationsCSV' + os.sep
-    if not os.path.exists(newDir): os.makedirs(newDir)
-    
     # In 'generationsCSV' dir, create new 'gen' dir
     newDir = newDir + 'Gen' + str(num) + os.sep
     if not os.path.exists(newDir): os.makedirs(newDir)
@@ -296,7 +293,7 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
         # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
         csvfile.close()
         
-        # If the Algorithm found feasibles solutions
+        # If the Algorithm found some feasibles solutions
         if(len(maxFeaIndex) != 0):
             # If we are on the first best solution found
             if(maxFeaIndex[0] == i):
@@ -310,7 +307,7 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
         # Next Solution Index        
         i = i + 1
             
-    # All Fitness in a Generation
+    # Output all Fitness in a Generation
     outName = newDir + 'gen' +  str(num) + '.csv'
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
