@@ -40,18 +40,24 @@ class Subject:
 # Keep the data of a Candidate
 class Candidate:
     def __init__(self):
+        # Main Data
         self.listRelations = []
         self.fitness = 0.0
         
-        # 3 Variables used if the Candidate is classified as "Infeasible" and, if "Feasible", use only 'prof_relations'
+        # Useful Variables that carries more info about the Candidate
+        # Each List contains, for each prof, lists of Subj Indexs
         self.prof_relations = []
-        self.final_n_n = []
-        self.final_s_s = []
+        self.conflicts_i2 = []
+        self.conflicts_i3 = []
+        self.subjPref = []
+        self.periodPref = []
+        self.quadSabbNotPref = []
+        self.campusPref = []
         
-    def getFitness(self): 
+    def getFitness(self):
         return self.fitness
             
-    def setFitness(self, fit): 
+    def setFitness(self, fit):
         self.fitness = fit
     
     def getFeaVariables(self):
@@ -61,12 +67,12 @@ class Candidate:
         self.prof_relations = prof_relations
     
     def getInfVariables(self):
-        return  self.prof_relations, self.final_n_n, self.final_s_s
+        return  self.prof_relations, self.conflicts_i2, self.conflicts_i3
     
-    def setInfVariables(self, prof_relations, final_n_n, final_s_s):
+    def setInfVariables(self, prof_relations, conflicts_i2, conflicts_i3):
         self.prof_relations = prof_relations
-        self.final_n_n = final_n_n
-        self.final_s_s = final_s_s    
+        self.conflicts_i2 = conflicts_i2
+        self.conflicts_i3 = conflicts_i3    
     
     def getList(self):
         return self.listRelations

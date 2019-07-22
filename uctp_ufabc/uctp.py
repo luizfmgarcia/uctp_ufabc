@@ -1,8 +1,8 @@
 # UCTP Main Methods
 
-from objects import *
-from ioData import *
-from random import *
+import objects
+import ioData
+import random
 
 # Set '1' to allow, during the run, the output of some steps
 prt = 1
@@ -16,7 +16,7 @@ class UCTP:
     # Create the first generation of solutions
     def start(self, solutionsNoPop, subj, prof, init):        
         if(prt == 1): print("Creating first generation...", end='')
-        for i in range(init): solutionsNoPop.addCand(self.newCandRand(subj, prof))
+        for _ in range(init): solutionsNoPop.addCand(self.newCandRand(subj, prof))
         if(prt == 1): print("Created first generation!")    
         #printAllCand(solutions)
         
@@ -24,9 +24,9 @@ class UCTP:
         
     # Create new Candidate Full-Random
     def newCandRand(self, subj, prof):        
-        candidate = Candidate()
+        candidate = objects.Candidate()
         # Follow the subjects in 'subj' list, in order, and for each one, choose a professor randomly 
-        for sub in subj: candidate.addRelation(sub, prof[randrange(len(prof))])
+        for sub in subj: candidate.addRelation(sub, prof[random.randrange(len(prof))])
         return candidate
 
 #==============================================================================================================
@@ -91,28 +91,27 @@ class UCTP:
     def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
         # Getting information about the Candidate
         prof_relations = self.i1(candidate, prof, subj)
-        conflicts_n_n, conflicts_s_s = self.i2_i3(prof_relations, subj)
+        conflicts_i2, conflicts_i3 = self.i2_i3(prof_relations, subj)
         
+        # Setting found variables 
+        candidate.setInfVariables(prof_relations, conflicts_i2, conflicts_i3)
+
         # Checking if occurred violations of restrictions on the Candidate
         # If there are violated restrictions, this Cadidate is Infeasible and then will calculate and return a negative Fitness, 
         # if not, is Feasible, will return 1.0 as Fitness
-        if(prof_relations.count([]) != 0 or len(conflicts_n_n) != 0 or len(conflicts_s_s) != 0):            
+        if(prof_relations.count([]) != 0 or conflicts_i2.count([]) != len(conflicts_i2) or conflicts_i3.count([]) != len(conflicts_i3)):            
             # Calculating main variables
             i1 = float(prof_relations.count([])) / (float(len(prof)) - 1.0)
-            i2 = float(len(conflicts_n_n)) / float(len(subj))
-            i3 = float(len(conflicts_s_s)) / float(len(subj))
+            i2 = float(sum([len(i) for i in conflicts_i2])) / float(len(subj))
+            i3 = float(sum([len(i) for i in conflicts_i3])) / float(len(subj))
             
             # Final Infeasible Function Fitness Calc
-            Fi = (-1.0) * (((w_alpha * i1) + (w_beta * i2) + (w_gamma * i3)) / (w_alpha + w_beta + w_gamma))
-
-            # Setting main variables of a Infeasible Candidate
-            candidate.setInfVariables(prof_relations, conflicts_n_n, conflicts_s_s)
+            Fi = (-1.0) * (((w_alpha * i1) + (w_beta * i2) + (w_gamma * i3)) / (w_alpha + w_beta + w_gamma))            
             
             # Returning the calculated result 
             return Fi
 
-        # If all Relations Prof-Subj in this Candidate passed through the restrictions
-        candidate.setFeaVariables(prof_relations)
+        # If all Relations Prof-Subj in this Candidate passed through the restrictions)
         return 1.0
 
     #-------------------------------------------------------
@@ -121,7 +120,7 @@ class UCTP:
     def i1(self, candidate, prof, subj):
         # List of lists of Subjects that are related to the same Professor, where the position in this list is the same of the same professor in 'prof' list 
         # Empty list in this list means that some Professor (p) does not exists on the Candidate
-        prof_relations = [[] for i in range(len(prof))]
+        prof_relations = [[] for _ in range(len(prof))]
         
         # Filling the list according to the candidate    
         for s, p in candidate.getList():            
@@ -138,10 +137,13 @@ class UCTP:
     def i2_i3(self, prof_relations, subj):
         # List of the subjects that have a conflict between them - always the two conflicts are added, that is, 
         # there can be repetitions of subjects
-        conflicts_n_n, conflicts_s_s = [], []
+        conflicts_i2, conflicts_i3 = [[] for _ in range(len(prof_relations))], [[] for _ in range(len(prof_relations))]
         
         # Searching, in each professor (one at a time), conflicts of schedules between subjects related to it
         for list_subj in prof_relations:
+            # Actual Prof in analisys
+            profIndex = prof_relations.index(list_subj)
+
             # Check if the professor has more than 1 relation Prof-Subj to analyze
             if(len(list_subj) > 1):
                 # Getting the data of all Subjects related to actual Professor in analysis
@@ -173,7 +175,7 @@ class UCTP:
                         # Alredy check if both Subj (i, k) is on same Quadri
                         if(quadri_List[i] == quadri_List[k]):
                             # Variables that flags if a conflict was already detected (do not count 2 or more times same 2 subjects in conflict)
-                            verified_n_n, verified_s_s = False, False
+                            verified_i2, verified_i3 = False, False
                             
                             # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
                             inext_day, inext_hour, inext_frequency = [], [], []
@@ -189,33 +191,33 @@ class UCTP:
                                     if(a == b):
                                         # There is, at least, two subjects teach in the same day and quadri, but in different campus
                                         if(campus_List[i] != campus_List[k]):
-                                            if(verified_s_s == False):
-                                                conflicts_s_s.append(list_subj[i])
-                                                conflicts_s_s.append(list_subj[k])
-                                                verified_s_s = True
+                                            if(verified_i3 == False):
+                                                conflicts_i3[profIndex].append(list_subj[i])
+                                                conflicts_i3[profIndex].append(list_subj[k])
+                                                verified_i3 = True
 
                                         # There is, at least, two subjects teach in the same day, hour and quadri
                                         # First check if they have the same Period
                                         if(period_List[i] == period_List[k] and i_hour[i_day.index(a)] == inext_hour[inext_day.index(b)]):
                                             # if one 'frequency' is "QUINZENAL I" and the other is "QUINZENAL II" then DO NOT count
                                             if('SEMANAL' in i_frequency[i_day.index(a)] or 'SEMANAL' in inext_frequency[inext_day.index(b)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
+                                                if(verified_i2 == False):
+                                                    conflicts_i2[profIndex].append(list_subj[i])
+                                                    conflicts_i2[profIndex].append(list_subj[k])
                                                     #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
-                                                    verified_n_n = True
+                                                    verified_i2 = True
                                             elif('QUINZENAL I' in i_frequency[i_day.index(a)] and 'QUINZENAL I' in inext_frequency[inext_day.index(b)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
+                                                if(verified_i2 == False):
+                                                    conflicts_i2[profIndex].append(list_subj[i])
+                                                    conflicts_i2[profIndex].append(list_subj[k])
                                                     #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
-                                                    verified_n_n = True
-                                            elif('QUINZENAL II' in i_frequency[i_day.index(a)] and'QUINZENAL II' in inext_frequency[inext_day.index(b)]):
-                                                if(verified_n_n == False):
-                                                    conflicts_n_n.append(list_subj[i])
-                                                    conflicts_n_n.append(list_subj[k])
+                                                    verified_i2 = True
+                                            elif('QUINZENAL II' in i_frequency[i_day.index(a)] and 'QUINZENAL II' in inext_frequency[inext_day.index(b)]):
+                                                if(verified_i2 == False):
+                                                    conflicts_i2[profIndex].append(list_subj[i])
+                                                    conflicts_i2[profIndex].append(list_subj[k])
                                                     #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
-                                                    verified_n_n = True
+                                                    verified_i2 = True
                         
                         # Going to the next Subject (k+1) to compare with the same, actual, main, Subject (i)
                         k = k + 1    
@@ -223,14 +225,16 @@ class UCTP:
                     # Going to the next Subject (i+1) related to the same Professor   
                     i = i + 1
         
-        # Removing from 'conflicts_s_s' and 'conflicts_n_n' duplicates
-        final_n_n, final_s_s = [], []
-        for n in conflicts_n_n:
-            if(final_n_n.count(n) == 0): final_n_n.append(n) 
-        for s in conflicts_s_s:
-            if(final_s_s.count(s) == 0): final_s_s.append(s)
+        # Removing from 'conflicts_i2' and 'conflicts_i3' duplicates
+        final_i2, final_i3 = [[] for _ in range(len(prof_relations))], [[] for _ in range(len(prof_relations))]
+        
+        for i in range(len(prof_relations)):
+            for j in conflicts_i2[i]:
+                if(final_i2[i].count(j) == 0): final_i2[i].append(j) 
+            for j in conflicts_i3[i]:
+                if(final_i3.count(j) == 0): final_i3[i].append(j)
 
-        return final_n_n, final_s_s
+        return final_i2, final_i3
         
 #==============================================================================================================            
     
@@ -248,7 +252,7 @@ class UCTP:
         calcF5 = self.f5(subj, prof, prof_relations)
 
         # Calculating main variables
-        f1 = 1.0 - float(calcF1) / float(len(prof))
+        f1 = 1.0 - (float(calcF1) / float(len(prof)))
         f2 = float(calcF2) / float(len(prof))
         f3 = float(calcF3) / float(len(subj)) 
         f4 = float(calcF4) / float(len(subj)) 
@@ -296,7 +300,7 @@ class UCTP:
             # Setting Index of actual Prof
             actual_index = charges_EachProf.index(pCharge)
             # Finding relative charge based on the credit difference module between the credits requested by the Prof and the sum off all Subj related to it
-            res = abs(float(pCharge) - float(charges_AllRelations[actual_index]))/float(pCharge)
+            res = abs(float(pCharge) - float(charges_AllRelations[actual_index])) / float(pCharge)
             if(res>1.0): charges_relative[actual_index] = 1.0
             else: charges_relative[actual_index] = res    
         
@@ -495,28 +499,28 @@ class UCTP:
     def mutationI(self, candidate, prof, subj):
         # Getting data to work with
         relations = candidate.getList()
-        prof_relations, final_n_n, final_s_s = candidate.getInfVariables()
+        prof_relations, conflicts_i2, conflicts_i3 = candidate.getInfVariables()
         
         # This While ensures that 'errorType' will choose Randomly one 'restriction repair'
         flag_repair_done = False   
         while(flag_repair_done == False):
             # Choosing one type of restriction repair
-            errorType = randrange(1,4)
+            errorType = random.randrange(1,4)
             
             # (0) No repair -> Random Change
             if(errorType == 0):
                 # Do not granting that the 'errorType' do not change good relations without restrictions to repair
                 # Choosing the relation to be modified
-                relation_will_change_index = randrange(len(subj))
+                relation_will_change_index = random.randrange(len(subj))
                 
                 # Choosing new Prof to be in the relation with the Subj selected
                 subj, oldProf = relations[relation_will_change_index]
-                change = randrange(len(prof))
+                change = random.randrange(len(prof))
                 newProf = prof[change]
 
                 # Granting that the new Prof is different of the old one
                 while(oldProf == newProf):
-                    change = randrange(len(prof))
+                    change = random.randrange(len(prof))
                     newProf = prof[change]
                     
                 # Setting the flag to finish the while
@@ -539,55 +543,61 @@ class UCTP:
                     
                     # Selecting a subject related with the Selected Prof to lose this Relation
                     relations_choosed = prof_relations[selectedProf_Index[0]]
-                    index_relation_choosed = randrange(len(relations_choosed))
+                    index_relation_choosed = random.randrange(len(relations_choosed))
                     relation_will_change_index = relations_choosed[index_relation_choosed]
                     
                     # Choosing one Prof to be included in one relation
                     subj, oldProf = relations[relation_will_change_index]        
-                    change_index = randrange(len(prof_Zero_Relations))
+                    change_index = random.randrange(len(prof_Zero_Relations))
                     change = prof_Zero_Relations[change_index]
                     newProf = prof[change]
 
                     # Setting the flag to finish the while
                     flag_repair_done = True       
             
-            # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'final_n_n'
+            # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'conflicts_i2'
             if(errorType == 2):
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
-                if(len(final_n_n) != 0):
+                if(conflicts_i2.count([]) != len(conflicts_i2)):
                     # Choosing the relation to be modified
-                    will_change_index = randrange(len(final_n_n))
-                    relation_will_change_index = final_n_n[will_change_index]
+                    will_change_index = random.randrange(len(conflicts_i2))
+                    while(len(conflicts_i2[will_change_index]) == 0):
+                        will_change_index = random.randrange(len(conflicts_i2))
+                    will_change_index2 = random.randrange(len(conflicts_i2[will_change_index]))
+                    relation_will_change_index = conflicts_i2[will_change_index][will_change_index2]
 
                     # Choosing new Prof to be in the relation with the Subj selected
                     subj, oldProf = relations[relation_will_change_index]
-                    change = randrange(len(prof))
+                    change = random.randrange(len(prof))
                     newProf = prof[change]
 
                     # Granting that the new Prof is different of the old one
                     while(oldProf == newProf):
-                        change = randrange(len(prof))
+                        change = random.randrange(len(prof))
                         newProf = prof[change]
 
                     # Setting the flag to finish the while
                     flag_repair_done = True    
 
-            # (3) 2 or more Subjects (related to the same Prof) with same 'day' but different 'campus' in 'final_s_s'    
+            # (3) 2 or more Subjects (related to the same Prof) with same 'day' but different 'campus' in 'conflicts_i3'    
             if(errorType == 3):
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
-                if(len(final_s_s) != 0):
-                    # Choosing the relation to be modified
-                    will_change_index = randrange(len(final_s_s))
-                    relation_will_change_index = final_s_s[will_change_index]
+                if(conflicts_i3.count([]) != len(conflicts_i3)):
+                     # Choosing the relation to be modified
+                    will_change_index = random.randrange(len(conflicts_i3))
+                    while(len(conflicts_i3[will_change_index]) == 0):
+                        will_change_index = random.randrange(len(conflicts_i3))
+                    will_change_index2 = random.randrange(len(conflicts_i3[will_change_index]))
+                    relation_will_change_index = conflicts_i3[will_change_index][will_change_index2]
 
                     # Choosing new Prof to be in the relation with the Subj selected
                     subj, oldProf = relations[relation_will_change_index]
-                    change = randrange(len(prof))
+                    change = random.randrange(len(prof))
                     newProf = prof[change]
 
                     # Granting that the new Prof is different of the old one
                     while(oldProf == newProf):
-                        change = randrange(len(prof))
+                        change = random.randrange(len(prof))
                         newProf = prof[change]
 
                     # Setting the flag to finish the while
@@ -595,7 +605,7 @@ class UCTP:
 
         # Setting the new relation, creating new Candidate and returning it
         relations[relation_will_change_index]=[subj,newProf]
-        newCand = Candidate()
+        newCand = objects.Candidate()
         newCand.setList(relations)
 
         return newCand
@@ -639,13 +649,13 @@ class UCTP:
                     
                     # If there are more then 2, choosing the parents Randomly  
                     else:
-                        parent1, parent2 = randrange(len(parentsSolFeas)), randrange(len(parentsSolFeas))
+                        parent1, parent2 = random.randrange(len(parentsSolFeas)), random.randrange(len(parentsSolFeas))
                         # Granting the second parent is not the same of first one
                         while(parent1 == parent2):
-                            parent2 = randrange(len(parentsSolFeas))
+                            parent2 = random.randrange(len(parentsSolFeas))
                     
                     # Making the Crossover with the selected parents
-                    newCand1, newCand2 = self.crossover(parentsSolFeas[parent1], parentsSolFeas[parent2], True, _, True)
+                    newCand1, newCand2 = self.crossover(parentsSolFeas[parent1], parentsSolFeas[parent2])
                    
                     # Removing used parents to make a new selection of Parents
                     parent2 = parentsSolFeas[parent2]
@@ -659,7 +669,7 @@ class UCTP:
                 # Make Mutations with 'pctMut' (mutation prob.) with all the children generated by Crossover right before
                 for cand in childSolFeas:
                     # Generating a random value to validate the execution of a Mutation
-                    r = float(randrange(100) / 100.0)
+                    r = float(random.randrange(100) / 100.0)
                     if(r <= (pctMut / 100.0)):
                         # Making a rand mutation in the child
                         newCand = self.mutationRand(cand, prof)
@@ -718,7 +728,8 @@ class UCTP:
                 listFit = [cand.getFitness() for cand in feasibles_List]
                 
                 # Elitism Selection
-                maxFeasibles_List, restObj, restFit = self.elitismSelection(feasibles_List, listFit, numCand)
+                maxFeasibles_List, _, _ = self.elitismSelection(feasibles_List, listFit, numCand)
+
                 solutionsF.setList(maxFeasibles_List)
             
             if(prt == 1): print("Feas. Selection/", end='')
@@ -731,22 +742,22 @@ class UCTP:
         relations = candidate.getList().copy()
         
         # Choosing randomly a relation to be modified
-        original = randrange(len(relations))
+        original = random.randrange(len(relations))
         # Recording the Original Relation
         subj, oldProf = relations[original]
         
         # Finding randomly a new Prof
-        change = randrange(len(prof))
+        change = random.randrange(len(prof))
         newProf = prof[change]
         
         # Granting that the 'newProf' is different from the 'oldProf'
         while(oldProf == newProf):
-            change = randrange(len(prof))
+            change = random.randrange(len(prof))
             newProf = prof[change]
         
         # Setting the new Relation modified, creating and setting a new Candidate
         relations[original]=[subj,newProf]
-        newCand = Candidate()
+        newCand = objects.Candidate()
         newCand.setList(relations)
         
         # Returning the new Candidate generated
@@ -755,19 +766,16 @@ class UCTP:
 #==============================================================================================================            
     
     # Make a crossover between two solutions    
-    def crossover(self, cand1, cand2, twoPoints=None, firstHalf=None, symmetric=None):
+    def crossover(self, cand1, cand2, twoPoints=None, firstHalf=None):
         # The number of changes between parents will always be equal (same crossover segment size), never same size of Num of Parents Relations
         # twoPoints = False -> its chosen only one point, will have changes from the point till the rest of the relations
         # firstHalf = True -> changes from the beginning till the one point choosed
-        # symmetric = False -> the chosen segment of the second Parent will be in a different place of the first parent
-
+        
         # What is equal 'None' will be a random choice
         if(twoPoints == None):
-            twoPoints = choice([True, False])
+            twoPoints = random.choice([True, False])
         if(firstHalf == None):
-            twoPoints = choice([True, False])
-        if(symmetric == None):
-            twoPoints = choice([True, False])
+            twoPoints = random.choice([True, False])
         
         # Getting all relations from Candidates to work with
         relations1, relations2 = cand1.getList(), cand2.getList()
@@ -775,59 +783,45 @@ class UCTP:
         # OnePoint type:
         if(twoPoints == False):
             if(firstHalf == True):
-                point11 = 0 # Default point in 'firstHalf' mode
-                point12 = randrange(len(relations1)) # Randomly choosing one point
+                point1 = 0 # Default point in 'firstHalf' mode
+                point2 = random.randrange(len(relations1)) # Randomly choosing one point
                 # Granting that not occur only a copy of parents - the chosen point is not the last relation
-                while(point12 == len(relations1)-1): point12 = randrange(len(relations1))
+                while(point2 == len(relations1)-1): point2 = random.randrange(len(relations1))
             else:
-                point12 = len(relations1)-1 # Default point in 'secondHalf' mode
-                point11 = randrange(len(relations1)) # Randomly choosing one point
+                point2 = len(relations1)-1 # Default point in 'secondHalf' mode
+                point1 = random.randrange(len(relations1)) # Randomly choosing one point
                 # Granting that not occur only a copy of parents - the chosen point is not the last relation
-                while(point11 == 0): point11 = randrange(len(relations1))   
+                while(point1 == 0): point1 = random.randrange(len(relations1))   
         
         # TwoPoints Type
         else:
             # Granting that the crossover do not only copy all relations of one Cand to the another
-            point11, point12 = 0, len(relations1) - 1
-            while(point12 - point11 == len(relations1) - 1):
+            point1, point2 = 0, len(relations1) - 1
+            while(point2 - point1 == len(relations1) - 1):
                 # Generating, randomly two numbers to create a patch - can be a single modification (when p1==p2)
-                point11, point12 = randrange(len(relations1)), randrange(len(relations1))
+                point1, point2 = random.randrange(len(relations1)), random.randrange(len(relations1))
                 
-                # Granting that 'point12' is bigger than 'point11'
-                if(point12 < point11):
-                    p = point11
-                    point11 = point12
-                    point12 = p
+                # Granting that 'point2' is bigger than 'point1'
+                if(point2 < point1):
+                    p = point1
+                    point1 = point2
+                    point2 = p
         
-        # If Symmetric Type   
-        if(symmetric == False): point21 = point11
-        
-        # If Asymmetric Type
-        else:
-            # Now generating a segment with same size for second Parent 
-            point21 = randrange(len(relations1))
-            dif1_2 = point12 - point11 + 1
-            # Granting that segment do not exceed cand size/limits
-            while((len(relations1) - 1) - (point21 + dif1_2) < 0): point21 = point21 - 1
-            # Granting that points are not equal
-            if(point21 == point11 and point11 != 0): point21 = point21 - 1
-
         # Passing through the relations between Parents making all changes    
-        while (point11 <= point12):
+        while (point1 <= point2):
             # Recording the original relations
-            s1, p1 = relations1[point11]
-            s2, p2 = relations2[point21]
+            s1, p1 = relations1[point1]
+            s2, p2 = relations2[point1]
             
             # Making the exchange of relations (changing only professors)
-            relations1[point11] = s1, p2 
-            relations2[point21] = s2, p1
+            relations1[point1] = s1, p2 
+            relations2[point1] = s2, p1
             
             # Next relation
-            point11 = point11 + 1
-            point21 = point21 + 1
+            point1 = point1 + 1
                
         # Creating and setting the two new Candidates
-        newCand1, newCand2 = Candidate(), Candidate()
+        newCand1, newCand2 = objects.Candidate(), objects.Candidate()
         newCand1.setList(relations1)
         newCand2.setList(relations2)
         
@@ -891,7 +885,7 @@ class UCTP:
             # MAIN Roulette Wheel Selection process (one round)    
             probPrev = 0.0
             index = 0
-            r = float(randrange(100) / 100.0)
+            r = float(random.randrange(100) / 100.0)
             for q in cumulativeProbObj:
                 if(probPrev < r and r <= q):
                     # Adding the selected Object to 'selectedObj'

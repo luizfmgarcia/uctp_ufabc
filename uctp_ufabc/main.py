@@ -1,18 +1,19 @@
 # Main Class - Algorithm
 
-from objects import *
-from uctp import *
-from ioData import *
+import objects
+import uctp
+import ioData
 
 """
 -Verificar se há variaveis/List importantes sendo modificadas quando n deveriam
 -Erros nos comments
 -Nomes de variavel ruins
+-uso de _
+-remover espa;os em branco
 
 -PErmitir maior variacao de individuos feasible?
     -Reformular SelectionF para ter uma parte elitista e outra com roleta?
--Problema no Crossover: não gerar 2 filhos iguais aos pais que na maioria das vezes sao iguais? Inserindo Assimetria
-
+-Reformular f2 para apenas contagem de meterias de preferencia(sem levar em conta posicao no vetor)
 -havendo acumulo de disciplinas em poucos prof
 -muitas materias n sao de pref
     -Criar X funcoes novas totalmente aleatorias toda rodada?
@@ -33,9 +34,9 @@ class main:
     prt = 1
 
     # Max Number of iterations to get a solution
-    iterations = 5000
+    iterations = 3000
     # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 30
+    numCand = 100
 
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     pctRouletteCross = 45 # Must be between '0' and '100'
@@ -46,7 +47,7 @@ class main:
     w_alpha = 2.0   # Prof without Subj
     w_beta = 3.0   # Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 1.0   # Subjs (same Prof), same quadri and day but in different campus
-    w_delta = 20.0   # Balance of distribution of Subjs between Profs
+    w_delta = 2.0   # Balance of distribution of Subjs between Profs
     w_omega = 30.0   # Profs preference Subjects
     w_sigma = 1.0   # Profs with Subjs in quadriSabbath
     w_pi = 1.0      # Profs with Subjs in Period
@@ -57,13 +58,13 @@ class main:
     # CREATION OF MAIN VARIABLES
     
     # to access UCTP Main methods and creating Solutions (List of Candidates)
-    uctp = UCTP()
+    uctp = uctp.UCTP()
     # Main candidates of a generation
-    solutionsI, solutionsF = Solutions(), Solutions()
+    solutionsI, solutionsF = objects.Solutions(), objects.Solutions()
     # Candidates without classification 
-    solutionsNoPop = Solutions()
+    solutionsNoPop = objects.Solutions()
     # Candidates generated in a iteration (will be selected to be, or not, in the main List of Candidates)
-    infPool, feaPool = Solutions(), Solutions()
+    infPool, feaPool = objects.Solutions(), objects.Solutions()
     # Base Lists of Professors and Subjects - never modified through the run
     prof, subj = [], []
 
@@ -71,8 +72,8 @@ class main:
     # START OF THE WORK
     
     # Getting data to work with
-    getData(subj, prof)
-    startOutFolders()
+    ioData.getData(subj, prof)
+    ioData.startOutFolders()
 
     # Creating the first 'numCand' candidates (First Generation)
     uctp.start(solutionsNoPop, subj, prof, numCand)
@@ -83,7 +84,7 @@ class main:
 
     # Print and export generated data
     if(prt == 1): print('Iteration: 0')
-    maxFeaIndex = outDataMMA(solutionsI, solutionsF, 0)
+    maxFeaIndex = ioData.outDataMMA(solutionsI, solutionsF, 0)
 
     #----------------------------------------------------------------------------------------------------------
     # MAIN WORK - iterations of GA-Algorithm to find a solution
@@ -113,7 +114,7 @@ class main:
         uctp.selectionF(feaPool, solutionsF, numCand)
         
         # Print and export generated data
-        maxFeaIndex = outDataMMA(solutionsI, solutionsF, t)
+        maxFeaIndex = ioData.outDataMMA(solutionsI, solutionsF, t)
         
         # Register of the 'Iteration' that appeared the first Feas Sol
         if(firstFeasSol == -1 and len(solutionsF.getList()) != 0): firstFeasSol = t
@@ -128,7 +129,7 @@ class main:
 
     # Export last generation of candidates and Config-Run Info
     config = [iterations, numCand, pctRouletteCross, pctMut, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho] 
-    outData(solutionsI, solutionsF, t, maxFeaIndex, config)      
+    ioData.finalOutData(solutionsI, solutionsF, t, maxFeaIndex, config)      
     if(prt == 1): print("End of works") 
           
 #==============================================================================================================

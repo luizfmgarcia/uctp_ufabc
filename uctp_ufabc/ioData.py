@@ -1,6 +1,6 @@
 # Import/Export Data Methods
 
-from objects import *
+import objects
 import csv
 import os
 import sys
@@ -29,7 +29,7 @@ def getData(subj, prof):
                 datas[7] = datas[7].split('/')
                 datas[8] = datas[8].split('/')
                 # Creating and saving a new Prof.
-                prof.append(Prof(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7], datas[8]))
+                prof.append(objects.Prof(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7], datas[8]))
                 if(prt == 1): print(datas)
             else:
                 if(prt == 1):
@@ -83,7 +83,7 @@ def getData(subj, prof):
                     # Removing datas[8] that is not useful
                     datas.pop(8)
                     # Creating and saving the new Subj.
-                    subj.append(Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
+                    subj.append(objects.Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
                     if(prt == 1): print(datas)
             else:
                 if(prt == 1): print("This subject register has some missing data! It will not be used.")
@@ -138,7 +138,7 @@ def outDataMMA(solutionsI, solutionsF, iter):
         if(cand.getFitness() < minFea):
             minFea = cand.getFitness()
     if(len(solutionsF.getList()) != 0): avgFea = avgFea / len(solutionsF.getList())
-    
+
     # get current directory, 'generationsCSV' dir., and CSV file to be modified with current generation Min/Max Fitness
     currentDir = os.getcwd()
     newDir = currentDir + os.sep + 'generationsCSV' + os.sep
@@ -160,7 +160,7 @@ def outDataMMA(solutionsI, solutionsF, iter):
         
 #==============================================================================================================                
 
-# Extract information - auxiliar function to "outData" function
+# Extract information - auxiliar function to "finalOutData" function
 def extractInfo(datas):
     # Collecting Profs names in 'prof' and putting Subj index related to same Prof in same index of 'indexs' list
     prof, indexs = [], []
@@ -177,20 +177,20 @@ def extractInfo(datas):
     info = [[] for i in range(len(prof))]
     
     # Extracting the number of each occurence
-    # info = [profName, numSubjs, numSubjNotPrefered, numPeriodNotPrefered, numQuadriSabbathPrefered, numCampusNotPrefered, SubtractProfCharge(SumSubjCharges)]
+    # info = [profName, numSubjs, numSubjNotPrefered, numPeriodNotPref, numQuadriSabbathPref, numCampusNotPref, SubtractProfCharge(SumSubjCharges)]
     for i in range(len(prof)):
         info[i] = info[i] + [prof[i], len(indexs[i]), 0, 0, 0, 0, 0]
         k = 0
         for j in indexs[i]:
             _, _, sName, sQuadri, sPeriod, sCampus, sCharge, _, pName, pPeriod, pCharge, pQuadriSabbath, pPrefCampus, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = datas[j]    
             if('1' in sQuadri):
-                if(pPrefSubjQ1List.count(sName) == 0 and pPrefSubjLimList.count(sName) == 0):
+                if(sName not in pPrefSubjQ1List and sName not in pPrefSubjLimList):
                     info[i][2] = info[i][2] + 1
             elif('2' in sQuadri):
-                if(pPrefSubjQ2List.count(sName) == 0 and pPrefSubjLimList.count(sName) == 0):
+                if(sName not in pPrefSubjQ2List and sName not in pPrefSubjLimList):
                     info[i][2] = info[i][2] + 1
             elif('3' in sQuadri):
-                if(pPrefSubjQ3List.count(sName) == 0 and pPrefSubjLimList.count(sName) == 0):
+                if(sName not in pPrefSubjQ3List and sName not in pPrefSubjLimList):
                     info[i][2] = info[i][2] + 1                
             if('NEGOCI' not in pPeriod and sPeriod != pPeriod):
                 info[i][3] = info[i][3] + 1
@@ -215,7 +215,7 @@ def extractInfo(datas):
 
 # Export all Candidates in a generation into CSV files
 # Create a CSV File for each Candidate and one CSV for all Fitness of the Candidates: 
-def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
+def finalOutData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
     if(prt == 1): print("Exporting data....", end='')
 
     # get current directory and go to 'generationsCSV' dir
@@ -302,7 +302,7 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
                 # Resuming the result to showi only 'sName' and 'pName' of each relation
                 resumeMaxData = [[row[2], row[8]] for row in maxData]
                 # Getting Fitness of the first best solution found
-                fitMaxData = solutionsF.getList()[maxFeaIndex[0]].getFitness()
+                fitMaxData = solutionsF.getList()[i].getFitness()
         
         # Next Solution Index        
         i = i + 1
@@ -345,7 +345,7 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
             spamwriter.writerow(['index', titles1[2], titles1[8]])
             i = 1
             for row in resumeMaxData:       
-                spamwriter.writerow([i]+row)
+                spamwriter.writerow([i] + row)
                 i = i + 1 
             
             # Extracted Info of one of the best Solutions found
@@ -353,7 +353,7 @@ def outData(solutionsI, solutionsF, num, maxFeaIndex=[], config=[]):
             spamwriter.writerow(titles2)
             i = 1
             for row in maxInfo:       
-                spamwriter.writerow([i]+row)
+                spamwriter.writerow([i] + row)
                 i = i + 1
         else: spamwriter.writerow("Do not found feasible solutions.")                   
     # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
