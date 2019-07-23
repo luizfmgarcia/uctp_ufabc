@@ -5,7 +5,7 @@ import ioData
 import random
 
 # Set '1' to allow, during the run, the print on terminal of some steps
-prt = 1
+prt = 0
 
 #==============================================================================================================
 
@@ -28,6 +28,43 @@ class UCTP:
         # Follow the subjects in 'subj' list, in order, and for each one, choose a professor randomly
         for sub in subj: candidate.addRelation(sub, prof[random.randrange(len(prof))])
         return candidate
+
+#==============================================================================================================
+
+    # Extracts info about what Subj appears in which Prof (PrefList)
+    def extractSubjIsPref(self, subj, prof):
+        # Lists for each Prof, where it is '1' if Subj in respective index is on Prof List of Pref
+        subjIsPref = [[0 for _ in range(len(subj))] for _ in range(len(prof))]
+
+        # Counting the occurrences, filling the vectors
+        for pIndex in range(len(prof)):
+            # Getting data of current Prof
+            _, _, _, _, _, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
+            prefSubjLists = [pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList]
+            
+            # All Relations of one Prof
+            for sIndex in range(len(subj)):
+                # Getting data of current Subj
+                _, _, sName, sQuadri, _, _, _, _ = subj[sIndex].get()
+                
+                # For each quadri
+                for i in range(3):
+                    # Finding the Subject 'sName' in "pPrefSubjQXList+pPrefSubjLimList" list
+                    sumList = prefSubjLists[i] + prefSubjLists[3]
+                    # Checking if the List is not empty
+                    if(len(sumList) > 0):
+                        try: index_value = sumList.index(sName)
+                        except ValueError: index_value = -1
+                        # If the Subj name appears in the list
+                        if(index_value != -1):
+                            # Looking for only in the list of respective quadri of current Subject in analisys
+                            if(str(i+1) in sQuadri):
+                                # Informing that the Subj appears on respective Prof-QuadriPrefList
+                                subjIsPref[pIndex][sIndex] = 2
+                            # Informing that the Subj appears on other Prof-QuadriPrefList that is not same Quadri
+                            else: subjIsPref[pIndex][sIndex] = 1
+        
+        return subjIsPref
 
 #==============================================================================================================
     
@@ -254,9 +291,18 @@ class UCTP:
         # Setting found variables
         candidate.setFeaVariables(prof_relations, subjPref, periodPref, quadSabbNotPref, campusPref, difCharge)
         
+        #TEste!!!!!!!
+        #sum_f2 = sum([sum([s for s in subjPref[i]]) / len(subjPref[i]) for i in range(len(subjPref))])
+        final_f2 = sum([subjPref[i]/len(prof_relations[i]) for i in range(len(subjPref))])
+        sum_f1 = sum([len(rel) for rel in prof_relations])
+        final_f1 = sum_f1 / float(len(subj))
+
         # Calculating main variables
         f1 = 1.0 - (float(sum_chargesRelative) / float(len(prof)))
         f2 = float(sum_Satisfaction) / float(len(prof))
+        f2 = f2 + (float(final_f2) / float(len(prof)))
+        f2 = f2/2.0
+        f1 = (f1 + final_f1) / 2.0
         f3 = float(sum_quadSabbNotPref) / float(len(subj))
         f4 = float(sum_periodPref) / float(len(subj))
         f5 = float(sum_campusPref) / float(len(subj))
@@ -350,7 +396,7 @@ class UCTP:
                 # For each quadri
                 for i in range(3):
                     # Looking for only in the list of respective quadri of current Subject in analisys
-                    if(str(i) in sQuadri):
+                    if(str(i+1) in sQuadri):
                         # Finding the Subject 'sName' in "pPrefSubjQXList+pPrefSubjLimList" list
                         sumList = prefSubjLists[i] + prefSubjLists[3]
                         # Checking if the List is not empty
@@ -363,7 +409,7 @@ class UCTP:
                                 qX_relations[i][pIndex][index_value] = 1
                                 # Adding the Subj that is on Prof Pref List
                                 subjPref[pIndex] = subjPref[pIndex] + 1
-        
+            
         # Calculating intermediate variables
         # Lists of the calculation of "satisfaction" based on the order of Subjects choose by a Professor (index = 0 has more weight)
         finalQX = [[0.0 for _ in range(len(prof))] for _ in range(3)]
@@ -510,8 +556,8 @@ class UCTP:
         flag_repair_done = False
         while(flag_repair_done == False):
             # Choosing one type of restriction to repair
-            errorType = random.randrange(1,4)
-            
+            errorType = random.randrange(0,4)
+            #errorType = 0
             # (0) No repair -> Random Change
             if(errorType == 0):
                 # Do NOT granting that the 'errorType' do not change good relations without restrictions to repair
@@ -531,7 +577,7 @@ class UCTP:
                         if(p == []): prof_Zero_Relations.append(prof_relations.index(p))
                         else: prof_With_Relations.append(prof_relations.index(p))
                     
-                    # Roulette Wheel
+                    # Roulette Wheel - more relations -> more weight 
                     numRelationsList = [float(len(prof_relations[p])) for p in prof_With_Relations]
                     selectedProf_Index, _, _ = self.rouletteWheel(prof_With_Relations, numRelationsList, objectiveNum=1, repos=True, negative=False)
                     
@@ -559,12 +605,12 @@ class UCTP:
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
                 if(conflicts_i2.count([]) != len(conflicts_i2)):
                     # Choosing the relation to be modified
-                    will_change_index = random.randrange(len(conflicts_i2))
-                    while(len(conflicts_i2[will_change_index]) == 0):
-                        will_change_index = random.randrange(len(conflicts_i2))
-                    will_change_index2 = random.randrange(len(conflicts_i2[will_change_index]))
-                    relation_will_change_index = conflicts_i2[will_change_index][will_change_index2]
-
+                    # Roulette Wheel - more relations -> more weight
+                    numRelationsList = [float(len(prof_relations[i])) if len(conflicts_i2[i]) != 0 else 0 for i in range(len(prof_relations))]
+                    selected_i2, _, _ = self.rouletteWheel(conflicts_i2, numRelationsList, objectiveNum=1, repos=True, negative=False)
+                    will_change_index = random.randrange(len(selected_i2[0]))
+                    relation_will_change_index = selected_i2[0][will_change_index]
+                    
                     # Choosing new Prof to be in the relation with the Subj selected
                     subj, oldProf = relations[relation_will_change_index]
                     change = random.randrange(len(prof))
@@ -583,16 +629,16 @@ class UCTP:
                     # Setting the flag to finish the while
                     flag_repair_done = True
 
-            # (3) 2 or more Subjects (related to the same Prof) with same 'day' but different 'campus' in 'conflicts_i3'
+            # (3) 2 or more Subjects (related to the same Prof) with same 'day' and 'quadri' but different 'campus' in 'conflicts_i3'
             if(errorType == 3):
                 # Granting that the 'errorType' do not change good relations without restrictions to repair
                 if(conflicts_i3.count([]) != len(conflicts_i3)):
-                     # Choosing the relation to be modified
-                    will_change_index = random.randrange(len(conflicts_i3))
-                    while(len(conflicts_i3[will_change_index]) == 0):
-                        will_change_index = random.randrange(len(conflicts_i3))
-                    will_change_index2 = random.randrange(len(conflicts_i3[will_change_index]))
-                    relation_will_change_index = conflicts_i3[will_change_index][will_change_index2]
+                    # Choosing the relation to be modified
+                    # Roulette Wheel - more relations -> more weight
+                    numRelationsList = [float(len(prof_relations[i])) if len(conflicts_i2[i]) != 0 else 0 for i in range(len(prof_relations))]
+                    selected_i3, _, _ = self.rouletteWheel(conflicts_i2, numRelationsList, objectiveNum=1, repos=True, negative=False)
+                    will_change_index = random.randrange(len(selected_i3[0]))
+                    relation_will_change_index = selected_i3[0][will_change_index]
 
                     # Choosing new Prof to be in the relation with the Subj selected
                     subj, oldProf = relations[relation_will_change_index]
@@ -684,7 +730,7 @@ class UCTP:
                         solutionsNoPop.addCand(cand)
 
             if(prt == 1): print("Feas. Offspring/", end='')
-            
+
 #==============================================================================================================
 
     # Make a selection of the solutions from all Infeasible Pop.('infPool' and 'solutionsI')
@@ -714,7 +760,7 @@ class UCTP:
 #==============================================================================================================
 
     # Make a Selection of the best solutions from Feasible Pop.
-    def selectionF(self, feaPool, solutionsF, numCand):
+    def selectionF(self, feaPool, solutionsF, numCand, pctElitism=100):
         # Check if the Feasible pop. is empty
         if(len(solutionsF.getList()) != 0 or len(feaPool.getList()) != 0):
             # New list with both lists (feaPool and solutions)
@@ -731,9 +777,12 @@ class UCTP:
                 # Gathering all Fitness
                 listFit = [cand.getFitness() for cand in feasibles_List]
                 
-                # Elitism Selection
-                maxFeasibles_List, rest_objectsList, rest_valuesList = self.elitismSelection(feasibles_List, listFit, 3)
-                selectedObj, _, _ = self.rouletteWheel(rest_objectsList, rest_valuesList, numCand-3, repos=False)
+                # Elitism and Roulette Selection
+                elitismNum = int(numCand * pctElitism / 100.0)
+                if(elitismNum == 0): elitismNum = 1
+                roulNum = numCand-elitismNum
+                maxFeasibles_List, rest_objectsList, rest_valuesList = self.elitismSelection(feasibles_List, listFit, elitismNum)
+                selectedObj, _, _ = self.rouletteWheel(rest_objectsList, rest_valuesList, roulNum, repos=False)
                 solutionsF.setList(maxFeasibles_List + selectedObj)
             
             if(prt == 1): print("Feas. Selection/", end='')

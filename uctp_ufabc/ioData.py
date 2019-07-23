@@ -125,13 +125,12 @@ def extractInfo(cand, prof, subj):
     prof_relations, conflicts_i2, conflicts_i3 = cand.getInfVariables()
     prof_relations, subjPref, periodPref, quadSabbNotPref, campusPref, difCharge = cand.getFeaVariables()
     
-    # If does not have FeaVariables - the Cand is Infeasible
-    if(len(subjPref) == 0):
-        _, difCharge = uctp.UCTP().f1(subj, prof, prof_relations)
-        _, subjPref = uctp.UCTP().f2(subj, prof, prof_relations)
-        _, quadSabbNotPref = uctp.UCTP().f3(subj, prof, prof_relations)
-        _, periodPref = uctp.UCTP().f4(subj, prof, prof_relations)
-        _, campusPref = uctp.UCTP().f5(subj, prof, prof_relations)
+    # If does not have some of the FeaVariables - probably the Cand is Infeasible
+    if(len(difCharge) == 0): _, difCharge = uctp.UCTP().f1(subj, prof, prof_relations)
+    if(len(subjPref) == 0): _, subjPref = uctp.UCTP().f2(subj, prof, prof_relations)
+    if(len(quadSabbNotPref) == 0): _, quadSabbNotPref = uctp.UCTP().f3(subj, prof, prof_relations)
+    if(len(periodPref) == 0): _, periodPref = uctp.UCTP().f4(subj, prof, prof_relations)
+    if(len(campusPref) == 0): _, campusPref = uctp.UCTP().f5(subj, prof, prof_relations)
 
     # Extracting the number of each occurence
     # [profName, numSubjs, numSubjNotPrefered, numPeriodNotPref, numQuadriSabbathPref, numCampusNotPref, numI2, numI3, difCharge]
@@ -156,7 +155,7 @@ def extractInfo(cand, prof, subj):
 
 # Put out on 'totalMinMaxAvg.csv' the current generation Min/Max/Avg Fitness
 def outDataMMA(solutionsI, solutionsF, iter):
-    if(prt == 1): print("Exporting data....")
+    if(prt == 1): print("Exporting data....", end='')
     
     minInf, maxInf, avgInf = 0, -1, 0
     # Find Min/Max Fitness in the Infeasible Pop.
@@ -190,14 +189,9 @@ def outDataMMA(solutionsI, solutionsF, iter):
         if(minFea != 1): spamwriter.writerow(['Fea', iter, minFea, maxFea, avgFea])
     csvfile.close()
 
-    if(prt == 1):
-        if(minInf != 0): print('Infeasibles (', len(solutionsI.getList()), ') Min:', minInf, 'Max:', maxInf, 'Avg:', avgInf)
-        else: print('No Infeasibles Solutions!')
-        if(minFea != 1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', avgFea)
-        else: print('No Feasibles Solutions!')
-        print("Data Exported!")
+    if(prt == 1): print("Data Exported!")
     
-    return maxFeaIndex
+    return maxFeaIndex, minInf, maxInf, avgInf, minFea, maxFea, avgFea
 
 #==============================================================================================================
 
