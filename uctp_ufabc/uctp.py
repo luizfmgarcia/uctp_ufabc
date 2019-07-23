@@ -4,7 +4,7 @@ import objects
 import ioData
 import random
 
-# Set '1' to allow, during the run, the output of some steps
+# Set '1' to allow, during the run, the print on terminal of some steps
 prt = 1
 
 #==============================================================================================================
@@ -141,12 +141,12 @@ class UCTP:
         
         # Searching, in each professor (one at a time), conflicts of schedules between subjects related to it
         for list_subj in prof_relations:
-            # Actual Prof in analisys
+            # Current Prof in analisys
             profIndex = prof_relations.index(list_subj)
 
             # Check if the professor has more than 1 relation Prof-Subj to analyze
             if(len(list_subj) > 1):
-                # Getting the data of all Subjects related to actual Professor in analysis
+                # Getting the data of all Subjects related to current Professor in analysis
                 timetableList_List, quadri_List, campus_List, period_List = [], [], [], []
 
                 for subj_index in list_subj:
@@ -167,7 +167,7 @@ class UCTP:
                         i_hour.append(j[1])
                         i_frequency.append(j[2])
                     
-                    # Now, comparing actual (i) subject data with next ones (k), one at a time
+                    # Now, comparing current (i) subject data with next ones (k), one at a time
                     k = i + 1
                     rest = timetableList_List[k:]
                     # repeat this 'len(rest)' times
@@ -219,7 +219,7 @@ class UCTP:
                                                     #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
                                                     verified_i2 = True
                         
-                        # Going to the next Subject (k+1) to compare with the same, actual, main, Subject (i)
+                        # Going to the next Subject (k+1) to compare with the same, current, main, Subject (i)
                         k = k + 1
 
                     # Going to the next Subject (i+1) related to the same Professor
@@ -278,9 +278,9 @@ class UCTP:
 
         # Counting the occurrences, filling the vectors
         for relations in prof_relations:
-            # Setting Index of actual Prof
+            # Setting Index of current Prof
             pIndex = prof_relations.index(relations)
-            # Getting data of actual Prof
+            # Getting data of current Prof
             _, _, pCharge, _, _, _, _, _, _ = prof[pIndex].get()
             
             # Collecting each Professors Charge
@@ -288,7 +288,7 @@ class UCTP:
             
             # All Relations of one Prof
             for sIndex in relations:
-                # Getting data of actual Subj
+                # Getting data of current Subj
                 _, _, _, _, _, _, sCharge, _ = subj[sIndex].get()
                 # Collecting and summing Subjects Charges related to same Prof
                 charges_AllRelations[pIndex] = charges_AllRelations[pIndex] + float(str(sCharge).replace(",","."))
@@ -322,34 +322,34 @@ class UCTP:
 
         # Initializing qX_relations Lists of Lists (in each one appends "pPrefSubjQXList" with "pPrefSubjLimList" to have the length of the subList)
         for relations in prof_relations:
-            # Setting Index of actual Prof
+            # Setting Index of current Prof
             pIndex = prof_relations.index(relations)
             
-            # Getting data of actual Prof
+            # Getting data of current Prof
             _, _, _, _, _, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
             prefSubjLists = [pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList]
             
-            # For each Quadri - Filling QX Lists of actual Prof
+            # For each Quadri - Filling QX Lists of current Prof
             for i in range(3):
                 qX_relations[i][pIndex] = [0 for _ in range(len(prefSubjLists[i]) + len(prefSubjLists[3]))]
         
         # Counting the occurrences, filling the vectors
         for relations in prof_relations:
-            # Setting Index of actual Prof
+            # Setting Index of current Prof
             pIndex = prof_relations.index(relations)
             
-            # Getting data of actual Prof
+            # Getting data of current Prof
             _, _, _, _, _, pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList = prof[pIndex].get()
             prefSubjLists = [pPrefSubjQ1List, pPrefSubjQ2List, pPrefSubjQ3List, pPrefSubjLimList]
             
             # All Relations of one Prof
             for sIndex in relations:
-                # Getting data of actual Subj
+                # Getting data of current Subj
                 _, _, sName, sQuadri, _, _, _, _ = subj[sIndex].get()
                 
                 # For each quadri
                 for i in range(3):
-                    # Looking for only in the list of respective quadri of actual Subject in analisys
+                    # Looking for only in the list of respective quadri of current Subject in analisys
                     if(str(i) in sQuadri):
                         # Finding the Subject 'sName' in "pPrefSubjQXList+pPrefSubjLimList" list
                         sumList = prefSubjLists[i] + prefSubjLists[3]
@@ -372,30 +372,30 @@ class UCTP:
         for i in range(3):
             # Calculating the Satisfaction from QX relations for each Professor
             for list_choice_relation in qX_relations[i]:
-                # Setting actual Prof Index and actual List Relations-Preference
+                # Setting current Prof Index and current List Relations-Preference
                 prof_index = qX_relations[i].index(list_choice_relation)
-                len_actual_list = len(list_choice_relation)
+                len_current_list = len(list_choice_relation)
                 
-                # Initializing actual position and total weight that will be calculated next
+                # Initializing current position and total weight that will be calculated next
                 total_weight = 0
                 
                 # Checking if the Relations-Preference List is empty
-                if(len_actual_list == 0): finalQX[i][prof_index] = 1.0
+                if(len_current_list == 0): finalQX[i][prof_index] = 1.0
                 # If is needed to be calculated (is not empty)
                 else:
                     # QX Relations of each Professor
                     for h in list_choice_relation:
-                        # Setting actual Subject Preference Position
+                        # Setting current Subject Preference Position
                         pref_index = list_choice_relation.index(h)
                         # Summing the Total Weight of this list of preferences to normalize later (+1 because first index is 0)
                         total_weight = total_weight + pref_index + 1
                         
-                        # If the actual Subj, in this specific position on the Preference List of actual Prof, is related to it
+                        # If the current Subj, in this specific position on the Preference List of current Prof, is related to it
                         if(h == 1):
                             # Summing the respective weight the Subj has in the Prof List of Preferences
-                            finalQX[i][prof_index] = finalQX[i][prof_index] + (len_actual_list - pref_index + 1)
+                            finalQX[i][prof_index] = finalQX[i][prof_index] + (len_current_list - pref_index + 1)
                     
-                    # Calculate the final value of "Satisfaction" normalized, after obtained and summed all weights from Subjects related to actual professor
+                    # Calculate the final value of "Satisfaction" normalized, after obtained and summed all weights from Subjects related to current professor
                     finalQX[i][prof_index] = float(finalQX[i][prof_index]) / float(total_weight)
         
         # Calculate the final value of a Prof "satisfaction" summing all 3 values (from finalQ1, finalQ2 and finalQ3 lists) and normalizing it
@@ -414,14 +414,14 @@ class UCTP:
 
         # Counting the occurrences, filling the vector
         for relations in prof_relations:
-            # Setting Index of actual Prof
+            # Setting Index of current Prof
             pIndex = prof_relations.index(relations)
-            # Getting data of actual Prof
+            # Getting data of current Prof
             _, _, _, pQuadriSabbath, _, _, _, _, _ = prof[pIndex].get()
             
             # All Relations of one Prof
             for sIndex in relations:
-                # Getting data of actual Subj
+                # Getting data of current Subj
                 _, _, _, sQuadri, _, _, _, _ = subj[sIndex].get()
                 # Adding to count if the Subj is not in the same 'pQuadriSabbath' (if Prof choose 'nenhum' he does not have a 'pQuadriSabbath')
                 if(sQuadri != pQuadriSabbath or 'NENHUM' in pQuadriSabbath):
@@ -440,14 +440,14 @@ class UCTP:
 
         # Counting the occurrences, filling the vector
         for relations in prof_relations:
-            # Setting Index of actual Prof
+            # Setting Index of current Prof
             pIndex = prof_relations.index(relations)
-            # Getting data of actual Prof
+            # Getting data of current Prof
             _, pPeriod, _, _, _, _, _, _, _ = prof[pIndex].get()
             
             # All Relations of one Prof
             for sIndex in relations:
-                # Getting data of actual Subj
+                # Getting data of current Subj
                 _, _, _, _, sPeriod, _, _, _ = subj[sIndex].get()
                 # Adding to count if the Subj is in the same 'pPeriod' or if Prof do not care about 'pPeriod' equal to 'NEGOCIAVEL'
                 if(sPeriod == pPeriod or 'NEGOCI' in pPeriod):
@@ -466,14 +466,14 @@ class UCTP:
 
         # Counting the occurrences, filling the vector
         for relations in prof_relations:
-            # Setting Index of actual Prof
+            # Setting Index of current Prof
             pIndex = prof_relations.index(relations)
-            # Getting data of actual Prof
+            # Getting data of current Prof
             _, _, _, _, pPrefCampus, _, _, _, _ = prof[pIndex].get()
             
             # All Relations of one Prof
             for sIndex in relations:
-                # Getting data of actual Subj
+                # Getting data of current Subj
                 _, _, _, _, _, sCampus, _, _ = subj[sIndex].get()
                 # Adding to count if the Subj is in the same 'pPrefCampus'
                 if(sCampus == pPrefCampus):
@@ -509,24 +509,13 @@ class UCTP:
         # This While ensures that 'errorType' will choose Randomly one 'restriction repair'
         flag_repair_done = False
         while(flag_repair_done == False):
-            # Choosing one type of restriction repair
+            # Choosing one type of restriction to repair
             errorType = random.randrange(1,4)
             
             # (0) No repair -> Random Change
             if(errorType == 0):
                 # Do NOT granting that the 'errorType' do not change good relations without restrictions to repair
-                # Choosing the relation to be modified
-                relation_will_change_index = random.randrange(len(subj))
-                
-                # Choosing new Prof to be in the relation with the Subj selected
-                subj, oldProf = relations[relation_will_change_index]
-                change = random.randrange(len(prof))
-                newProf = prof[change]
-
-                # Granting that the new Prof is different of the old one
-                while(oldProf == newProf):
-                    change = random.randrange(len(prof))
-                    newProf = prof[change]
+                newCand = self.mutationRand(candidate, prof)
                     
                 # Setting the flag to finish the while
                 flag_repair_done = True
@@ -557,6 +546,11 @@ class UCTP:
                     change = prof_Zero_Relations[change_index]
                     newProf = prof[change]
 
+                    # Setting the new relation, creating new Candidate and returning it
+                    relations[relation_will_change_index]=[subj,newProf]
+                    newCand = objects.Candidate()
+                    newCand.setList(relations)
+
                     # Setting the flag to finish the while
                     flag_repair_done = True
             
@@ -581,6 +575,11 @@ class UCTP:
                         change = random.randrange(len(prof))
                         newProf = prof[change]
                     
+                    # Setting the new relation, creating new Candidate and returning it
+                    relations[relation_will_change_index]=[subj,newProf]
+                    newCand = objects.Candidate()
+                    newCand.setList(relations)
+
                     # Setting the flag to finish the while
                     flag_repair_done = True
 
@@ -605,24 +604,24 @@ class UCTP:
                         change = random.randrange(len(prof))
                         newProf = prof[change]
                     
+                    # Setting the new relation, creating new Candidate and returning it
+                    relations[relation_will_change_index]=[subj,newProf]
+                    newCand = objects.Candidate()
+                    newCand.setList(relations)
+
                     # Setting the flag to finish the while
                     flag_repair_done = True
-
-        # Setting the new relation, creating new Candidate and returning it
-        relations[relation_will_change_index]=[subj,newProf]
-        newCand = objects.Candidate()
-        newCand.setList(relations)
 
         return newCand
 
 #==============================================================================================================
 
     # Generate new solutions from the current Feasible population
-    def offspringF(self, solutionsNoPop, solutionsF, prof, subj, pctMut, pctRouletteCross, numCand):
+    def offspringF(self, solutionsNoPop, solutionsF, prof, subj, pctMut, pctParentsCross, numCand):
         # Check if the Feasible pop. is empty
         if(len(solutionsF.getList()) != 0):
-            # 'objectiveNum': number of solutions to become parents - based on 'pctRouletteCross'
-            objectiveNum = int(pctRouletteCross * len(solutionsF.getList()) / 100)
+            # 'objectiveNum': number of solutions to become parents - based on 'pctParentsCross'
+            objectiveNum = int(pctParentsCross * len(solutionsF.getList()) / 100)
             
             # Turning 'objectiveNum' to Even if it is Odd -> summing +1 to it only if the new 'objectiveNum' is not bigger then len(solutionsF)
             if(objectiveNum % 2 != 0):
@@ -733,9 +732,9 @@ class UCTP:
                 listFit = [cand.getFitness() for cand in feasibles_List]
                 
                 # Elitism Selection
-                maxFeasibles_List, _, _ = self.elitismSelection(feasibles_List, listFit, numCand)
-
-                solutionsF.setList(maxFeasibles_List)
+                maxFeasibles_List, rest_objectsList, rest_valuesList = self.elitismSelection(feasibles_List, listFit, 3)
+                selectedObj, _, _ = self.rouletteWheel(rest_objectsList, rest_valuesList, numCand-3, repos=False)
+                solutionsF.setList(maxFeasibles_List + selectedObj)
             
             if(prt == 1): print("Feas. Selection/", end='')
 

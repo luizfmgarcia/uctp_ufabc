@@ -44,8 +44,8 @@ class Candidate:
         self.listRelations = []
         self.fitness = 0.0
         
-        # Useful Variables that carries more info about the Candidate
-        # Each List contains, for each prof, lists of Subj Indexs
+        # Useful (for some functions) Variables that carries more info about the Candidate
+        # Each List contains, for each prof, lists of Subj Indexes related to a characteristic
         self.prof_relations = []
         self.conflicts_i2 = []
         self.conflicts_i3 = []
@@ -90,9 +90,6 @@ class Candidate:
         relation = [Subject, Prof]
         self.listRelations.append(relation)
     
-    def removeRelation(self, relation):
-        self.listRelations.remove(relation)
-    
 #==============================================================================================================
 
 # Keep all Candidates obtained during a run of the algorithm
@@ -111,8 +108,5 @@ class Solutions:
     
     def addCand(self, candidate):
         self.listCandidates.append(candidate)
-    
-    def removeCand(self, candidate):
-        self.listCandidates.remove(candidate)
     
 #==============================================================================================================

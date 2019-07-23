@@ -1,4 +1,4 @@
-# Import/Export Data Methods
+# Data Input/Output Methods
 
 import objects
 import uctp
@@ -7,7 +7,7 @@ import os
 import sys
 import shutil
 
-# Set '1' to allow, during the run, the output of some steps
+# Set '1' to allow, during the run, the print on terminal of some steps
 prt = 1
 
 #==============================================================================================================
@@ -117,10 +117,9 @@ def startOutFolders():
 # Extract information - auxiliary function to gathering all important info
 def extractInfo(cand, prof, subj):
     # Collecting Profs names in 'prof'
-    prof = []
-    for p in prof:
-        pName, _, _, _, _, _, _, _, _ = p.get()
-        prof.append(pName)
+    profData = [p.get() for p in prof]
+    profName = [pName for pName, _, _, _, _, _, _, _, _ in profData]
+
         
     # Getting other info
     prof_relations, conflicts_i2, conflicts_i3 = cand.getInfVariables()
@@ -136,18 +135,19 @@ def extractInfo(cand, prof, subj):
 
     # Extracting the number of each occurence
     # [profName, numSubjs, numSubjNotPrefered, numPeriodNotPref, numQuadriSabbathPref, numCampusNotPref, numI2, numI3, difCharge]
-    info = [[prof[i], len(prof_relations[i]), 
-            len(prof_relations[i]) - subjPref, 
-            len(prof_relations[i]) - periodPref, 
-            len(prof_relations[i]) - quadSabbNotPref, 
-            len(prof_relations[i]) - campusPref,
-            len(conflicts_i2),
-            len(conflicts_i3),
-            difCharge] for i in range(len(prof))]
+    info = [[profName[i],
+            len(prof_relations[i]), 
+            len(prof_relations[i]) - subjPref[i], 
+            len(prof_relations[i]) - periodPref[i], 
+            len(prof_relations[i]) - quadSabbNotPref[i], 
+            len(prof_relations[i]) - campusPref[i],
+            len(conflicts_i2[i]),
+            len(conflicts_i3[i]),
+            difCharge[i]] for i in range(len(prof))]
         
     # Last line sums total data
     total = ['Total', 0, 0, 0, 0, 0, 0, 0, 0]
-    for j in range(1,7): total[j] = sum([i[j] for i in info])
+    for j in range(1,9): total[j] = sum([i[j] for i in info])
     info.append(total)
 
     return  info
@@ -267,7 +267,7 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
     # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
 
-    if(prt == 1): print("All Generation (Solutions) data Exported!", '\n')
+    if(prt == 1): print("All Generation (Solutions) data Exported!")
     
 #==============================================================================================================
 
@@ -277,7 +277,7 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
     # Main titles to output datas
     titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
     titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
-    titles3 = ['iterations', 'numCand', 'pctRouletteCross', 'pctMut', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
+    titles3 = ['iterations', 'numCand', 'pctParentsCross', 'pctMut', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
 
     # Output Run-Config and Final best result
     currentDir = os.getcwd()
@@ -326,7 +326,6 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
             spamwriter.writerow(titles1)
             for row in maxData:
                 spamwriter.writerow(row)
-                spamwriter.writerow(" ")
 
         else: spamwriter.writerow("Do not found feasible solutions.")
     # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
