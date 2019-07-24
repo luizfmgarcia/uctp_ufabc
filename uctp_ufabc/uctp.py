@@ -341,7 +341,7 @@ class UCTP:
         charges_relativeFinal = [charge if charge < 1.0 else 1.0 for charge in charges_relative]
         
         # The sum of charge discrepancies of all professors
-        sum_chargesRelative = sum([float(charge) for charge in charges_relative])
+        sum_chargesRelative = sum([float(charge) for charge in charges_relativeFinal])
         
         return sum_chargesRelative, difCharge
 
