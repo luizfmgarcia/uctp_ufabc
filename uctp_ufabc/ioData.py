@@ -286,40 +286,45 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
 
         # If best solutions found
         if(len(maxFeaIndex)!=0):
-            # Finding best Feasible Solution and its Fitness
-            maxCand = solutionsF.getList()[maxFeaIndex[0]]
-            fitMaxData = maxCand.getFitness()
-            # Recording its data
-            maxData = [s.get() + p.get() for s, p in maxCand.getList()]
-            maxInfo = extractInfo(maxCand, prof, subj)
-            # Resuming the result to show too 'sName' and 'pName' of each relation
-            resumeMaxData = [[row[2], row[8]] for row in maxData]
+            maxCand, fitMaxData, maxData, resumeMaxData, maxInfo, info_alreadyShow = [], [], [], [], [], []
+            for m in range(len(maxFeaIndex)):
+                # Finding best Feasible Solution and its Fitness
+                maxCand.append(solutionsF.getList()[maxFeaIndex[m]])
+                fitMaxData.append(maxCand[m].getFitness())
+                # Recording its data
+                maxData.append([s.get() + p.get() for s, p in maxCand[m].getList()])
+                maxInfo.append(extractInfo(maxCand[m], prof, subj))
 
-            # Best Feasible Solution info
-            spamwriter.writerow(["Best solutions found:", maxFeaIndex])
-            spamwriter.writerow(["Index/Fit:", maxFeaIndex[0], fitMaxData])
-            spamwriter.writerow('')
+                if(info_alreadyShow.count(maxInfo[m]) == 0): 
+                    info_alreadyShow.append(maxInfo[m])
+                    # Resuming the result to show too 'sName' and 'pName' of each relation
+                    resumeMaxData.append([[row[2], row[8]] for row in maxData[m]])
+                    # Best Feasible Solution info
+                    spamwriter.writerow(["Best solutions found:", maxFeaIndex])
+                    spamwriter.writerow(["Index/Fit:", maxFeaIndex[m], fitMaxData[m]])
+                    spamwriter.writerow('')
 
-            # sName + pName
-            spamwriter.writerow(['index', titles1[2], titles1[8]])
-            i = 1
-            for row in resumeMaxData:
-                spamwriter.writerow([i] + row)
-                i = i + 1
-            
-            # Extracted Info of one of the best Solutions found
-            spamwriter.writerow('')
-            spamwriter.writerow(titles2)
-            i = 1
-            for row in maxInfo:
-                spamwriter.writerow([i] + row)
-                i = i + 1
+                    # sName + pName
+                    spamwriter.writerow(['index', titles1[2], titles1[8]])
+                    i = 1
+                    for row in resumeMaxData[-1]:
+                        spamwriter.writerow([i] + row)
+                        i = i + 1
+                    
+                    # Extracted Info of one of the best Solutions found
+                    spamwriter.writerow('')
+                    spamwriter.writerow(titles2)
+                    i = 1
+                    for row in maxInfo[m]:
+                        spamwriter.writerow([i] + row)
+                        i = i + 1
 
-            # All Details of same solution
-            spamwriter.writerow('')
-            spamwriter.writerow(titles1)
-            for row in maxData:
-                spamwriter.writerow(row)
+                    # All Details of same solution
+                    spamwriter.writerow('')
+                    spamwriter.writerow(titles1)
+                    for row in maxData[m]:
+                        spamwriter.writerow(row)
+                    spamwriter.writerow('')    
 
         else: spamwriter.writerow("Do not found feasible solutions.")
     # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
@@ -337,11 +342,11 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
         
         # Printing one of the best solutions found
         if(len(maxFeaIndex)!=0):
-            print("These are the best solutions found:", maxFeaIndex)
-            print("Index/Fit:", maxFeaIndex[0], '/', fitMaxData)
+            print("These are the best solutions found:", maxFeaIndex[0])
+            print("Index/Fit:", maxFeaIndex[0], '/', fitMaxData[0])
             with pandas.option_context('display.max_rows', 999):
-                print(pandas.DataFrame(data=resumeMaxData, index=None, columns=[titles1[2], titles1[8]]), '\n')
-                print(pandas.DataFrame(data=maxInfo, index=None, columns=titles2), '\n')
+                print(pandas.DataFrame(data=resumeMaxData[0], index=None, columns=[titles1[2], titles1[8]]), '\n')
+                print(pandas.DataFrame(data=maxInfo[0], index=None, columns=titles2), '\n')
 
 #==============================================================================================================
 

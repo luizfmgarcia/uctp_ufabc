@@ -290,19 +290,10 @@ class UCTP:
 
         # Setting found variables
         candidate.setFeaVariables(prof_relations, subjPref, periodPref, quadSabbNotPref, campusPref, difCharge)
-        
-        #TEste!!!!!!!
-        #sum_f2 = sum([sum([s for s in subjPref[i]]) / len(subjPref[i]) for i in range(len(subjPref))])
-        final_f2 = sum([subjPref[i]/len(prof_relations[i]) for i in range(len(subjPref))])
-        sum_f1 = sum([len(rel) for rel in prof_relations])
-        final_f1 = sum_f1 / float(len(subj))
 
         # Calculating main variables
         f1 = 1.0 - (float(sum_chargesRelative) / float(len(prof)))
         f2 = float(sum_Satisfaction) / float(len(prof))
-        f2 = f2 + (float(final_f2) / float(len(prof)))
-        f2 = f2/2.0
-        f1 = (f1 + final_f1) / 2.0
         f3 = float(sum_quadSabbNotPref) / float(len(subj))
         f4 = float(sum_periodPref) / float(len(subj))
         f5 = float(sum_campusPref) / float(len(subj))
@@ -561,8 +552,27 @@ class UCTP:
             # (0) No repair -> Random Change
             if(errorType == 0):
                 # Do NOT granting that the 'errorType' do not change good relations without restrictions to repair
-                newCand = self.mutationRand(candidate, prof)
-                    
+                #newCand = self.mutationRand(candidate, prof)
+                # Roulette Wheel - more relations -> more weight
+                numRelationsList = [float(len(prof_relations[i])) for i in range(len(prof_relations))]
+                selected, _, _ = self.rouletteWheel(prof_relations, numRelationsList, objectiveNum=1, repos=True, negative=False)
+                will_change_index = random.randrange(len(selected[0]))
+                relation_will_change_index = selected[0][will_change_index]
+                
+                # Choosing new Prof to be in the relation with the Subj selected
+                subj, oldProf = relations[relation_will_change_index]
+                change = random.randrange(len(prof))
+                newProf = prof[change]
+
+                # Granting that the new Prof is different of the old one
+                while(oldProf == newProf):
+                    change = random.randrange(len(prof))
+                    newProf = prof[change]
+                
+                # Setting the new relation, creating new Candidate and returning it
+                relations[relation_will_change_index]=[subj,newProf]
+                newCand = objects.Candidate()
+                newCand.setList(relations)    
                 # Setting the flag to finish the while
                 flag_repair_done = True
 
@@ -574,7 +584,7 @@ class UCTP:
                     prof_Zero_Relations, prof_With_Relations = [], []
 
                     for p in prof_relations:
-                        if(p == []): prof_Zero_Relations.append(prof_relations.index(p))
+                        if(len(p) == 0): prof_Zero_Relations.append(prof_relations.index(p))
                         else: prof_With_Relations.append(prof_relations.index(p))
                     
                     # Roulette Wheel - more relations -> more weight 
@@ -750,7 +760,7 @@ class UCTP:
             else:
                 # Roulette Wheel
                 fitnessList = [cand.getFitness() for cand in infeasibles_List]
-                newSolInf, _, _ = self.rouletteWheel(infeasibles_List, fitnessList, numCand, repos=False, negative=True)
+                newSolInf, _, _ = self.rouletteWheel(infeasibles_List, fitnessList, numCand, repos=False, negative=False)
                 
                 # Setting the new 'solutionsI' list to go to the next generation
                 solutionsI.setList(newSolInf)
@@ -780,9 +790,9 @@ class UCTP:
                 # Elitism and Roulette Selection
                 elitismNum = int(numCand * pctElitism / 100.0)
                 if(elitismNum == 0): elitismNum = 1
-                roulNum = numCand-elitismNum
+                roulNum = numCand - elitismNum
                 maxFeasibles_List, rest_objectsList, rest_valuesList = self.elitismSelection(feasibles_List, listFit, elitismNum)
-                selectedObj, _, _ = self.rouletteWheel(rest_objectsList, rest_valuesList, roulNum, repos=False)
+                selectedObj, _, _ = self.rouletteWheel(rest_objectsList, rest_valuesList, roulNum, repos=False, negative=False)
                 solutionsF.setList(maxFeasibles_List + selectedObj)
             
             if(prt == 1): print("Feas. Selection/", end='')
@@ -819,14 +829,16 @@ class UCTP:
 #==============================================================================================================
 
     # Make a crossover between two solutions
-    def crossover(self, cand1, cand2, twoPoints=None, firstHalf=None):
+    def crossover(self, cand1, cand2, twoPoints=None, firstHalf=None, notEqualParent=None):
         # The number of changes between parents will always be equal (same crossover segment size), never same size of Num of Parents Relations
         # twoPoints = False -> its chosen only one point, will have changes from the point till the rest of the relations
         # firstHalf = True -> changes from the beginning till the one point choosed
+        # notEqualParent = True -> avoid occurrence of childs equal to his parents
         
         # What is equal 'None' will be a random choice
         if(twoPoints == None): twoPoints = random.choice([True, False])
         if(firstHalf == None): twoPoints = random.choice([True, False])
+        if(notEqualParent == None): notEqualParent = random.choice([True, False])
         
         # Getting all relations from Candidates to work with
         relations1, relations2 = cand1.getList(), cand2.getList()
@@ -837,21 +849,32 @@ class UCTP:
                 point1 = 0 # Default point in 'firstHalf' mode
                 point2 = random.randrange(len(relations1)) # Randomly choosing one point
                 # Granting that not occur only a copy of parents - the chosen point is not the last relation
-                while(point2 == len(relations1)-1): point2 = random.randrange(len(relations1))
+                if(notEqualParent == True):
+                    while(point2 == len(relations1)-1): point2 = random.randrange(len(relations1))
             else:
                 point2 = len(relations1)-1 # Default point in 'secondHalf' mode
                 point1 = random.randrange(len(relations1)) # Randomly choosing one point
                 # Granting that not occur only a copy of parents - the chosen point is not the last relation
-                while(point1 == 0): point1 = random.randrange(len(relations1))
+                if(notEqualParent == True):
+                    while(point1 == 0): point1 = random.randrange(len(relations1))
         
         # TwoPoints Type
         else:
             # Granting that the crossover do not only copy all relations of one Cand to the another
-            point1, point2 = 0, len(relations1) - 1
-            while(point2 - point1 == len(relations1) - 1):
+            if(notEqualParent == True):
+                point1, point2 = 0, len(relations1) - 1
+                while(point2 - point1 == len(relations1) - 1):
+                    # Generating, randomly two numbers to create a patch - can be a single modification (when p1==p2)
+                    point1, point2 = random.randrange(len(relations1)), random.randrange(len(relations1))
+                    # Granting that 'point2' is bigger than 'point1'
+                    if(point2 < point1):
+                        p = point1
+                        point1 = point2
+                        point2 = p
+            
+            else:
                 # Generating, randomly two numbers to create a patch - can be a single modification (when p1==p2)
                 point1, point2 = random.randrange(len(relations1)), random.randrange(len(relations1))
-                
                 # Granting that 'point2' is bigger than 'point1'
                 if(point2 < point1):
                     p = point1

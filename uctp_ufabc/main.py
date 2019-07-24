@@ -15,6 +15,7 @@ import ioData
     -Reformular SelectionF para ter uma parte elitista e outra com roleta?
 -Reformular f2 para apenas contagem de meterias de preferencia(sem levar em conta posicao no vetor)?
 -Ou adicionar mais um f6 com essa contagem....
+-offspringF parte vai para crossover e o resto sofre mutacao randomica?
 
 -havendo acumulo de disciplinas em poucos prof
 -muitas materias n sao de pref
@@ -24,6 +25,8 @@ import ioData
 
 -Contador de iteracoes que finaliza o algoritmo qundo nao acha solucao melhor dps de um tempo?
 -Ou a possibilidade de uma tecla para finalizar o algoritmo e ainda assim apresentar um resultado?
+-Perguntar no inicio se quer apagar runs anteriores ou criar uma pasta GenerationsCSV nova
+-Quando chegar no maxiter perguntar se quer finalizar ou continuar e qnto mais rounds
 """
 
 #==============================================================================================================
@@ -39,26 +42,27 @@ class main:
     prt = 1
 
     # Max Number of iterations to get a solution
-    maxIter = 2000
-    # Number of candidates in a generation (same for each Feas/Inf.)
-    numCand = 30
+    maxIter = 20000
+    # Number of candidates in a generation (same for each Pop Feas/Inf.)
+    numCand = 50
 
+    # Operators Config (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 75 # Must be between '0' and '100'
+    pctParentsCross = 100
     # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer 
-    pctMut = 80 # Must be between '0' and '100'
-    # pctElitism
+    pctMut = 90
+    # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
     pctElitism = 100
 
     # Weights (must be float)
     w_alpha = 1.0   # i1 - Prof without Subj
     w_beta = 3.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 2.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
-    w_delta = 1.0   # f1 - Balance of distribution of Subjs between Profs
-    w_omega = 1.0   # f2 - Profs preference Subjects
-    w_sigma = 1.0   # f3 - Profs with Subjs in quadriSabbath
+    w_delta = 2.0   # f1 - Balance of distribution of Subjs between Profs
+    w_omega = 3.0   # f2 - Profs preference Subjects
+    w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
-    w_rho = 1.0     # f5 - Profs with Subjs in Campus
+    w_rho = 1.3     # f5 - Profs with Subjs in Campus
     weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
     
     #----------------------------------------------------------------------------------------------------------
@@ -89,6 +93,7 @@ class main:
     
     # Extracting basic info about Prof's Subj Pref
     subjIsPref = uctp.extractSubjIsPref(subj, prof)
+    pIndex, sIndex, pName, sName = 0, 0, '', ''
     if(prt == 1):
         for pIndex in range(len(prof)):
                 # Getting data of current Prof
@@ -96,7 +101,7 @@ class main:
                 # All Relations of one Prof
                 for sIndex in range(len(subj)):
                     # Getting data of current Subj
-                    _, _, sName, sQuadri, _, _, _, _ = subj[sIndex].get()
+                    _, _, sName, _, _, _, _, _ = subj[sIndex].get()
                     if(subjIsPref[pIndex][sIndex]!=0): print(pName, sName, subjIsPref[pIndex][sIndex])
         print("")
 
@@ -106,23 +111,29 @@ class main:
 
     # Print and export generated data
     if(prt == 1): print('Iteration: 0')
-    maxFeaIndex, _, _, _, _, _, _ = ioData.outDataMMA(solutionsI, solutionsF, 0)
+    maxFeaIndex, _, _, _, _, maxFea, _ = ioData.outDataMMA(solutionsI, solutionsF, 0)
+
+    # Flag to mark when appears the first Feasible Solution during a run
+    firstFeasSol = -1
+    # Mark when current MaxFit Feas Sol appears and its fit value
+    lastMaxIter, lastMax = 0, 0
+    if(len(maxFeaIndex) != 0): lastMax = maxFea
+    
+    curIter = 1
 
     #----------------------------------------------------------------------------------------------------------
     # MAIN WORK - iterations of GA-Algorithm to find a solution
     
     if(prt == 1): print("\nStarting hard work...\n")
     
-    # Flag to mark when appears the first Feasible Solution during a run
-    firstFeasSol = -1
-    
-    curIter = 1
     while(uctp.stop(curIter, maxIter, solutionsI, solutionsF)):
         # Important Info to output and follow on terminal during the run
         if(prt == 1):
             print('Iteration:', curIter, 'of', maxIter, '/ Working with (Prof/Subj):', len(prof), '/', len(subj))
-            if(firstFeasSol != -1): print('First Feasible Sol. at (iteration): ', firstFeasSol)
-
+            if(firstFeasSol != -1): 
+                print('First Feas Sol at (iter): ', firstFeasSol, '/ Cur Max Feas Sol at (iter): ', lastMaxIter, '/ Num Iter since last Max:', curIter - lastMaxIter)
+        
+        # Creating new Random Solutions
         for _ in range(int(numCand*30/100)): solutionsNoPop.addCand(uctp.newCandRand(subj, prof))
         
         # Choosing Parents to generate children (put all new into 'solutionsNoPop')
@@ -143,8 +154,10 @@ class main:
         # Register of the 'Iteration' that appeared the first Feas Sol
         if(firstFeasSol == -1 and len(solutionsF.getList()) != 0): firstFeasSol = curIter
         
-        # Next Iteration
-        curIter = curIter + 1
+        # Register of the 'Iteration' that the Max Feas Sol changed
+        if(firstFeasSol != -1 and lastMax != maxFea):
+            lastMax = maxFea
+            lastMaxIter = curIter
 
         # Important Info to output and follow on terminal during the run
         if(prt == 1):
@@ -153,6 +166,10 @@ class main:
             if(minFea != 1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', avgFea)
             else: print('No Feasibles Solutions!')
             print("")
+        
+        if(curIter - lastMaxIter>=500): break
+        # Next Iteration
+        curIter = curIter + 1
     # End of While (Iterations) - Stop condition verified
     
     #----------------------------------------------------------------------------------------------------------
