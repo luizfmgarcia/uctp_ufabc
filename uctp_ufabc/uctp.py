@@ -213,7 +213,6 @@ class UCTP:
                         if(quadri_List[i] == quadri_List[k]):
                             # Variables that flags if a conflict was already detected (do not count 2 or more times same 2 subjects in conflict)
                             verified_i2, verified_i3 = False, False
-                            
                             # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
                             inext_day, inext_hour, inext_frequency = [], [], []
 
@@ -255,16 +254,13 @@ class UCTP:
                                                     conflicts_i2[profIndex].append(list_subj[k])
                                                     #print(subj[list_subj[i]].get(), subj[list_subj[k]].get(), '\n')
                                                     verified_i2 = True
-                        
                         # Going to the next Subject (k+1) to compare with the same, current, main, Subject (i)
                         k = k + 1
-
                     # Going to the next Subject (i+1) related to the same Professor
                     i = i + 1
         
         # Removing from 'conflicts_i2' and 'conflicts_i3' duplicates
         final_i2, final_i3 = [[] for _ in range(len(prof_relations))], [[] for _ in range(len(prof_relations))]
-        
         for i in range(len(prof_relations)):
             for j in conflicts_i2[i]:
                 if(final_i2[i].count(j) == 0): final_i2[i].append(j)
@@ -290,7 +286,7 @@ class UCTP:
 
         # Setting found variables
         candidate.setFeaVariables(prof_relations, subjPref, periodPref, quadSabbNotPref, campusPref, difCharge)
-
+        
         # Calculating main variables
         f1 = 1.0 - (float(sum_chargesRelative) / float(len(prof)))
         f2 = float(sum_Satisfaction) / float(len(prof))
@@ -306,42 +302,36 @@ class UCTP:
     
     #-------------------------------------------------------
     
-    # f1: how balanced is the distribution of Subjects, considering the "Charge" of each Professor (count the "Charge" of all Subj related to that Prof)
+    # f1: how balanced is the distribution of Subjects, considering the "Charge" of each Professor and its Subj related
     def f1(self, subj, prof, prof_relations):
         # List of all 'Effective Charges', that is, the sum of the charges of all the subjects related to the professor
-        charges_AllRelations = [0 for _ in range(len(prof))]
+        charges_eachProfRelations = [0 for _ in range(len(prof))]
         # List of requested charges of each professor
         charges_EachProf = []
-
+        
         # Counting the occurrences, filling the vectors
+        prof_data = [prof[i].get() for i in range(len(prof))]
+        charges_EachProf = [float(pCharge) for _, _, pCharge, _, _, _, _, _, _ in prof_data]
         for relations in prof_relations:
             # Setting Index of current Prof
             pIndex = prof_relations.index(relations)
-            # Getting data of current Prof
-            _, _, pCharge, _, _, _, _, _, _ = prof[pIndex].get()
-            
-            # Collecting each Professors Charge
-            charges_EachProf.append(int(pCharge))
-            
-            # All Relations of one Prof
-            for sIndex in relations:
-                # Getting data of current Subj
-                _, _, _, _, _, _, sCharge, _ = subj[sIndex].get()
-                # Collecting and summing Subjects Charges related to same Prof
-                charges_AllRelations[pIndex] = charges_AllRelations[pIndex] + float(str(sCharge).replace(",","."))
+            # Getting data of current Subj related to this pIndex Prof
+            subj_data = [subj[sIndex].get() for sIndex in relations]
+            # Summing all chagers of all relations of this Prof
+            charges_eachProfRelations[pIndex] = sum([float(str(sCharge).replace(",",".")) for _, _, _, _, _, _, sCharge, _ in subj_data])
         
-        # Difference of Prof Charge and Sum of all of its Subj-Relations
-        difCharge = [float(charges_EachProf[i] - charges_AllRelations[i]) for i in range(len(prof))]
+        # Difference of Prof Charge and the sum of all of its Subj-Relations
+        difCharge = [charges_EachProf[i] - charges_eachProfRelations[i] for i in range(len(prof))]
 
         # Relative weigh of excess or missing charge for each Prof - based on the credit difference module
         # between the credits requested by the Prof and the sum off all Subj related to it
-        charges_relative = [abs(difCharge[i]) / float(charges_EachProf[i]) for i in range(len(prof))]
+        charges_relative = [float(abs(difCharge[i])) / charges_EachProf[i] for i in range(len(prof))]
         
         # Making a simple adjust on the value
         charges_relativeFinal = [charge if charge < 1.0 else 1.0 for charge in charges_relative]
         
         # The sum of charge discrepancies of all professors
-        sum_chargesRelative = sum([float(charge) for charge in charges_relativeFinal])
+        sum_chargesRelative = sum([charge for charge in charges_relativeFinal])
         
         return sum_chargesRelative, difCharge
 
@@ -977,10 +967,26 @@ class UCTP:
 #==============================================================================================================
     
     # Detect the stop condition
-    def stop(self, iteration, total, solutionsI, solutionsF):
-        for cand in solutionsF.getList():
-            if cand.getFitness() >= 0.999: return False
-        if(iteration > total): return False
-        return True
+    def stop(self, curIter, maxIter, lastMaxIter, convergDetect, maxFea, stopFitValue):
+        if(curIter >= maxIter): return self.ask(maxIter) # Reached max num of iterations
+        if(stopFitValue != -1 and maxFea >= stopFitValue): return False # Reached max fit value
+        if(convergDetect != -1 and curIter - lastMaxIter >= convergDetect): return False # Reached convergence num of iterations
+        return True # Continues the run
+    
+    def ask(self, maxIter):
+        # Ask to user if wants delete past runs folders/files
+        ask1 = 'a'
+        while(ask1 != "s" and ask1 != ""): ask1 = input("Mais iteracoes? Sim('s')/Não('enter'): ")
+        if(ask1 == "s"):
+            notPosNumber = False
+            while(not notPosNumber): 
+                ask2 = input("Quanto? (Numero positivo): ")
+                try:
+                    if(int(ask2) >= 0): notPosNumber = True
+                except ValueError:
+                    notPosNumber = False
+            maxIter = maxIter + int(ask2)
+            return True
+        return False
 
 #==============================================================================================================

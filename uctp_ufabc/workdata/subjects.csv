@@ -1,0 +1,809 @@
+G;DANHT1058-14SB;Morfofisiologia Humana I;Q3;Diurno;SB;6;quarta das 08:00 às 10:00, sala A1-S106-SB, semanal ;segunda das 08:00 às 12:00, lab. A1-L305-SB, semanal 
+G;NA2BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Noturno;SA;3;terca das 21:00 às 23:00, Lab. S - 211-0, quinzenal II/quarta das 19:00 às 21:00, Lab. S - 211-0, semanal ;0
+G;NB2BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Noturno;SA;3;terca das 19:00 às 21:00, Lab. S - 211-0, quinzenal II/quarta das 21:00 às 23:00, Lab. A - 103-0, semanal ;0
+G;NA10BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. 408-2, semanal 
+G;DAMCTD005-13SA;Fundamentos de Álgebra;Q2;Diurno;SA;4;segunda das 10:00 às 12:00, Lab. S - 002-0, semanal/quarta das 08:00 às 10:00, Lab. S - 002-0, semanal ;0
+G;NABIN0406-15SA;Introdução à Probabilidade e à Estatística;Q3;Noturno;SA;3;terca das 21:00 às 23:00, sala S - 213-0, quinzenal II/sexta das 19:00 às 21:00, sala S - 213-0, semanal ;0
+G;NBBIN0406-15SA;Introdução à Probabilidade e à Estatística;Q3;Noturno;SA;3;terca das 19:00 às 21:00, sala S - 204-0, quinzenal II/sexta das 21:00 às 23:00, sala S - 204-0, semanal ;0
+G;DB2BCN0402-15SB;Funções de Uma Variável;Q3;Diurno;SB;4;terca das 08:00 às 10:00, sala A2-S104-SB, semanal/quinta das 10:00 às 12:00, sala A2-S103-SB, semanal ;0
+G;;Estágio Supervisionado em Matemática - Ensino Fundamental I e II;Q3;Diurno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Estágio Supervisionado em Matemática - Ensino Fundamental I e II;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;ENS104M173;Formação de professores de Ciências e Matemática: Tendências;Q3;;SA;4;#N/D;#N/D
+G;DABCN0407-15SB;Funções de Várias Variáveis;Q1;Diurno;SB;4;segunda das 10:00 às 12:00, sala A2-S201-SB, semanal/quinta das 08:00 às 10:00, sala A2-S201-SB, semanal ;0
+G;DBBCN0407-15SB;Funções de Várias Variáveis;Q1;Diurno;SB;4;segunda das 08:00 às 10:00, sala A2-S102-SB, semanal/quinta das 10:00 às 12:00, sala A2-S102-SB, semanal ;0
+G;NABCN0405-15SB;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SB;4;terca das 19:00 às 21:00, Lab. A2-S105-SB, semanal/sexta das 21:00 às 23:00, Lab. A2-S105-SB, semanal ;0
+G;NBBCN0405-15SB;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SB;4;terca das 21:00 às 23:00, Lab. A2-S201-SB, semanal/sexta das 19:00 às 21:00, Lab. A2-S201-SB, semanal ;0
+G;NABCM0506-15SB;Comunicação e Redes;Q2;Noturno;SB;3;quarta das 21:00 às 23:00, sala A2-S201-SB, semanal/sexta das 19:00 às 21:00, sala A2-S201-SB, quinzenal II;0
+G;DABIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;segunda das 17:00 às 19:00, Lab. A1-L002-SB, semanal 
+G;NA2BIS0005-15SB;Bases Computacionais da Ciência;Q2;Noturno;SB;2;0;terca das 21:00 às 23:00, sala A1-L101-SB, semanal 
+G;DB1BCM0504-15SA;Natureza da Informação;Q3;Diurno;SA;3;segunda das 10:00 às 12:00, sala A - 104-0, quinzenal II/quinta das 08:00 às 10:00, sala A - 104-0, semanal ;0
+G;DAMCZA038-17SA;Prática Avançada de Programação A;Q3;Diurno;SA;4;0;segunda das 08:00 às 10:00, lab. 408-2, semanal/quinta das 10:00 às 12:00, lab. 408-2, semanal 
+G;NA7BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 19:00 às 21:00, sala A - 103-0, semanal/sexta das 21:00 às 23:00, sala A - 103-0, quinzenal I;quinta das 21:00 às 23:00, sala L603, semanal 
+G;NA8BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 19:00 às 21:00, sala A - 103-0, semanal/sexta das 21:00 às 23:00, sala A - 103-0, quinzenal I;quinta das 21:00 às 23:00, sala L703, semanal 
+G;NA9BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;3;terca das 19:00 às 21:00, sala A - 103-0, semanal/sexta das 21:00 às 23:00, sala A - 103-0, quinzenal I;quinta das 21:00 às 23:00, sala 402-2, semanal 
+G;DA2BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. L503, semanal 
+G;DB2BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. L503, semanal 
+G;NA1MCTA018-13SA;Programação Orientada a Objetos;Q2;Noturno;SA;2;terca das 19:00 às 21:00, Lab. S - 311-2, semanal ;quinta das 19:00 às 21:00, Lab. 408-2, semanal 
+G;NA2MCTA018-13SA;Programação Orientada a Objetos;Q2;Noturno;SA;2;terca das 19:00 às 21:00, Lab. S - 311-2, semanal ;quinta das 21:00 às 23:00, Lab. 408-2, semanal 
+G;NA2BCM0504-15SA;Natureza da Informação;Q3;Noturno;SA;3;segunda das 19:00 às 21:00, sala A - 102-0, quinzenal II/quinta das 21:00 às 23:00, sala A - 102-0, semanal ;0
+G;DAMCTB025-13SA;Trabalho de Conclusão de Curso em Matemática I, II e III;Q1;Diurno;SA;2;sabado das 10:00 às 12:00, sala S - 501, semanal ;0
+G;NAMCTB001-17SB;Álgebra Linear;Q2;Noturno;SB;6;segunda das 19:00 às 21:00, Lab. A1-S206-SB, semanal/quarta das 21:00 às 23:00, Lab. A1-S206-SB, semanal/sexta das 19:00 às 21:00, Lab. A1-S206-SB, semanal ;0
+G;DAMCTB024-13SA;Trabalho de Conclusão de Curso em Matemática I, II e III;Q2;Diurno;SA;1;sabado das 08:00 às 10:00, Lab. S - 501, semanal ;0
+G;DAMCTB027-13SA;Trabalho de Conclusão de Curso em Matemática I, II e III;Q2;Diurno;SA;1;sabado das 12:00 às 14:00, Lab. S - 501, semanal ;0
+G;DAMCTB024-13SA;Trabalho de Conclusão de Curso em Matemática I, II e III;Q3;Diurno;SA;2;sabado das 08:00 às 10:00, Lab. S - 501, semanal ;0
+G;NAMCTB005-13SA;Análise Real I;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. S - 501, semanal/quinta das 21:00 às 23:00, Lab. S - 501, semanal ;0
+G;NAMCTB026-17SA;Topologia;Q3;Noturno;SA;4;quarta das 21:00 às 23:00, sala S - 501, semanal/sexta das 19:00 às 21:00, sala S - 501, semanal ;0
+PG;;Geometria Analítica;Q3;;;4;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;INF004D171;Estudo Dirigido;Q1;Noturno;SA;4;#N/D;#N/D
+PG;INF304D171;Lógica e Sistemas Inteligentes;Q1;Noturno;SA;4;#N/D;#N/D
+G;DB5BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. L603, semanal 
+G;DAMCTA016-13SA;Paradigmas de Programação;Q2;Diurno;SA;4;segunda das 10:00 às 12:00, Lab. S - 308-2, semanal ;quinta das 08:00 às 10:00, Lab. 409-2, semanal 
+PG;BIS202D172;Modelagem Molecular;Q2;;SA;3;#N/D;#N/D
+PG;INF004M172;Estudo Dirigido;Q2;;SA;4;#N/D;#N/D
+PG;INF009D172;Projeto e Comunicação de Pesquisa em Engenharia da Informaçã;Q2;;SA;4;#N/D;#N/D
+PG;INF004D173;Estudo Dirigido;Q3;;SA;2;#N/D;#N/D
+G;DB2BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 10:00 às 12:00, sala A - 104-0, semanal/sexta das 08:00 às 10:00, sala A - 104-0, quinzenal I;quinta das 08:00 às 10:00, sala 404-2, semanal 
+G;DA1MCTA001-13SA;Algoritmos e Estruturas de Dados I;Q1;Diurno;SA;4;quarta das 08:00 às 10:00, sala S - 301-3, semanal ;sexta das 08:00 às 10:00, sala 407-2, semanal 
+G;DA2MCTA001-13SA;Algoritmos e Estruturas de Dados I;Q1;Diurno;SA;4;quarta das 08:00 às 10:00, sala S - 301-3, semanal ;sexta das 10:00 às 12:00, sala 407-2, semanal 
+G;DA1BCM0505-15SA;Processamento da Informação;Q2;Diurno;SA;1;terca das 08:00 às 10:00, sala A - 101-0, semanal/sexta das 10:00 às 12:00, sala A - 101-0, quinzenal I;quinta das 10:00 às 12:00, sala L501, semanal 
+G;DA2BCM0505-15SA;Processamento da Informação;Q2;Diurno;SA;3;terca das 08:00 às 10:00, sala A - 101-0, semanal/sexta das 10:00 às 12:00, sala A - 101-0, quinzenal I;quinta das 10:00 às 12:00, sala 404-2, semanal 
+G;DA3BCM0505-15SA;Processamento da Informação;Q2;Diurno;SA;1;terca das 08:00 às 10:00, sala A - 101-0, semanal/sexta das 10:00 às 12:00, sala A - 101-0, quinzenal I;quinta das 10:00 às 12:00, sala L503, semanal 
+G;NA2BCM0505-15SA;Processamento da Informação;Q2;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala 404-2, semanal 
+G;NA5BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. L603, semanal 
+G;NB5BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 19:00 às 21:00, Lab. L603, semanal 
+G;DA3BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;1,5;terca das 08:00 às 10:00, sala A2-S102-SB, semanal/sexta das 10:00 às 12:00, sala A2-S102-SB, quinzenal I;quinta das 10:00 às 12:00, sala A1-L101-SB, semanal 
+G;DA4BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;3,5;terca das 08:00 às 10:00, sala A2-S102-SB, semanal/sexta das 10:00 às 12:00, sala A2-S102-SB, quinzenal I;quinta das 10:00 às 12:00, sala A2-L001-SB, semanal 
+G;DB2BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;2;terca das 10:00 às 12:00, sala A2-S105-SB, semanal/sexta das 08:00 às 10:00, sala A2-S105-SB, quinzenal I;quinta das 08:00 às 10:00, sala A1-L002-SB, semanal 
+G;;Coordenador de Estágio do BCC;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Coordenador de Estágio do BCC;Q3;;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;CCM209D173;Interação Humano-Computador;Q3;;SA;4;#N/D;#N/D
+G;DAMCTB008-17SA;Cálculo de Probabilidade;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. S - 501, semanal/sexta das 08:00 às 10:00, Lab. S - 501, semanal ;0
+G;DANHT3036-15SA;Mecânica Estatística;Q2;Diurno;SA;6;segunda das 10:00 às 12:00, Lab. S - 308-3, semanal/quarta das 08:00 às 10:00, Lab. S - 308-3, semanal/sexta das 10:00 às 12:00, Lab. S - 308-3, semanal ;0
+G;NABCN0405-15SB;Introdução às Equações Diferenciais Ordinárias;Q3;Noturno;SB;4;terca das 19:00 às 21:00, Lab. A2-S105-SB, semanal/sexta das 21:00 às 23:00, Lab. A2-S105-SB, semanal ;0
+G;DAMCZB020-13SA;Introdução aos Sistemas Dinâmicos;Q3;Diurno;SA;4;segunda das 10:00 às 12:00, sala S - 502, semanal/quarta das 08:00 às 10:00, sala S - 502, semanal ;0
+G;NAMCTC001-15SB;Introdução à Filosofia da Mente;Q2;Noturno;SB;2;quinta das 19:00 às 21:00, Lab. A2-S301-SB, semanal ;0
+PG;NCG301D172;Filosofia da Mente e da Neurociência;Q2;;SB;2;#N/D;#N/D
+PG;NCG003D173;Ciências Cognitivas;Q3;;SB;3;#N/D;#N/D
+G;DAMCTB004-13SA;Análise no Rn I;Q1;Diurno;SA;4;terca das 08:00 às 10:00, sala S - 501, semanal/quinta das 10:00 às 12:00, sala S - 501, semanal ;0
+G;DAMCTB005-13SA;Análise Real I;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. S - 501, semanal/quinta das 10:00 às 12:00, Lab. S - 501, semanal ;0
+G;DAMCTB009-17SA;Cálculo Numérico;Q2;Diurno;SA;4;quarta das 08:00 às 10:00, Lab. A - 107-0, semanal/sexta das 10:00 às 12:00, Lab. S - 211-0, semanal ;0
+G;DBMCTB009-17SA;Cálculo Numérico;Q2;Diurno;SA;4;quarta das 10:00 às 12:00, Lab. A - 107-0, semanal/sexta das 08:00 às 10:00, Lab. S - 211-0, semanal ;0
+G;;Coordenador de Cálculo Numérico;Q2;;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCZB005-17SA;Análise Numérica;Q3;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 502, semanal/quarta das 19:00 às 21:00, sala S - 502, semanal ;0
+G;DAMCTB009-17SB;Cálculo Numérico;Q3;Diurno;SB;4;segunda das 08:00 às 10:00, Lab. A2-S106-SB, semanal/quarta das 10:00 às 12:00, Lab. A2-S106-SB, semanal ;0
+G;DAMCTB001-13SB;Álgebra Linear;Q1;Diurno;SB;6;segunda das 08:00 às 10:00, sala A1-S202-SB, semanal/quarta das 10:00 às 12:00, sala A1-S202-SB, semanal/sexta das 08:00 às 10:00, sala A1-S202-SB, semanal ;0
+G;NA1BCN0405-15SB;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SB;4;terca das 19:00 às 21:00, Lab. A2-S208-SB, semanal/sexta das 21:00 às 23:00, Lab. B-A004-SB, semanal ;0
+G;NAMCZB008-13SA;Formas Diferenciais;Q2;Noturno;SA;4;segunda das 21:00 às 23:00, Lab. S - 502, semanal/quarta das 19:00 às 21:00, Lab. S - 502, semanal ;0
+G;DABCN0405-15SB;Introdução às Equações Diferenciais Ordinárias;Q3;Diurno;SB;4;terca das 08:00 às 10:00, Lab. A2-S105-SB, semanal/sexta das 10:00 às 12:00, Lab. A2-S105-SB, semanal ;0
+G;;Coord. De Introdução às Equações Diferenciais Ordinárias;Q3;Noturno;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTB009-13SB;Cálculo Numérico;Q1;Diurno;SB;4;segunda das 08:00 às 10:00, sala A1-S201-SB, semanal/quarta das 10:00 às 12:00, sala A1-S201-SB, semanal ;0
+G;NAMCTB009-13SB;Cálculo Numérico;Q1;Noturno;SB;4;segunda das 19:00 às 21:00, sala A2-S103-SB, semanal/quarta das 21:00 às 23:00, sala A2-S103-SB, semanal ;0
+G;NABIN0406-15SB;Introdução à Probabilidade e à Estatística;Q2;Noturno;SB;3;terca das 19:00 às 21:00, Lab. A2-S103-SB, quinzenal I/sexta das 21:00 às 23:00, Lab. A2-S103-SB, semanal ;0
+G;NBBIN0406-15SB;Introdução à Probabilidade e à Estatística;Q2;Noturno;SB;3;terca das 21:00 às 23:00, Lab. A2-S104-SB, quinzenal I/sexta das 19:00 às 21:00, Lab. A2-S104-SB, semanal ;0
+G;NAMCTB009-17SB;Cálculo Numérico;Q3;Noturno;SB;4;segunda das 19:00 às 21:00, Lab. A2-S106-SB, semanal/quarta das 21:00 às 23:00, Lab. A2-S106-SB, semanal ;0
+G;NB1BCM0506-15SA;Comunicação e Redes;Q2;Noturno;SA;3;segunda das 21:00 às 23:00, Lab. S - 207-0, semanal/terca das 19:00 às 21:00, Lab. S - 207-0, quinzenal I;0
+G;DA1BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. 408-2, semanal 
+G;NB6BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 19:00 às 21:00, Lab. L703, semanal 
+G;DAMCTA027-17SA;Teoria dos Grafos;Q3;Diurno;SA;4;quarta das 10:00 às 12:00, sala S - 301-1, semanal/sexta das 08:00 às 10:00, sala S - 301-1, semanal ;0
+G;NA3BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. A - 103-0, semanal/sexta das 19:00 às 21:00, Lab. A - 103-0, semanal ;0
+G;NB3BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. A - 113-0, semanal/sexta das 21:00 às 23:00, Lab. A - 113-0, semanal ;0
+G;DAMCTB017-13SA;Geometria Diferencial II;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. S - 502, semanal/quinta das 08:00 às 10:00, Lab. S - 502, semanal ;0
+G;;Coordenador de Bases Matemáticas;Q2;;;3;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DB1BCN0402-15SA;Funções de Uma Variável;Q3;Diurno;SA;4;terca das 08:00 às 10:00, sala A - 104-0, semanal/quinta das 10:00 às 12:00, sala A - 104-0, semanal ;0
+G;NB3BCN0402-15SA;Funções de Uma Variável;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala A - 106-0, semanal/quinta das 21:00 às 23:00, sala A - 106-0, semanal ;0
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q1;Diurno;EAD;4;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;NA3BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala L503, semanal 
+EX;;NTME - Novas Tecnologias e Metodologias para Educação;Q1;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA3BCM0505-15SA;Processamento da Informação;Q2;Diurno;SA;2;terca das 08:00 às 10:00, sala A - 101-0, semanal/sexta das 10:00 às 12:00, sala A - 101-0, quinzenal I;quinta das 10:00 às 12:00, sala L503, semanal 
+G;DSBCM0505-15SA;Processamento da Informação;Q2;Diurno;SA;5;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+EX;;NTME - Novas Tecnologias e Metodologias para Educação;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA1BCM0506-15SA;Comunicação e Redes;Q2;Diurno;SA;3;segunda das 08:00 às 10:00, Lab. S - 204-0, semanal/terca das 10:00 às 12:00, Lab. S - 204-0, quinzenal I;0
+PG;INF103M172;Avaliação de Desempenho de Redes e Sistemas;Q2;;SA;4;#N/D;#N/D
+PG;CCM002D173;Metodologia de Pesquisa em Ciência da Computação;Q3;;SA;2;#N/D;#N/D
+G;NA2BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala 404-2, semanal 
+G;NAMCZA002-13SA;Aprendizado de Máquina;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala A - 114-0, semanal/quinta das 19:00 às 21:00, sala A - 114-0, semanal ;0
+PG;CCM304M171;Visão Computacional e Processamento de Imagens;Q1;Noturno;SA;4;#N/D;#N/D
+G;DABIN0406-15SB;Introdução à Probabilidade e à Estatística;Q2;Diurno;SB;3;terca das 08:00 às 10:00, Lab. A2-S103-SB, quinzenal I/sexta das 10:00 às 12:00, Lab. A2-S103-SB, semanal ;0
+G;DBBIN0406-15SB;Introdução à Probabilidade e à Estatística;Q2;Diurno;SB;3;terca das 10:00 às 12:00, Lab. A2-S104-SB, quinzenal I/sexta das 08:00 às 10:00, Lab. A2-S104-SB, semanal ;0
+G;NA1MCZA015-13SA;Mineração de Dados;Q2;Noturno;SA;1;terca das 21:00 às 23:00, Lab. S - 302-3, semanal ;sexta das 19:00 às 21:00, Lab. 408-2, quinzenal II e Lab. de aula 311-3, quinzenal I 
+G;DABCN0404-15SA;Geometria Analítica;Q1;Diurno;SA;3;segunda das 16:00 às 18:00, sala A - 104-0, quinzenal I/quinta das 14:00 às 16:00, sala A - 104-0, semanal ;0
+G;DA1BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala A - 101-0, semanal/quinta das 08:00 às 10:00, sala A - 101-0, semanal ;0
+G;DB2BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala A - 105-0, semanal/quinta das 10:00 às 12:00, sala A - 105-0, semanal ;0
+G;;Coordenadora de Geometria Analítica;Q1;Noturno;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABIS0003-15SB;Bases Matemáticas;Q3;Diurno;SB;4;segunda das 17:00 às 19:00, sala B-A004-SB, semanal/quarta das 17:00 às 19:00, sala B-A004-SB, semanal ;0
+G;DBBIS0003-15SB;Bases Matemáticas;Q3;Diurno;SB;4;terca das 08:00 às 10:00, Lab. A2-S201-SB, semanal/sexta das 10:00 às 12:00, Lab. A2-S201-SB, semanal ;0
+PG;FIS102M172;Mecânica Quântica II;Q2;;SA;4;#N/D;#N/D
+G;NAMCTB001-17SA;Álgebra Linear;Q2;Noturno;SA;6;segunda das 19:00 às 21:00, Lab. S - 212-0, semanal/quarta das 21:00 às 23:00, Lab. S - 212-0, semanal/sexta das 19:00 às 21:00, Lab. S - 208-0, semanal ;0
+G;NA4BCN0404-15SA;Geometria Analítica;Q3;Noturno;SA;3;segunda das 19:00 às 21:00, sala S - 208-0, quinzenal I/sexta das 19:00 às 21:00, sala S - 214-0, semanal ;0
+G;NAMCTB003-17SA;Álgebra Linear Avançada II;Q3;Noturno;SA;4;terca das 21:00 às 23:00, sala S - 501, semanal/quinta das 19:00 às 21:00, sala S - 501, semanal ;0
+G;NA2BIS0005-15SB;Bases Computacionais da Ciência;Q1;Noturno;SB;2;0;terca das 21:00 às 23:00, sala A1-L101-SB, semanal 
+G;NB2BIS0005-15SB;Bases Computacionais da Ciência;Q1;Noturno;SB;2;0;terca das 19:00 às 21:00, sala A1-L101-SB, semanal 
+G;DAMCTA006-13SA;Circuitos Digitais;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala S - 301-3, semanal/quinta das 08:00 às 10:00, sala S - 301-3, semanal ;0
+G;NA1MCTA026-13SA;Sistemas Operacionais;Q1;Noturno;SA;1;segunda das 21:00 às 23:00, sala S - 212-0, semanal ;quinta das 19:00 às 21:00, sala 409-2, semanal 
+G;DA3BCM0506-15SA;Comunicação e Redes;Q2;Diurno;SA;3;segunda das 08:00 às 10:00, Lab. S - 205-0, semanal/terca das 10:00 às 12:00, Lab. S - 205-0, quinzenal I;0
+G;DB1BCM0506-15SA;Comunicação e Redes;Q2;Diurno;SA;3;segunda das 10:00 às 12:00, Lab. S - 207-0, semanal/terca das 08:00 às 10:00, Lab. S - 207-0, quinzenal I;0
+G;NB2BIS0005-15SB;Bases Computacionais da Ciência;Q2;Noturno;SB;2;0;terca das 19:00 às 21:00, sala A1-L101-SB, semanal 
+G;DAMCTB002-13SA;Álgebra Linear Avançada I;Q2;Diurno;SA;4;segunda das 08:00 às 10:00, Lab. S - 501, semanal/quarta das 10:00 às 12:00, Lab. S - 501, semanal ;0
+G;NAMCTB002-13SA;Álgebra Linear Avançada I;Q2;Noturno;SA;4;segunda das 19:00 às 21:00, Lab. S - 501, semanal/quarta das 21:00 às 23:00, Lab. S - 501, semanal ;0
+G;DA1BCN0404-15SB;Geometria Analítica;Q3;Diurno;SB;3;segunda das 08:00 às 10:00, sala A1-S201-SB, quinzenal I/sexta das 08:00 às 10:00, sala A1-S201-SB, semanal ;0
+G;DBBCN0404-15SB;Geometria Analítica;Q3;Diurno;SB;3;segunda das 10:00 às 12:00, sala A2-S101-SB, quinzenal I/sexta das 10:00 às 12:00, sala A2-S101-SB, semanal ;0
+G;DAMCZC007-15SB;Ergonomia Cognitiva;Q1;Diurno;SB;1;terca das 08:00 às 10:00, sala A1-S106-SB, semanal/sexta das 10:00 às 12:00, sala A1-S106-SB, semanal ;0
+G;NAMCZC007-15SB;Ergonomia Cognitiva;Q1;Noturno;SB;2;terca das 19:00 às 21:00, sala A1-S106-SB, semanal/sexta das 21:00 às 23:00, sala A1-S106-SB, semanal ;0
+G;DAMCZC008-13SB;Neuroarte;Q1;Diurno;SB;2;terca das 10:00 às 12:00, sala A1-S105-SB, semanal ;0
+G;NAMCZC008-13SB;Neuroarte;Q1;Noturno;SB;2;terca das 21:00 às 23:00, sala A1-S105-SB, semanal ;0
+G;DAMCTC002-15SA;Introdução à Neurociência;Q3;Diurno;SA;4;quarta das 14:00 às 16:00, sala A - 108-0, semanal/sexta das 14:00 às 16:00, sala A - 108-0, semanal ;0
+G;NAMCTC002-15SB;Introdução à Neurociência;Q3;Noturno;SB;2;quarta das 19:00 às 21:00, sala A2-S203-SB, semanal/sexta das 21:00 às 23:00, sala A2-S203-SB, semanal ;0
+G;NAMCTC011-15SB;Psicologia Cognitiva;Q3;Noturno;SB;4;terca das 19:00 às 21:00, sala A2-S203-SB, semanal/quarta das 21:00 às 23:00, sala A2-S205-SB, semanal ;0
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q1;Diurno;EAD;3;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;NA3MCTA022-13SA;Redes de Computadores;Q1;Noturno;SA;2,5;segunda das 19:00 às 21:00, sala A - 113-0, semanal/quarta das 21:00 às 23:00, sala A - 113-0, quinzenal I;quarta das 21:00 às 23:00, sala 404-2, quinzenal II
+G;NA4MCTA022-13SA;Redes de Computadores;Q1;Noturno;SA;1,5;segunda das 19:00 às 21:00, sala A - 113-0, semanal/quarta das 21:00 às 23:00, sala A - 113-0, quinzenal I;quarta das 21:00 às 23:00, sala 403-2, quinzenal II
+G;DSBCM0505-15SB;Processamento da Informação - EAD;Q2;Diurno;SB;5;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, sala A1-S206-SB; Primeira Prova dia 15/03/17 das 17:00 às 19:00, sala A1-S206-SB"; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;DA1BIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;terca das 10:00 às 12:00, sala A1-L002-SB, semanal 
+G;DB1BIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;terca das 08:00 às 10:00, sala A1-L002-SB, semanal 
+G;DDBCS0002-15SB;Projeto Dirigido;Q1;Diurno;SB;2;segunda das 10:00 às 12:00, sala A1-S201-SB, semanal ;0
+G;DA1MCTC023-15SB;Neuroanatomia;Q1;Diurno;SB;1;quarta das 10:00 às 12:00, sala A2-S206-SB, quinzenal I/sexta das 08:00 às 10:00, sala A2-S206-SB, semanal ;quarta das 10:00 às 12:00, sala A1-L302-SB, quinzenal II
+G;NA1MCTC023-15SB;Neuroanatomia;Q1;Noturno;SB;1;quarta das 21:00 às 23:00, sala A2-S307-SB, quinzenal I/sexta das 19:00 às 21:00, sala A2-S203-SB, semanal ;quarta das 21:00 às 23:00, sala A1-L302-SB, quinzenal II
+PG;NCG001M171;Neurociência;Q1;Noturno;SB;3;#N/D;#N/D
+G;DAMCTC001-15SB;Introdução à Filosofia da Mente;Q2;Diurno;SB;2;quinta das 08:00 às 10:00, Lab. A1-S205-SB, semanal ;0
+PG;NCG104M172;Desenvolvimento Neural e Cognitivo;Q2;;SB;2;#N/D;#N/D
+PG;NCG301M172;Filosofia da Mente e da Neurociência;Q2;;SB;2;#N/D;#N/D
+G;NAMCZC002-15SB;Bases Neurais da Motricidade;Q3;Noturno;SB;4;terca das 19:00 às 21:00, sala A1-S106-SB, semanal/quinta das 21:00 às 23:00, sala A1-S106-SB, semanal ;0
+G;NA1BCM0505-15SA;Processamento da Informação;Q2;Noturno;SA;1,5;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala L501, semanal 
+G;NA2BCM0505-15SA;Processamento da Informação;Q2;Noturno;SA;1,5;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala 404-2, semanal 
+PG;CCM103M172;Otimização Combinatória;Q2;;SA;4;#N/D;#N/D
+G;DAMCTA017-17SA;Programação Matemática;Q3;Diurno;SA;4;quarta das 10:00 às 12:00, sala S - 306-2, quinzenal I/sexta das 08:00 às 10:00, sala S - 306-2, semanal ;quarta das 10:00 às 12:00, lab. 409-2, quinzenal II
+G;NA2BCN0402-15SA;Funções de Uma Variável;Q3;Noturno;SA;4;terca das 21:00 às 23:00, sala A - 102-0, semanal/quinta das 19:00 às 21:00, sala A - 102-0, semanal ;0
+G;NB2BCN0402-15SA;Funções de Uma Variável;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala A - 105-0, semanal/quinta das 21:00 às 23:00, sala A - 105-0, semanal ;0
+G;;Coordenador de Funções de Uma Variável;Q3;Noturno;;3;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;MAT313D173;Seminários do Programa de Matemática III, IV e VI;Q3;;SA;2;#N/D;#N/D
+G;DAMCTC002-15SB;Introdução à Neurociência;Q3;Diurno;SB;4;quarta das 08:00 às 10:00, sala A2-S101-SB, semanal/sexta das 10:00 às 12:00, sala A2-S205-SB, semanal ;0
+G;NAMCTC002-15SB;Introdução à Neurociência;Q3;Noturno;SB;2;quarta das 19:00 às 21:00, sala A2-S203-SB, semanal/sexta das 21:00 às 23:00, sala A2-S203-SB, semanal ;0
+G;DAMCTB010-13SA;Cálculo Vetorial e Tensorial;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala S - 213-0, semanal/quinta das 08:00 às 10:00, sala S - 213-0, semanal ;0
+PG;;Recursos Computacionais no Ensino de Matemática;Q2;Noturno;SA;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTB021-17SA;Probabilidade;Q3;Diurno;SA;4;terca das 10:00 às 12:00, sala S - 502, semanal/quinta das 08:00 às 10:00, sala S - 502, semanal ;0
+G;DA10BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. L502, semanal 
+G;DB1BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. L502, semanal 
+G;DAMCTA003-17SA;Análise de Algoritmos;Q2;Diurno;SA;4;quarta das 08:00 às 10:00, Lab. S - 311-2, semanal/sexta das 10:00 às 12:00, Lab. S - 311-2, semanal ;0
+G;DSBCM0505-15SB;Processamento da Informação - EAD;Q3;Diurno;SB;3;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, sala A1-S206-SB; Primeira Prova dia 15/03/17 das 17:00 às 19:00, sala A1-S206-SB"; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;DBMCTA028-15SA;Programação Estruturada;Q3;Diurno;SA;4;quarta das 08:00 às 10:00, sala A - 110-0, semanal ;quarta das 10:00 às 12:00, lab. 407-2, semanal 
+EX;;Programação em Python para Iniciantes;Q3;;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA2BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. L503, semanal 
+G;NB2BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 19:00 às 21:00, Lab. L503, semanal 
+PG;CCM203M172;Mineração de Dados;Q2;;SA;4;#N/D;#N/D
+G;;Coordenador de Natureza da Informação;Q3;Noturno;;3;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA7BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 08:00 às 10:00, sala A - 103-0, semanal/sexta das 10:00 às 12:00, sala A - 103-0, quinzenal I;quinta das 10:00 às 12:00, sala L603, semanal 
+G;NA3BIS0005-15SB;Bases Computacionais da Ciência;Q1;Noturno;SB;2;0;terca das 21:00 às 23:00, sala A2-L001-SB, semanal 
+G;NB1BIS0005-15SB;Bases Computacionais da Ciência;Q1;Noturno;SB;2;0;terca das 19:00 às 21:00, sala A1-L002-SB, semanal 
+PG;BTC208D171;Empreendedorismo, Gestão da Inovação e Propriedade Intelectual;Q1;Noturno;SA;0,75;#N/D;#N/D
+PG;CCM105D171;Teoria dos Grafos;Q1;Noturno;SA;4;#N/D;#N/D
+G;NA1BCM0505-15SB;Processamento da Informação;Q2;Noturno;SB;2;terca das 19:00 às 21:00, sala A2-S105-SB, semanal/sexta das 21:00 às 23:00, sala A2-S105-SB, quinzenal I;quinta das 21:00 às 23:00, sala A2-L003-SB, semanal 
+G;NA1MCTA016-13SA;Paradigmas de Programação;Q2;Noturno;SA;2;segunda das 21:00 às 23:00, Lab. S - 301-1, semanal ;quinta das 19:00 às 21:00, Lab. 409-2, quinzenal II e Lab. de aula 311-2 quinzenal I
+G;NAMCTA016-13SA;Paradigmas de Programação;Q2;Noturno;SA;2;segunda das 21:00 às 23:00, Lab. S - 301-1, semanal ;quinta das 19:00 às 21:00, Lab. 407-2, quinzenal II e Lab. de aula 311-2 quinzenal I 
+G;NA1MCZA015-13SA;Mineração de Dados;Q2;Noturno;SA;3;terca das 21:00 às 23:00, Lab. S - 302-3, semanal ;sexta das 19:00 às 21:00, Lab. 408-2, quinzenal II e Lab. de aula 311-3, quinzenal I 
+G;NAMCZA015-13SA;Mineração de Dados;Q2;Noturno;SA;1;terca das 21:00 às 23:00, Lab. S - 302-3, semanal ;sexta das 19:00 às 21:00, Lab. 409-2, quinzenal II e Lab. de aula 311-3, quinzenal I
+PG;CCM001D171;Análise de Algoritmos e Estrutura de Dados;Q1;Noturno;SA;4;#N/D;#N/D
+G;DAMCTA023-13SA;Segurança de Dados;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala S - 307-2, semanal ;quarta das 10:00 às 12:00, sala 407-2, semanal 
+G;NAMCTA023-13SA;Segurança de Dados;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala S - 209-0, semanal ;quarta das 21:00 às 23:00, sala 407-2, semanal 
+G;DSBCM0505-15SB;Processamento da Informação - EAD;Q3;Diurno;SB;2;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, sala A1-S206-SB; Primeira Prova dia 15/03/17 das 17:00 às 19:00, sala A1-S206-SB"; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;;Coordenadora de Processamento da Informação - EAD;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA1MCTA002-17SA;Algoritmos e Estruturas de Dados II;Q3;Noturno;SA;2;terca das 21:00 às 23:00, sala S - 302-1, semanal ;quinta das 19:00 às 21:00, lab. 408-2, semanal 
+G;NAMCTA002-17SA;Algoritmos e Estruturas de Dados II;Q3;Noturno;SA;2;terca das 21:00 às 23:00, sala S - 302-1, semanal ;quinta das 19:00 às 21:00, lab. 409-2, semanal 
+EX;;Software Livre (Curso especialização TSI);Q3;;;4,75;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NB3BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 21:00 às 23:00, sala A - 104-0, semanal/sexta das 19:00 às 21:00, sala A - 104-0, quinzenal I;quinta das 19:00 às 21:00, sala L503, semanal 
+G;DAMCZA029-13SA;Sistemas Multimídia;Q1;Diurno;SA;4;0;terca das 08:00 às 10:00, sala 407-2, semanal/quinta das 10:00 às 12:00, sala 407-2, semanal 
+G;NAMCZA031-13SA;Web Semântica;Q1;Noturno;SA;4;0;terca das 19:00 às 21:00, sala 407-2, semanal/quinta das 21:00 às 23:00, sala 407-2, semanal 
+G;DA7BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. L506, semanal 
+G;DB7BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. L506, semanal 
+G;NA8BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. 402-2, semanal 
+G;NB8BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 19:00 às 21:00, Lab. 402-2, semanal 
+G;NBMCTB001-13SA;Álgebra Linear;Q1;Noturno;SA;6;segunda das 21:00 às 23:00, sala S - 214-0, semanal/quarta das 19:00 às 21:00, sala S - 208-0, semanal/sexta das 21:00 às 23:00, sala S - 214-0, semanal ;0
+G;;Coordenador de Álgebra Linear;Q1;Noturno;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCTB001-17SA;Álgebra Linear;Q3;Noturno;SA;6;segunda das 19:00 às 21:00, Lab. S - 212-0, semanal/quarta das 21:00 às 23:00, Lab. S - 212-0, semanal/sexta das 19:00 às 21:00, Lab. S - 208-0, semanal ;0
+G;NBMCTB001-17SA;Álgebra Linear;Q3;Noturno;SA;6;segunda das 21:00 às 23:00, Lab. S - 211-0, semanal/quarta das 19:00 às 21:00, Lab. A - 104-0, semanal/sexta das 21:00 às 23:00, Lab. S - 205-0, semanal ;0
+G;NA2BCN0407-15SA;Funções de Várias Variáveis;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala A - 102-0, semanal/quinta das 19:00 às 21:00, sala A - 102-0, semanal ;0
+G;NB2BCN0407-15SA;Funções de Várias Variáveis;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala A - 207-0, semanal/quinta das 21:00 às 23:00, sala A - 207-0, semanal ;0
+G;DABCN0407-15SA;Funções de Várias Variáveis;Q2;Diurno;SA;4;terca das 16:00 às 18:00, Lab. S - 213-0, semanal/sexta das 14:00 às 16:00, Lab. S - 213-0, semanal ;0
+G;DBBCN0407-15SA;Funções de Várias Variáveis;Q2;Diurno;SA;4;terca das 14:00 às 16:00, Lab. A - 103-0, semanal/sexta das 16:00 às 18:00, Lab. A - 103-0, semanal ;0
+G;;Coordenador de Funções de Várias Variáveis;Q2;;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA2BIS0003-15SA;Bases Matemáticas;Q3;Noturno;SA;4;terca das 21:00 às 23:00, Lab. A - 102-0, semanal/sexta das 19:00 às 21:00, Lab. A - 102-0, semanal ;0
+G;NBBIS0003-15SA;Bases Matemáticas;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala A - 107-0, semanal/sexta das 21:00 às 23:00, sala A - 107-0, semanal ;0
+G;DAMCZB029-13SA;Teoria Aritmética dos Números II;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala S - 501, semanal/quinta das 08:00 às 10:00, sala S - 501, semanal ;0
+G;NA4BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Noturno;SA;3;terca das 21:00 às 23:00, Lab. S - 206-0, quinzenal II/quarta das 19:00 às 21:00, Lab. A - 101-0, semanal ;0
+G;NB3BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Noturno;SA;3;terca das 19:00 às 21:00, Lab. S - 212-0, quinzenal II/quarta das 21:00 às 23:00, Lab. A - 102-0, semanal ;0
+G;NAMCTB023-17SA;Teoria Aritmética dos Números;Q2;Noturno;SA;4;segunda das 21:00 às 23:00, Lab. S - 501, semanal/quinta das 19:00 às 21:00, Lab. S - 501, semanal ;0
+G;DAMCTB016-13SA;Geometria Diferencial I;Q1;Diurno;SA;4;terca das 10:00 às 12:00, sala S - 502, semanal/quinta das 08:00 às 10:00, sala S - 502, semanal ;0
+G;DA2BIS0003-15SB;Bases Matemáticas;Q2;Diurno;SB;4;terca das 10:00 às 12:00, Lab. A2-S105-SB, semanal/sexta das 08:00 às 10:00, Lab. A2-S105-SB, semanal ;0
+G;DCBIS0003-15SB;Bases Matemáticas;Q2;Diurno;SB;4;terca das 17:00 às 19:00, Lab. B-A004-SB, semanal/sexta das 17:00 às 19:00, Lab. B-A004-SB, semanal ;0
+G;NA1BIS0003-15SB;Bases Matemáticas;Q3;Noturno;SB;4;terca das 21:00 às 23:00, Lab. A2-S102-SB, semanal/sexta das 19:00 às 21:00, Lab. A2-S102-SB, semanal ;0
+G;NB1BIS0003-15SB;Bases Matemáticas;Q3;Noturno;SB;4;terca das 19:00 às 21:00, sala A1-S204-SB, semanal/sexta das 21:00 às 23:00, sala A1-S204-SB, semanal ;0
+PG;BTC206D171;Biologia Molecular e Biotecnologia;Q1;Noturno;SA;2;#N/D;#N/D
+G;DANHT1002-15SB;Bioética;Q1;Diurno;SB;2;segunda das 10:00 às 12:00, sala A1-S105-SB, semanal ;0
+G;NANHT1002-15SB;Bioética;Q1;Noturno;SB;2;segunda das 21:00 às 23:00, sala A1-S105-SB, semanal ;0
+G;DFBCS0001-15SA;Base Experimental das Ciências Naturais;Q2;Diurno;SA;3;0;quinta das 14:00 às 16:00, Lab. L605, quinzenal I/quinta das 14:00 às 18:00, Lab. L605, quinzenal II
+G;NB4BCS0001-15SA;Base Experimental das Ciências Naturais;Q2;Noturno;SA;3;0;quarta das 19:00 às 21:00, Lab. 501-1, quinzenal I/quarta das 19:00 às 23:00, Lab. 501-1, quinzenal II
+G;ND4BCS0001-15SA;Base Experimental das Ciências Naturais;Q2;Noturno;SA;3;0;quinta das 19:00 às 21:00, Lab. 501-1, quinzenal I/quinta das 19:00 às 23:00, Lab. 501-1, quinzenal II
+G;NE1BCS0001-15SB;Base Experimental das Ciências Naturais;Q2;Noturno;SB;3;0;sabado das 08:00 às 10:00, Lab. A1-L301-SB, quinzenal I/sabado das 08:00 às 12:00, Lab. A1-L301-SB, quinzenal II
+G;;Coordenadora de Base Experimental das Ciências Naturais;Q2;;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCTB014-13SA;Extensões Algébricas;Q1;Noturno;SA;4;quarta das 21:00 às 23:00, sala S - 502, semanal/sexta das 19:00 às 21:00, sala S - 502, semanal ;0
+G;NA4BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. A - 104-0, semanal/sexta das 19:00 às 21:00, Lab. A - 104-0, semanal ;0
+G;NB4BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. A - 108-0, semanal/sexta das 21:00 às 23:00, Lab. A - 108-0, semanal ;0
+G;NA1BCN0402-15SA;Funções de Uma Variável;Q3;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 205-0, semanal/quinta das 19:00 às 21:00, sala S - 205-0, semanal ;0
+G;NB1BCN0402-15SA;Funções de Uma Variável;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala A - 104-0, semanal/quinta das 21:00 às 23:00, sala A - 104-0, semanal ;0
+G;DA3BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Diurno;SA;3;terca das 10:00 às 12:00, Lab. S - 205-0, quinzenal II/quarta das 08:00 às 10:00, Lab. S - 205-0, semanal ;0
+G;DAMCTB020-17SA;Teoria da Medida e Integração;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. S - 502, semanal/sexta das 10:00 às 12:00, Lab. S - 502, semanal ;0
+G;DDBIS0003-15SB;Bases Matemáticas;Q3;Diurno;SB;4;terca das 14:00 às 16:00, sala A2-S101-SB, semanal/sexta das 14:00 às 16:00, sala A2-S101-SB, semanal ;0
+G;DAMCTD011-13SA;Práticas de Ensino de Matemática no Ensino Fundamental;Q1;Diurno;SA;4;0;segunda das 08:00 às 10:00, sala 401-2, semanal/quarta das 10:00 às 12:00, sala 401-2, semanal 
+G;;Estágio Supervisionado em Matemática - Ensino Médio;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;ENS255M171;Tendências em Educação Matemática;Q1;Noturno;SA;4;#N/D;#N/D
+G;DAMCTD010-13SA;História da Matemática;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. A - 110-0, semanal/quinta das 10:00 às 12:00, Lab. A - 110-0, semanal ;0
+G;;Estágio Supervisionado em Matemática - Ensino Fundamental;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Estágio Supervisionado em Matemática - Ensino Médio;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCTB016-13SA;Geometria Diferencial I;Q1;Noturno;SA;4;terca das 21:00 às 23:00, sala S - 502, semanal/quinta das 19:00 às 21:00, sala S - 502, semanal ;0
+G;DABCN0407-15SB;Funções de Várias Variáveis;Q2;Diurno;SB;4;segunda das 10:00 às 12:00, sala A2-S201-SB, semanal/quinta das 08:00 às 10:00, sala A2-S201-SB, semanal ;0
+G;NABCN0407-15SB;Funções de Várias Variáveis;Q2;Noturno;SB;4;segunda das 21:00 às 23:00, sala A2-S201-SB, semanal/quinta das 19:00 às 21:00, sala A2-S201-SB, semanal ;0
+G;NBBCN0407-15SB;Funções de Várias Variáveis;Q2;Noturno;SB;4;segunda das 19:00 às 21:00, sala A2-S201-SB, semanal/quinta das 21:00 às 23:00, sala A2-S201-SB, semanal ;0
+G;NAMCZB009-13SA;Geometria Não Euclidiana;Q3;Noturno;SA;4;segunda das 19:00 às 21:00, sala S - 501, semanal/sexta das 21:00 às 23:00, sala S - 501, semanal ;0
+G;DAMCZC013-15SB;Memória e Aprendizagem;Q1;Diurno;SB;3;segunda das 08:00 às 10:00, sala A1-S106-SB, semanal/quinta das 10:00 às 12:00, sala A1-S106-SB, semanal ;0
+G;DAMCTC021-15SB;Introdução à Neurociência Computacional;Q2;Diurno;SB;4;0;terca das 08:00 às 10:00, Lab. A1-L002-SB, semanal/quinta das 10:00 às 12:00, Lab. A1-L002-SB, semanal 
+G;NAMCTC021-15SB;Introdução à Neurociência Computacional;Q2;Noturno;SB;4;0;terca das 19:00 às 21:00, Lab. A1-L101-SB, semanal/quinta das 21:00 às 23:00, Lab. A1-L101-SB, semanal 
+G;NAMCTC024-15SB;Neuroetologia;Q3;Noturno;SB;4;terca das 21:00 às 23:00, sala A1-S105-SB, semanal/quinta das 19:00 às 21:00, sala A1-S105-SB, semanal ;0
+G;DA9BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 08:00 às 10:00, sala A - 103-0, semanal/sexta das 10:00 às 12:00, sala A - 103-0, quinzenal I;quinta das 10:00 às 12:00, sala 402-2, semanal 
+G;DB1BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;3;terca das 10:00 às 12:00, sala A - 104-0, semanal/sexta das 08:00 às 10:00, sala A - 104-0, quinzenal I;quinta das 08:00 às 10:00, sala L501, semanal 
+G;DB2BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 10:00 às 12:00, sala A - 104-0, semanal/sexta das 08:00 às 10:00, sala A - 104-0, quinzenal I;quinta das 08:00 às 10:00, sala 404-2, semanal 
+G;DB3BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 10:00 às 12:00, sala A - 104-0, semanal/sexta das 08:00 às 10:00, sala A - 104-0, quinzenal I;quinta das 08:00 às 10:00, sala L503, semanal 
+G;DA2BCM0506-15SA;Comunicação e Redes;Q2;Diurno;SA;3;segunda das 08:00 às 10:00, Lab. S - 208-0, semanal/terca das 10:00 às 12:00, Lab. S - 208-0, quinzenal I;0
+G;;Coordenador de Comunicação e Redes;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;CCM-206D173;Inteligência na Web e Big Data;Q3;;SA;2;#N/D;#N/D
+PG;CCM206M173;Inteligência na Web e Big Data;Q3;;SA;2;#N/D;#N/D
+G;DA1MCTA028-15SA;Programação Estruturada;Q3;Diurno;SA;3;quarta das 10:00 às 12:00, sala A - 103-0, semanal ;sexta das 08:00 às 10:00, lab. 407-2, semanal 
+G;DA2MCTA028-15SA;Programação Estruturada;Q3;Diurno;SA;3;quarta das 10:00 às 12:00, sala A - 103-0, semanal ;sexta das 10:00 às 12:00, lab. 407-2, semanal 
+G;DAMCZB014-13SA;Introdução à Análise Funcional;Q1;Diurno;SA;4;terca das 10:00 às 12:00, sala S - 501, semanal/quinta das 08:00 às 10:00, sala L604, semanal ;0
+G;NAMCZB014-13SA;Introdução à Análise Funcional;Q1;Noturno;SA;4;terca das 21:00 às 23:00, sala S - 501, semanal/quinta das 19:00 às 21:00, sala S - 501, semanal ;0
+G;NAMCTB009-17SA;Cálculo Numérico;Q3;Noturno;SA;4;quarta das 19:00 às 21:00, Lab. A - 105-0, semanal/sexta das 21:00 às 23:00, Lab. S - 211-0, semanal ;0
+G;NBMCTB009-17SA;Cálculo Numérico;Q3;Noturno;SA;4;quarta das 21:00 às 23:00, Lab. A - 105-0, semanal/sexta das 19:00 às 21:00, Lab. S - 207-0, semanal ;0
+G;;Coordenador de Cálculo Numérico;Q3;Noturno;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTC019-15SB;Neurobiologia Molecular e Celular;Q1;Diurno;SB;4;segunda das 08:00 às 10:00, sala A1-S105-SB, semanal/quinta das 10:00 às 12:00, sala A1-S105-SB, semanal ;quarta das 08:00 às 10:00, sala A1-L305-SB, semanal 
+G;NAMCTC019-15SB;Neurobiologia Molecular e Celular;Q1;Noturno;SB;2;segunda das 19:00 às 21:00, sala A1-S105-SB, semanal/quinta das 21:00 às 23:00, sala A1-S105-SB, semanal ;quarta das 19:00 às 21:00, sala A1-L305-SB, semanal 
+PG;NCG001M171;Neurociência;Q1;Noturno;SB;3;#N/D;#N/D
+PG;;Seminários em Neurociência e Cognição III;Q1;Noturno;SB;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTC009-15SB;Progressos e Métodos em Neurociência;Q2;Diurno;SB;4;terca das 10:00 às 12:00, Lab. A1-S106-SB, semanal/quinta das 08:00 às 10:00, Lab. A1-S106-SB, semanal ;0
+G;NAMCTC009-15SB;Progressos e Métodos em Neurociência;Q2;Noturno;SB;4;terca das 21:00 às 23:00, Lab. A1-S106-SB, semanal/quinta das 19:00 às 21:00, Lab. A1-S106-SB, semanal ;0
+PG;NCG405M172;Seminários em Neurociência e Cognição IV;Q2;;SB;2;#N/D;#N/D
+PG;NCG406D173;Seminários em Neurociência e Cognição V;Q3;;SB;2;#N/D;#N/D
+G;NANHT1058-14SB;Morfofisiologia Humana I;Q3;Noturno;SB;6;quarta das 19:00 às 21:00, sala A1-S106-SB, semanal ;segunda das 19:00 às 23:00, lab. A1-L301-SB, semanal 
+G;DA2BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;2;terca das 08:00 às 10:00, sala A2-S105-SB, semanal/sexta das 10:00 às 12:00, sala A2-S105-SB, quinzenal I;quinta das 10:00 às 12:00, sala A1-L002-SB, semanal 
+G;NA3BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;2;terca das 19:00 às 21:00, sala A2-S102-SB, semanal/sexta das 21:00 às 23:00, sala A2-S102-SB, quinzenal I;quinta das 21:00 às 23:00, sala A1-L101-SB, semanal 
+G;NB1BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;2;terca das 21:00 às 23:00, sala A2-S105-SB, semanal/sexta das 19:00 às 21:00, sala A2-S105-SB, quinzenal I;quinta das 19:00 às 21:00, sala A2-L003-SB, semanal 
+EX;;Produção de Vídeos NTE;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABIS0005-15SA;Bases Computacionais da Ciência;Q3;Diurno;SA;2;0;quarta das 16:00 às 18:00, sala 402-2, semanal 
+G;NABIS0005-15SA;Bases Computacionais da Ciência;Q3;Noturno;SA;2;0;quarta das 21:00 às 23:00, sala 402-2, semanal 
+G;DAMCTA002-17SA;Algoritmos e Estruturas de Dados II;Q3;Diurno;SA;4;terca das 10:00 às 12:00, sala S - 308-2, semanal ;quinta das 08:00 às 10:00, lab. 407-2, semanal 
+G;NA1MCTA002-17SA;Algoritmos e Estruturas de Dados II;Q3;Noturno;SA;2;terca das 21:00 às 23:00, sala S - 302-1, semanal ;quinta das 19:00 às 21:00, lab. 408-2, semanal 
+PG;MAT297HM171;Tópicos em Matemática I - Uma Introdução à Teoria de Anéis e;Q1;Noturno;SA;4;#N/D;#N/D
+PG;MAT214D173;Corpos Finitos;Q3;;SA;2;#N/D;#N/D
+PG;MAT214M173;Corpos Finitos;Q3;;SA;2;#N/D;#N/D
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q1;Diurno;EAD;4;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;NAMCTA010-15SA;Engenharia de Software;Q1;Noturno;SA;4;terca das 21:00 às 23:00, sala A - 102-0, semanal/sexta das 19:00 às 21:00, sala A - 102-0, semanal ;0
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q2;Diurno;SA;4;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;NA7BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 103-0, semanal/sexta das 21:00 às 23:00, sala A - 103-0, quinzenal I;quinta das 21:00 às 23:00, sala L603, semanal 
+G;NA1MCTA026-13SA;Sistemas Operacionais;Q1;Noturno;SA;1,5;segunda das 21:00 às 23:00, sala S - 212-0, semanal ;quinta das 19:00 às 21:00, sala 409-2, semanal 
+G;NAMCTA026-13SA;Sistemas Operacionais;Q1;Noturno;SA;2,5;segunda das 21:00 às 23:00, sala S - 212-0, semanal ;quinta das 19:00 às 21:00, sala 407-2, semanal 
+G;NAMCTA007-17SA;Compiladores;Q2;Noturno;SA;4;segunda das 19:00 às 21:00, Lab. S - 308-2, semanal ;quarta das 21:00 às 23:00, Lab. 407-2, semanal 
+G;NA1MCTA025-13SA;Sistemas Distribuídos;Q2;Noturno;SA;3;quarta das 19:00 às 21:00, Lab. S - 302-2, semanal ;sexta das 19:00 às 21:00, Lab. 407-2, semanal 
+G;NA2MCTA025-13SA;Sistemas Distribuídos;Q2;Noturno;SA;3;quarta das 19:00 às 21:00, Lab. S - 302-2, semanal ;sexta das 21:00 às 23:00, Lab. 407-2, semanal 
+EX;;Modelagem de Dados e Aplicações;Q3;;SA;4,75;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;CCM101M171;Computação Bioinspirada;Q1;Noturno;SA;4;#N/D;#N/D
+G;NAMCTA006-13SA;Circuitos Digitais;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala A - 113-0, semanal/quinta das 19:00 às 21:00, sala A - 113-0, semanal ;0
+G;DAMCZA030-13SA;Vida Artificial na Computação;Q1;Diurno;SA;2;quarta das 08:00 às 10:00, sala S - 207-0, semanal ;0
+G;NAMCZA030-13SA;Vida Artificial na Computação;Q1;Noturno;SA;2;quarta das 19:00 às 21:00, sala S - 204-0, semanal ;0
+G;DA1BCM0504-15SA;Natureza da Informação;Q3;Diurno;SA;3;segunda das 08:00 às 10:00, sala A - 102-0, quinzenal II/quinta das 10:00 às 12:00, sala A - 102-0, semanal ;0
+G;NB2BCM0504-15SA;Natureza da Informação;Q3;Noturno;SA;3;segunda das 21:00 às 23:00, sala A - 105-0, quinzenal II/quinta das 19:00 às 21:00, sala A - 105-0, semanal ;0
+G;DAMCTD013-13SA;Práticas de Ensino de Matemática III;Q1;Diurno;SA;3;0;terca das 08:30 às 10:00, sala 401-2, semanal/quinta das 10:00 às 11:30, sala 401-2, semanal 
+PG;ENS190M172;Didática da Matemática;Q2;;SA;2;#N/D;#N/D
+G;NAMCTD014-13SA;Práticas de Ensino de Matemática I;Q2;Noturno;SA;3;0;segunda das 19:30 às 21:00, Lab. 401-2, semanal/quarta das 21:00 às 22:30, Lab. 401-2, semanal 
+G;;Estágio Supervisionado em Matemática - Ensino Fundamental;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTD010-13SA;História da Matemática;Q3;Diurno;SA;1,6;terca das 08:00 às 10:00, Lab. A - 110-0, semanal/quinta das 10:00 às 12:00, Lab. A - 110-0, semanal ;0
+G;DAMCTB001-13SA;Álgebra Linear;Q1;Diurno;SA;6;segunda das 08:00 às 10:00, sala S - 214-0, semanal/quarta das 10:00 às 12:00, sala S - 214-0, semanal/sexta das 08:00 às 10:00, sala S - 214-0, semanal ;0
+G;DA1MCTB001-17SA;Álgebra Linear;Q2;Diurno;SA;6;segunda das 08:00 às 10:00, Lab. S - 212-0, semanal/quarta das 10:00 às 12:00, Lab. S - 208-0, semanal/sexta das 08:00 às 10:00, Lab. S - 212-0, semanal ;0
+G;DA2BCN0402-15SB;Funções de Uma Variável;Q3;Diurno;SB;4;terca das 10:00 às 12:00, sala A1-S202-SB, semanal/quinta das 08:00 às 10:00, sala A1-S202-SB, semanal ;0
+G;NA1BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;3;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala L501, semanal 
+G;NA2BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala 404-2, semanal 
+G;NA3BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala L503, semanal 
+G;NB4BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 21:00 às 23:00, sala A - 108-0, semanal/sexta das 19:00 às 21:00, sala A - 108-0, quinzenal I;quinta das 19:00 às 21:00, sala L504, semanal 
+G;NB5BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 21:00 às 23:00, sala A - 108-0, semanal/sexta das 19:00 às 21:00, sala A - 108-0, quinzenal I;quinta das 19:00 às 21:00, sala L505, semanal 
+G;NB6BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 21:00 às 23:00, sala A - 108-0, semanal/sexta das 19:00 às 21:00, sala A - 108-0, quinzenal I;quinta das 19:00 às 21:00, sala L506, semanal 
+G;NA1BCM0505-15SA;Processamento da Informação;Q2;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala L501, semanal 
+G;NAMCTA003-17SA;Análise de Algoritmos;Q2;Noturno;SA;4;quarta das 19:00 às 21:00, Lab. S - 311-2, semanal/sexta das 21:00 às 23:00, Lab. S - 311-2, semanal ;0
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q3;Diurno;SA;4;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;NAMCTA017-17SA;Programação Matemática;Q3;Noturno;SA;4;quarta das 21:00 às 23:00, sala S - 214-0, semanal/sexta das 19:00 às 21:00, sala S - 301-2, semanal ;0
+G;NA1BCM0506-15SA;Comunicação e Redes;Q2;Noturno;SA;3;segunda das 19:00 às 21:00, Lab. S - 204-0, semanal/terca das 21:00 às 23:00, Lab. S - 204-0, quinzenal I;0
+G;NB2BCM0506-15SA;Comunicação e Redes;Q2;Noturno;SA;3;segunda das 21:00 às 23:00, Lab. S - 311-1, semanal/terca das 19:00 às 21:00, Lab. S - 311-1, quinzenal I;0
+G;DA9BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. 404-2, semanal 
+G;NAMCTA027-17SA;Teoria dos Grafos;Q3;Noturno;SA;4;quarta das 21:00 às 23:00, sala S - 301-3, semanal/sexta das 19:00 às 21:00, sala S - 301-3, semanal ;0
+G;DABCM0504-15SB;Natureza da Informação;Q1;Diurno;SB;3;segunda das 14:00 às 16:00, sala A1-S201-SB, quinzenal II/quarta das 16:00 às 18:00, sala A1-S201-SB, semanal ;0
+G;NABCM0504-15SB;Natureza da Informação;Q1;Noturno;SB;3;segunda das 19:00 às 21:00, sala A1-S201-SB, quinzenal II/quarta das 21:00 às 23:00, sala A1-S201-SB, semanal ;0
+G;NA2BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;2;terca das 19:00 às 21:00, sala A2-S105-SB, semanal/sexta das 21:00 às 23:00, sala A2-S105-SB, quinzenal I;quinta das 21:00 às 23:00, sala A1-L002-SB, semanal 
+G;DAMCTA004-17SA;Arquitetura de Computadores;Q3;Diurno;SA;4;terca das 08:00 às 10:00, sala A - 114-0, semanal/sexta das 10:00 às 12:00, sala A - 114-0, semanal ;0
+G;NAMCTA004-17SA;Arquitetura de Computadores;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala S - 301-3, semanal/sexta das 21:00 às 23:00, sala S - 301-3, semanal ;0
+G;DA1MCTA022-13SA;Redes de Computadores;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala S - 301-3, semanal/quarta das 10:00 às 12:00, sala S - 301-3, quinzenal I;quarta das 10:00 às 12:00, sala 404-2, quinzenal II
+G;DAMCTA026-13SA;Sistemas Operacionais;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala S - 307-2, semanal ;quinta das 08:00 às 10:00, sala 407-2, semanal 
+G;;Coordenador de Redes de Computadores;Q1;Noturno;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;INF107D171;Redes Ópticas;Q1;;SA;2;#N/D;#N/D
+PG;INF102M172;Tecnologias de Redes de Computadores;Q2;;SA;4;#N/D;#N/D
+G;DAMCTA025-13SA;Sistemas Distribuídos;Q2;Diurno;SA;4;quarta das 08:00 às 10:00, Lab. S - 308-2, semanal ;sexta das 10:00 às 12:00, Lab. 407-2, semanal 
+G;;Coordenador de Bases Computacionais da Ciência;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA4BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. L505, semanal 
+G;DB4BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. L505, semanal 
+G;NA7BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. L506, semanal 
+G;NB7BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 19:00 às 21:00, Lab. L506, semanal 
+G;;Coordenador de Bases Computacionais da Ciência;Q2;;SA;3;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA1MCTA008-17SA;Computação Gráfica;Q3;Noturno;SA;4;0;terca das 21:00 às 23:00, lab. 404-2, semanal/quinta das 19:00 às 21:00, lab. 404-2, semanal 
+G;NA1BCN0402-15SA;Funções de Uma Variável;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 205-0, semanal/quinta das 19:00 às 21:00, sala S - 205-0, semanal ;0
+G;DA1BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Diurno;SA;3;terca das 10:00 às 12:00, Lab. S - 204-0, quinzenal II/quarta das 08:00 às 10:00, Lab. S - 204-0, semanal ;0
+G;DB1BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Diurno;SA;3;terca das 08:00 às 10:00, Lab. S - 207-0, quinzenal II/quarta das 10:00 às 12:00, Lab. S - 207-0, semanal ;0
+G;NA2BCN0402-15SB;Funções de Uma Variável;Q3;Noturno;SB;4;terca das 21:00 às 23:00, sala A1-S202-SB, semanal/quinta das 19:00 às 21:00, sala A1-S202-SB, semanal ;0
+G;NB2BCN0402-15SB;Funções de Uma Variável;Q3;Noturno;SB;4;terca das 19:00 às 21:00, sala A2-S201-SB, semanal/quinta das 21:00 às 23:00, sala A1-S203-SB, semanal ;0
+PG;MAT121M171;Análise no Rn;Q1;;SA;6;#N/D;#N/D
+G;DA4BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala A - 108-0, semanal/quinta das 08:00 às 10:00, sala A - 108-0, semanal ;0
+G;DB4BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala A - 108-0, semanal/quinta das 10:00 às 12:00, sala A - 108-0, semanal ;0
+G;NA4BCN0407-15SA;Funções de Várias Variáveis;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 301-2, semanal/quinta das 19:00 às 21:00, sala S - 301-2, semanal ;0
+G;NBMCTB001-17SA;Álgebra Linear;Q2;Noturno;SA;6;segunda das 21:00 às 23:00, Lab. S - 211-0, semanal/quarta das 19:00 às 21:00, Lab. A - 104-0, semanal/sexta das 21:00 às 23:00, Lab. S - 205-0, semanal ;0
+G;NAMCTB007-17SA;Anéis e Corpos;Q2;Noturno;SA;4;quarta das 21:00 às 23:00, Lab. S - 502, semanal/sexta das 19:00 às 21:00, Lab. S - 502, semanal ;0
+G;DA3BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala A - 103-0, semanal/quinta das 08:00 às 10:00, sala A - 103-0, semanal ;0
+G;DB3BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala A - 106-0, semanal/quinta das 10:00 às 12:00, sala A - 106-0, semanal ;0
+G;DA2BIS0003-15SA;Bases Matemáticas;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. A - 102-0, semanal/sexta das 08:00 às 10:00, Lab. A - 102-0, semanal ;0
+G;DB2BIS0003-15SA;Bases Matemáticas;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. A - 108-0, semanal/sexta das 10:00 às 12:00, Lab. A - 108-0, semanal ;0
+G;DB3BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 10:00 às 12:00, sala A - 104-0, semanal/sexta das 08:00 às 10:00, sala A - 104-0, quinzenal I;quinta das 08:00 às 10:00, sala L503, semanal 
+G;DSBCM0505-15SB;Processamento da Informação - EAD;Q1;Diurno;EAD;3;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, sala A1-S206-SB; Primeira Prova dia 15/03/17 das 17:00 às 19:00, sala A1-S206-SB"; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;;Coordenadora de Processamento da Informação;Q1;Noturno;SA;3;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA1BCM0505-15SA;Processamento da Informação;Q2;Diurno;SA;2;terca das 08:00 às 10:00, sala A - 101-0, semanal/sexta das 10:00 às 12:00, sala A - 101-0, quinzenal I;quinta das 10:00 às 12:00, sala L501, semanal 
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q2;Diurno;;2;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;DSBCM0505-15SB;Processamento da Informação - EAD;Q2;Diurno;;2;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, sala A1-S206-SB; Primeira Prova dia 15/03/17 das 17:00 às 19:00, sala A1-S206-SB"; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;;Coordenadora de Processamento da Informação;Q2;;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Coordenadora de Processamento da Informação;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q3;Diurno;SA;4;terca das 14:00 às 16:00, sala S - 205-0, semanal/sexta das 14:00 às 16:00, sala S - 205-0, semanal ;0
+G;DBBCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q3;Diurno;SA;4;terca das 17:00 às 19:00, sala S - 206-0, semanal/sexta das 17:00 às 19:00, sala S - 206-0, semanal ;0
+G;NABCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q3;Noturno;SA;4;terca das 21:00 às 23:00, sala S - 208-0, semanal/sexta das 19:00 às 21:00, sala S - 208-0, semanal ;0
+G;NBBCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala S - 206-0, semanal/sexta das 21:00 às 23:00, sala S - 206-0, semanal ;0
+G;DAMCTB019-13SA;Matemática Discreta;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala S - 213-0, semanal/quarta das 10:00 às 12:00, sala S - 213-0, semanal ;0
+G;NAMCTB019-13SA;Matemática Discreta;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala S - 213-0, semanal/quarta das 21:00 às 23:00, sala S - 213-0, semanal ;0
+G;NANHI2049-13SA;Lógica Básica;Q3;Noturno;SA;4;terca das 21:00 às 23:00, sala S - 311-2, semanal/sexta das 19:00 às 21:00, sala S - 311-2, semanal ;0
+PG;;Aritmética;Q3;;SA;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTB022-13SA;Sequências e Séries;Q1;Diurno;SA;4;quarta das 08:00 às 10:00, sala S - 213-0, semanal/sexta das 10:00 às 12:00, sala S - 213-0, semanal ;0
+G;NA2BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. A - 102-0, semanal/sexta das 19:00 às 21:00, Lab. A - 102-0, semanal ;0
+G;NB2BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. S - 213-0, semanal/sexta das 21:00 às 23:00, Lab. S - 212-0, semanal ;0
+G;NAMCTB011-17SA;Equações Diferenciais Ordinárias;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala S - 502, semanal/sexta das 21:00 às 23:00, sala S - 502, semanal ;0
+G;DAMCTA015-13SA;Linguagens Formais e Automata;Q1;Diurno;SA;4;terca das 08:00 às 10:00, sala S - 209-0, semanal/quinta das 10:00 às 12:00, sala S - 209-0, semanal ;0
+G;NAMCTA015-13SA;Linguagens Formais e Automata;Q1;Noturno;SA;4;terca das 19:00 às 21:00, sala A - 114-0, semanal/quinta das 21:00 às 23:00, sala A - 114-0, semanal ;0
+G;DAMCTB001-17SA;Álgebra Linear;Q2;Diurno;SA;6;segunda das 08:00 às 10:00, Lab. A - 113-0, semanal/quarta das 10:00 às 12:00, Lab. A - 113-0, semanal/sexta das 08:00 às 10:00, Lab. A - 113-0, semanal ;0
+G;DAMCTB023-17SA;Teoria Aritmética dos Números;Q2;Diurno;SA;4;segunda das 10:00 às 12:00, Lab. S - 501, semanal/quinta das 08:00 às 10:00, Lab. S - 501, semanal ;0
+G;DA7BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 08:00 às 10:00, sala A - 103-0, semanal/sexta das 10:00 às 12:00, sala A - 103-0, quinzenal I;quinta das 10:00 às 12:00, sala L603, semanal 
+G;DA8BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 08:00 às 10:00, sala A - 103-0, semanal/sexta das 10:00 às 12:00, sala A - 103-0, quinzenal I;quinta das 10:00 às 12:00, sala L703, semanal 
+G;DA9BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 08:00 às 10:00, sala A - 103-0, semanal/sexta das 10:00 às 12:00, sala A - 103-0, quinzenal I;quinta das 10:00 às 12:00, sala 402-2, semanal 
+G;DB4BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 10:00 às 12:00, sala A - 105-0, semanal/sexta das 08:00 às 10:00, sala A - 105-0, quinzenal I;quinta das 08:00 às 10:00, sala L504, semanal 
+G;DB5BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 10:00 às 12:00, sala A - 105-0, semanal/sexta das 08:00 às 10:00, sala A - 105-0, quinzenal I;quinta das 08:00 às 10:00, sala L505, semanal 
+G;DB6BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;1;terca das 10:00 às 12:00, sala A - 105-0, semanal/sexta das 08:00 às 10:00, sala A - 105-0, quinzenal I;quinta das 08:00 às 10:00, sala 402-2, semanal 
+G;NA1MCTA001-13SA;Algoritmos e Estruturas de Dados I;Q1;Noturno;SA;4;quarta das 19:00 às 21:00, sala S - 301-3, semanal ;sexta das 19:00 às 21:00, sala 407-2, semanal 
+G;NA2MCTA001-13SA;Algoritmos e Estruturas de Dados I;Q1;Noturno;SA;4;quarta das 19:00 às 21:00, sala S - 301-3, semanal ;sexta das 21:00 às 23:00, sala 407-2, semanal 
+PG;CCM002D173;Metodologia de Pesquisa em Ciência da Computação;Q3;;SA;1;#N/D;#N/D
+PG;CCM002M173;Metodologia de Pesquisa em Ciência da Computação;Q3;;SA;1;#N/D;#N/D
+G;NA1MCTA028-15SA;Programação Estruturada;Q3;Noturno;SA;3;quarta das 19:00 às 21:00, sala S - 213-0, semanal ;quarta das 21:00 às 23:00, lab. 409-2, semanal 
+G;NA2MCTA028-15SA;Programação Estruturada;Q3;Noturno;SA;3;quarta das 19:00 às 21:00, sala S - 213-0, semanal ;sexta das 21:00 às 23:00, lab. 409-2, semanal 
+G;;Coordenador de Programação Estruturada;Q3;Noturno;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABIS0003-15SB;Bases Matemáticas;Q1;Diurno;SB;4;segunda das 17:00 às 19:00, sala B-A004-SB, semanal/quarta das 17:00 às 19:00, sala B-A004-SB, semanal ;0
+G;NAMCTB001-13SB;Álgebra Linear;Q1;Noturno;SB;6;segunda das 19:00 às 21:00, sala A1-S203-SB, semanal/quarta das 21:00 às 23:00, sala A2-S202-SB, semanal/sexta das 19:00 às 21:00, sala A2-S106-SB, semanal ;0
+G;DCBIS0003-15SB;Bases Matemáticas;Q3;Diurno;SB;4;terca das 17:00 às 19:00, Lab. B-A004-SB, semanal/sexta das 17:00 às 19:00, Lab. B-A004-SB, semanal ;0
+G;NA2BIS0003-15SB;Bases Matemáticas;Q3;Noturno;SB;4;terca das 21:00 às 23:00, Lab. A2-S105-SB, semanal/sexta das 19:00 às 21:00, Lab. A2-S105-SB, semanal ;0
+G;DAMCZB025-13SA;Módulos;Q3;Diurno;SA;4;quarta das 14:00 às 16:00, sala S - 501, semanal/sexta das 14:00 às 16:00, sala S - 501, semanal ;0
+G;DA8BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 08:00 às 10:00, sala A - 103-0, semanal/sexta das 10:00 às 12:00, sala A - 103-0, quinzenal I;quinta das 10:00 às 12:00, sala L703, semanal 
+G;NA8BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 103-0, semanal/sexta das 21:00 às 23:00, sala A - 103-0, quinzenal I;quinta das 21:00 às 23:00, sala L703, semanal 
+G;NB6BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 21:00 às 23:00, sala A - 108-0, semanal/sexta das 19:00 às 21:00, sala A - 108-0, quinzenal I;quinta das 19:00 às 21:00, sala L506, semanal 
+G;DAMCTA008-17SA;Computação Gráfica;Q3;Diurno;SA;4;0;terca das 10:00 às 12:00, lab. 409-2, semanal/quinta das 08:00 às 10:00, lab. 409-2, semanal 
+G;NAMCTA008-17SA;Computação Gráfica;Q3;Noturno;SA;4;0;terca das 21:00 às 23:00, lab. 407-2, semanal/quinta das 19:00 às 21:00, lab. 407-2, semanal 
+G;DAMCTC014-13SB;Introdução à Inferência Estatística;Q1;Diurno;SB;4;terca das 10:00 às 12:00, sala A2-S102-SB, semanal/quinta das 08:00 às 10:00, sala A2-S102-SB, semanal ;0
+G;;Coordenador de Estágio do BNC;Q1;Noturno;SB;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Coordenador de Estágio do BNC;Q2;;SB;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTC022-15SB;Processamento de Sinais Neurais;Q3;Diurno;SB;4;0;terca das 10:00 às 12:00, lab. A1-L102-SB, semanal/quinta das 08:00 às 10:00, lab. A1-L102-SB, semanal 
+G;NAMCTC022-15SB;Processamento de Sinais Neurais;Q3;Noturno;SB;4;0;terca das 21:00 às 23:00, lab. A1-L102-SB, semanal/quinta das 19:00 às 21:00, lab. A1-L102-SB, semanal 
+G;;Coordenador de Estágio do BNC;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA3BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 08:00 às 10:00, sala A - 101-0, semanal/sexta das 10:00 às 12:00, sala A - 101-0, quinzenal I;quinta das 10:00 às 12:00, sala L503, semanal 
+G;DB5BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 10:00 às 12:00, sala A - 105-0, semanal/sexta das 08:00 às 10:00, sala A - 105-0, quinzenal I;quinta das 08:00 às 10:00, sala L505, semanal 
+G;NB5BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 21:00 às 23:00, sala A - 108-0, semanal/sexta das 19:00 às 21:00, sala A - 108-0, quinzenal I;quinta das 19:00 às 21:00, sala L505, semanal 
+G;DA1MCTA024-13SA;Sistemas Digitais;Q2;Diurno;SA;4;segunda das 10:00 às 12:00, Lab. S - 311-2, semanal ;quinta das 08:00 às 10:00, Lab. 402-2, semanal 
+G;DA2MCTA024-13SA;Sistemas Digitais;Q2;Diurno;SA;2;segunda das 10:00 às 12:00, Lab. S - 311-2, semanal ;quinta das 10:00 às 12:00, Lab. 402-2, semanal 
+G;NA1MCTA024-13SA;Sistemas Digitais;Q2;Noturno;SA;4;segunda das 21:00 às 23:00, Lab. S - 311-2, semanal ;quinta das 19:00 às 21:00, Lab. 402-2, semanal 
+G;NA2MCTA024-13SA;Sistemas Digitais;Q2;Noturno;SA;2;segunda das 21:00 às 23:00, Lab. S - 311-2, semanal ;quinta das 21:00 às 23:00, Lab. 402-2, semanal 
+G;NA1BCM0504-15SA;Natureza da Informação;Q3;Noturno;SA;3;segunda das 19:00 às 21:00, sala A - 101-0, quinzenal II/quinta das 21:00 às 23:00, sala A - 101-0, semanal ;0
+G;NB1BCM0504-15SA;Natureza da Informação;Q3;Noturno;SA;3;segunda das 21:00 às 23:00, sala A - 104-0, quinzenal II/quinta das 19:00 às 21:00, sala A - 104-0, semanal ;0
+EX;;NTME - Novas Tecnologias e Metodologias para Educação;Q3;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA1BCN0407-15SB;Funções de Várias Variáveis;Q2;Noturno;SB;4;terca das 21:00 às 23:00, Lab. A2-S208-SB, semanal/sexta das 19:00 às 21:00, Lab. A2-S208-SB, semanal ;0
+PG;MAT312M172;Seminários do Programa de Matemática II;Q2;;SA;1;#N/D;#N/D
+PG;MAT315D172;Seminários do Programa de Matemática V;Q2;;SA;1;#N/D;#N/D
+G;DA1BCN0404-15SA;Geometria Analítica;Q3;Diurno;SA;3;segunda das 08:00 às 10:00, sala A - 102-0, quinzenal I/sexta das 08:00 às 10:00, sala A - 102-0, semanal ;0
+G;DB1BCN0404-15SA;Geometria Analítica;Q3;Diurno;SA;3;segunda das 10:00 às 12:00, sala A - 104-0, quinzenal I/sexta das 10:00 às 12:00, sala A - 104-0, semanal ;0
+PG;MAT221D173;Equações Diferenciais Parciais;Q3;;SA;2;#N/D;#N/D
+PG;MAT221M173;Equações Diferenciais Parciais;Q3;;SA;2;#N/D;#N/D
+G;DB1BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala A - 104-0, semanal/quinta das 10:00 às 12:00, sala A - 104-0, semanal ;0
+G;DAMCTB009-17SA;Cálculo Numérico;Q3;Diurno;SA;4;quarta das 08:00 às 10:00, Lab. A - 107-0, semanal/sexta das 10:00 às 12:00, Lab. S - 211-0, semanal ;0
+G;DBMCTB009-17SA;Cálculo Numérico;Q3;Diurno;SA;4;quarta das 10:00 às 12:00, Lab. A - 107-0, semanal/sexta das 08:00 às 10:00, Lab. S - 211-0, semanal ;0
+G;NA2BCS0002-15SA;Projeto Dirigido;Q1;Noturno;SA;2;segunda das 21:00 às 23:00, sala S - 308-1, semanal ;0
+G;NB1BCS0002-15SA;Projeto Dirigido;Q1;Noturno;SA;2;segunda das 19:00 às 21:00, sala S - 305-3, semanal ;0
+PG;ENE309D171;Inteligência Artificial;Q1;;SA;0,6;#N/D;#N/D
+G;NB1BCS0002-15SA;Projeto Dirigido;Q3;Noturno;SA;2;segunda das 19:00 às 21:00, sala S - 305-3, semanal ;0
+G;DABIS0005-15SB;Bases Computacionais da Ciência;Q3;Diurno;SB;2;0;segunda das 17:00 às 19:00, Lab. A1-L002-SB, semanal 
+G;NABIS0005-15SB;Bases Computacionais da Ciência;Q3;Noturno;SB;2;0;quinta das 21:00 às 23:00, lab. A2-L003-SB, semanal 
+PG;INV003M173;Design de Negócios;Q3;;SA;2;#N/D;#N/D
+G;DAMCTC011-15SA;Psicologia Cognitiva;Q1;Diurno;SA;3;terca das 14:00 às 16:00, sala S - 302-2, semanal/quinta das 14:00 às 16:00, sala S - 302-2, semanal ;0
+G;NAMCZC007-15SB;Ergonomia Cognitiva;Q1;Noturno;SB;2;terca das 19:00 às 21:00, sala A1-S106-SB, semanal/sexta das 21:00 às 23:00, sala A1-S106-SB, semanal ;0
+G;NA1BCS0002-15SA;Projeto Dirigido;Q2;Noturno;SA;2;segunda das 21:00 às 23:00, sala S - 306-1, semanal ;0
+G;NB1BCS0002-15SA;Projeto Dirigido;Q2;Noturno;SA;2;segunda das 19:00 às 21:00, sala S - 305-3, semanal ;0
+G;NAMCTC020-15SB;Psicologia Experimental;Q2;Noturno;SB;4;quarta das 21:00 às 23:00, Lab. A1-S105-SB, semanal ;sexta das 19:00 às 23:00, Lab. A1-L101-SB, semanal 
+EX;;Curso de Férias: Neurociência e Cognição;Q2;;SB;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCZC012-15SB;Sensação e Percepção;Q3;Noturno;SB;4;quarta das 21:00 às 23:00, sala A1-S106-SB, semanal/sexta das 19:00 às 21:00, sala A1-S106-SB, semanal ;0
+PG;NCG003D173;Ciências Cognitivas;Q3;;SB;1;#N/D;#N/D
+PG;NCG003M173;Ciências Cognitivas;Q3;;SB;1;#N/D;#N/D
+EX;;Neurociência e Educação - Desmistificando o Cérebro;Q3;;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DCBIN0406-15SB;Introdução à Probabilidade e à Estatística;Q2;Diurno;SB;3;terca das 14:00 às 16:00, Lab. B-A004-SB, quinzenal I/sexta das 14:00 às 16:00, Lab. B-A004-SB, semanal ;0
+G;DDBIN0406-15SB;Introdução à Probabilidade e à Estatística;Q2;Diurno;SB;3;terca das 10:00 às 12:00, Lab. A1-S201-SB, quinzenal II/quarta das 08:00 às 10:00, Lab. A1-S201-SB, semanal ;0
+G;NCBIN0406-15SB;Introdução à Probabilidade e à Estatística;Q2;Noturno;SB;3;terca das 21:00 às 23:00, Lab. A1-S201-SB, quinzenal II/quarta das 19:00 às 21:00, Lab. A1-S201-SB, semanal ;0
+G;DAESZA009-13SA;Redes de Barramento de Campo;Q1;Diurno;SA;3;quarta das 14:00 às 17:00, sala S - 305-1, quinzenal II;quarta das 14:00 às 17:00, sala 408-1, quinzenal I
+PG;MEC505M171;Capacitação para Tutoria em Educação a Distância (EaD);Q1;;EAD;4;#N/D;#N/D
+G;DABCM0506-15SB;Comunicação e Redes;Q2;Diurno;SB;3;quarta das 16:00 às 18:00, sala A1-S202-SB, semanal/sexta das 14:00 às 16:00, sala A1-S202-SB, quinzenal II;0
+G;DAESZA009-17SA;Redes de Barramento de Campo;Q2;Diurno;SA;3;segunda das 14:00 às 15:00, Lab. S - 306-1, quinzenal I/segunda das 14:00 às 17:00, Lab. S - 306-1, quinzenal II/segunda das 16:00 às 17:00, Lab. S - 306-1, quinzenal I;segunda das 15:00 às 16:00, Lab. 408-1, quinzenal I
+PG;MEC505M172;Capacitação para Tutoria em Educação a Distância (EaD);Q2;;SA;4;#N/D;#N/D
+G;DAMCTB014-13SA;Extensões Algébricas;Q1;Diurno;SA;4;quarta das 10:00 às 12:00, sala S - 502, semanal/sexta das 08:00 às 10:00, sala S - 502, semanal ;0
+G;NA2BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. A - 103-0, semanal/sexta das 21:00 às 23:00, Lab. A - 103-0, semanal ;0
+G;NB2BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. S - 214-0, semanal/sexta das 19:00 às 21:00, Lab. S - 311-2, semanal ;0
+PG;MAT114M172;Representação de Grupo Finitos;Q2;;SA;4;#N/D;#N/D
+PG;MAT213M173;Álgebras de Lie;Q3;;SA;4;#N/D;#N/D
+G;DA6BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. L703, semanal 
+G;DB6BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. L703, semanal 
+G;NA1BIS0005-15SB;Bases Computacionais da Ciência;Q2;Noturno;SB;2;0;terca das 21:00 às 23:00, sala A1-L002-SB, semanal 
+G;NB1BIS0005-15SB;Bases Computacionais da Ciência;Q2;Noturno;SB;2;0;terca das 19:00 às 21:00, sala A1-L002-SB, semanal 
+PG;CCM003D172;Seminários em Computação;Q2;;SA;2;#N/D;#N/D
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q3;Diurno;SA;3;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;NA3MCTA028-15SA;Programação Estruturada;Q3;Noturno;SA;4;quarta das 21:00 às 23:00, sala S - 207-0, semanal ;sexta das 19:00 às 21:00, lab. 407-2, semanal 
+G;NA4MCTA028-15SA;Programação Estruturada;Q3;Noturno;SA;4;quarta das 21:00 às 23:00, sala S - 207-0, semanal ;sexta das 21:00 às 23:00, lab. 407-2, semanal 
+G;NA1BCM0505-15SB;Processamento da Informação;Q2;Noturno;SB;3;terca das 19:00 às 21:00, sala A2-S105-SB, semanal/sexta das 21:00 às 23:00, sala A2-S105-SB, quinzenal I;quinta das 21:00 às 23:00, sala A2-L003-SB, semanal 
+G;DA8BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 10:00 às 12:00, Lab. 402-2, semanal 
+G;DB8BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. 402-2, semanal 
+G;NA4BIS0005-15SB;Bases Computacionais da Ciência;Q2;Noturno;SB;2;0;segunda das 21:00 às 23:00, Lab. A2-L003-SB, semanal 
+G;NA1MCTA037-17SA;Banco de Dados;Q3;Noturno;SA;1;segunda das 19:00 às 21:00, sala S - 206-0, semanal/quinta das 21:00 às 23:00, sala S - 206-0, quinzenal II;quinta das 21:00 às 23:00, lab. 407-2, quinzenal I
+G;DAMCZA010-13SA;Laboratório de Engenharia de Software;Q3;Diurno;SA;4;0;terca das 08:00 às 10:00, lab. 409-2, semanal/sexta das 10:00 às 12:00, lab. 409-2, semanal 
+G;NABCS0002-15SB;Projeto Dirigido;Q1;Noturno;SB;2;segunda das 21:00 às 23:00, sala A1-S201-SB, semanal ;0
+G;DAMCTC019-15SB;Neurobiologia Molecular e Celular;Q1;Diurno;SB;2;segunda das 08:00 às 10:00, sala A1-S105-SB, semanal/quinta das 10:00 às 12:00, sala A1-S105-SB, semanal ;quarta das 08:00 às 10:00, sala A1-L305-SB, semanal 
+G;NAMCTC019-15SB;Neurobiologia Molecular e Celular;Q1;Noturno;SB;4;segunda das 19:00 às 21:00, sala A1-S105-SB, semanal/quinta das 21:00 às 23:00, sala A1-S105-SB, semanal ;quarta das 19:00 às 21:00, sala A1-L305-SB, semanal 
+G;DAMCZC001-15SB;Patologias do Sistema Nervoso Central;Q2;Diurno;SB;4;segunda das 10:00 às 12:00, Lab. A1-S106-SB, semanal/quarta das 08:00 às 10:00, Lab. A1-S106-SB, semanal ;0
+G;NAMCZC001-15SB;Patologias do Sistema Nervoso Central;Q2;Noturno;SB;4;segunda das 21:00 às 23:00, Lab. A1-S106-SB, semanal/quarta das 19:00 às 21:00, Lab. A1-S106-SB, semanal ;0
+EX;;Neurociência e Educação - Desmistificando o Cérebro;Q3;;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA1BIS0005-15SB;Bases Computacionais da Ciência;Q1;Diurno;SB;2;0;terca das 10:00 às 12:00, sala A1-L002-SB, semanal 
+G;DB1BIS0005-15SB;Bases Computacionais da Ciência;Q1;Diurno;SB;2;0;terca das 08:00 às 10:00, sala A1-L002-SB, semanal 
+PG;NCG002D172;Métodos Quantitativos em Neurociência;Q2;;SB;3;#N/D;#N/D
+PG;NCG003D171;Ciências Cognitivas;Q1;;SB;3;#N/D;#N/D
+PG;NCG002M172;Métodos Quantitativos em Neurociência;Q2;;SB;3;#N/D;#N/D
+G;NAMCTD007-13SA;Fundamentos de Geometria;Q1;Noturno;SA;4;terca das 19:00 às 21:00, sala A - 110-0, semanal/quinta das 21:00 às 23:00, sala A - 110-0, semanal ;0
+G;NAMCTD009-13SA;Geometria Plana e Construções Geométricas;Q1;Noturno;SA;4;terca das 21:00 às 23:00, sala A - 110-0, semanal/quinta das 19:00 às 21:00, sala A - 110-0, semanal ;0
+G;;Estágio Supervisionado em Matemática - Ensino Fundamental;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+EX;;O Ensino de Álgebra para a Educação Básica;Q1;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTD012-13SA;Práticas de Ensino de Matemática II;Q3;Diurno;SA;3;0;quarta das 10:00 às 11:30, lab. 401-2, semanal/quinta das 08:30 às 10:00, lab. 401-2, semanal 
+G;DANHT5013-15SA;Práticas de Ensino de Ciências e Matemática no Ensino Fundamental;Q3;Diurno;SA;2;segunda das 10:00 às 12:00, sala S - 305-3, semanal/quarta das 08:00 às 10:00, sala S - 305-3, semanal ;0
+G;;Estágio Supervisionado em Matemática - Ensino Médio I, II e III;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Estágio Supervisionado em Matemática - Ensino Médio I, II e III;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;MAT161M172;Geometria Diferencial;Q2;;SA;4;#N/D;#N/D
+G;NAMCTB017-13SA;Geometria Diferencial II;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. L704, semanal/quinta das 19:00 às 21:00, Lab. L704, semanal ;0
+G;NAMCTD005-13SA;Fundamentos de Álgebra;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. L704 (Lab. de aula - bloco B), semanal/quinta das 21:00 às 23:00, Lab. L704, semanal ;0
+G;;Estágio Supervisionado em Matemática - Ensino Médio;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DSBIS0003-15SA;Bases Matemáticas;Q3;Diurno;SA;4;terca das 14:00 às 16:00, sala S - 208-0, semanal/sexta das 14:00 às 16:00, sala S - 208-0, semanal ;0
+G;;Coordenador de Bases Matemáticas;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;MAT266D173;Variedades Diferenciáveis;Q3;;SA;2;#N/D;#N/D
+PG;MAT266M173;Variedades Diferenciáveis;Q3;;SA;2;#N/D;#N/D
+PG;;Geometria;Q3;;SA;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA1BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;2;terca das 08:00 às 10:00, sala A2-S105-SB, semanal/sexta das 10:00 às 12:00, sala A2-S105-SB, quinzenal I;quinta das 10:00 às 12:00, sala A2-L003-SB, semanal 
+G;NA5BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 102-0, semanal/sexta das 21:00 às 23:00, sala A - 102-0, quinzenal I;quinta das 21:00 às 23:00, sala L505, semanal 
+G;NA5BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 102-0, semanal/sexta das 21:00 às 23:00, sala A - 102-0, quinzenal I;quinta das 21:00 às 23:00, sala L505, semanal 
+G;;Coordenador de Projeto de Graduação em Computação - PGC;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA1MCTA016-13SA;Paradigmas de Programação;Q2;Noturno;SA;2;segunda das 21:00 às 23:00, Lab. S - 301-1, semanal ;quinta das 19:00 às 21:00, Lab. 409-2, quinzenal II e Lab. de aula 311-2 quinzenal I
+G;DAMCZA005-17SA;Banco de Dados de Apoio à Tomada de Decisão;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. S - 306-2, semanal ;sexta das 08:00 às 10:00, Lab. 407-2, semanal 
+G;;Coordenador de Projeto de Graduação em Computação - PGC;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Coordenador de Projeto de Graduação em Computação - PGC;Q3;Noturno;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DSBCM0505-15SB;Processamento da Informação - EAD;Q1;Diurno;EAD;2;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, sala A1-S206-SB; Primeira Prova dia 15/03/17 das 17:00 às 19:00, sala A1-S206-SB"; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;DS1BCM0505-15SB;Processamento da Informação - EAD;Q1;Diurno;EAD;2;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, sala A1-S206-SB; Primeira Prova dia 15/03/17 das 17:00 às 19:00, sala A1-S206-SB"; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;DA3BIS0005-15SB;Bases Computacionais da Ciência;Q1;Diurno;SB;2;0;terca das 10:00 às 12:00, sala A2-L001-SB, semanal 
+G;DB3BIS0005-15SB;Bases Computacionais da Ciência;Q1;Diurno;SB;2;0;terca das 08:00 às 10:00, sala A2-L003-SB, semanal 
+G;NA1BIS0005-15SB;Bases Computacionais da Ciência;Q1;Noturno;SB;2;0;terca das 21:00 às 23:00, sala A1-L002-SB, semanal 
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q3;Diurno;SA;4;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+G;NAMCZA028-13SA;Sistemas Multiagentes;Q3;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 306-2, semanal/quarta das 19:00 às 21:00, sala S - 306-2, quinzenal I;quarta das 19:00 às 21:00, lab. 409-2, quinzenal II
+PG;MAT311M171;Seminários do Programa de Matemática I;Q1;;SA;1;#N/D;#N/D
+PG;MAT314D171;Seminários do Programa de Matermática IV;Q1;;SA;1;#N/D;#N/D
+G;DAMCTB018-13SA;Grupos;Q1;Diurno;SA;4;quarta das 08:00 às 10:00, sala S - 502, semanal/sexta das 10:00 às 12:00, sala S - 502, semanal ;0
+G;NAMCTB018-13SA;Grupos;Q1;Noturno;SA;4;quarta das 19:00 às 21:00, sala S - 502, semanal/sexta das 21:00 às 23:00, sala S - 502, semanal ;0
+PG;MAT215M172;Tópicos em Álgebra I;Q2;;SA;4;#N/D;#N/D
+G;DAMCTB007-17SA;Anéis e Corpos;Q2;Diurno;SA;4;quarta das 10:00 às 12:00, Lab. S - 502, semanal/sexta das 08:00 às 10:00, Lab. S - 502, semanal ;0
+G;DAMCZC013-15SB;Memória e Aprendizagem;Q1;Diurno;SB;1;segunda das 08:00 às 10:00, sala A1-S106-SB, semanal/quinta das 10:00 às 12:00, sala A1-S106-SB, semanal ;0
+PG;NCG102M171;Memória e Aprendizagem;Q1;;SB;2;#N/D;#N/D
+PG;NCG104D172;Desenvolvimento Neural e Cognitivo;Q2;;SB;2;#N/D;#N/D
+EX;;Curso de Férias: Neurociência e Cognição;Q2;;SB;1;0;Terça das 14:00 às18:00, Lab. 407-2
+EX;;Projeto Ativamente UFABC;Q3;;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NABCN0404-15SA;Geometria Analítica;Q1;Noturno;SA;3;segunda das 21:00 às 23:00, sala S - 204-0, quinzenal I/quinta das 19:00 às 21:00, sala S - 204-0, semanal ;0
+G;NBBCN0404-15SA;Geometria Analítica;Q1;Noturno;SA;3;segunda das 19:00 às 21:00, sala S - 208-0, quinzenal I/quinta das 21:00 às 23:00, sala S - 208-0, semanal ;0
+G;DA3BIS0003-15SA;Bases Matemáticas;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. A - 103-0, semanal/sexta das 08:00 às 10:00, Lab. A - 103-0, semanal ;0
+G;DB3BIS0003-15SA;Bases Matemáticas;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. S - 208-0, semanal/sexta das 10:00 às 12:00, Lab. S - 205-0, semanal ;0
+G;NA1BCN0404-15SA;Geometria Analítica;Q3;Noturno;SA;3;segunda das 19:00 às 21:00, sala A - 101-0, quinzenal I/sexta das 19:00 às 21:00, sala A - 101-0, semanal ;0
+G;DAMCTB026-17SA;Topologia;Q3;Diurno;SA;4;quarta das 10:00 às 12:00, sala S - 501, semanal/sexta das 08:00 às 10:00, sala S - 501, semanal ;0
+G;DABCN0402-15SA;Funções de Uma Variável;Q1;Diurno;SA;4;segunda das 14:00 às 16:00, sala S - 208-0, semanal/quinta das 16:00 às 18:00, sala S - 208-0, semanal ;0
+G;DAMCTB009-13SA;Cálculo Numérico;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala S - 208-0, semanal/quarta das 10:00 às 12:00, sala S - 208-0, semanal ;0
+G;DBMCTB009-13SA;Cálculo Numérico;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala A - 106-0, semanal/quarta das 08:00 às 10:00, sala A - 106-0, semanal ;0
+G;;Coordenador de Cálculo Numérico;Q1;Noturno;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA3BCN0404-15SA;Geometria Analítica;Q3;Diurno;SA;3;segunda das 08:00 às 10:00, sala A - 103-0, quinzenal I/sexta das 08:00 às 10:00, sala A - 103-0, semanal ;0
+G;DB3BCN0404-15SA;Geometria Analítica;Q3;Diurno;SA;3;segunda das 10:00 às 12:00, sala S - 208-0, quinzenal I/sexta das 10:00 às 12:00, sala S - 208-0, semanal ;0
+G;DA3BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;2;terca das 08:00 às 10:00, sala A2-S102-SB, semanal/sexta das 10:00 às 12:00, sala A2-S102-SB, quinzenal I;quinta das 10:00 às 12:00, sala A1-L101-SB, semanal 
+G;NA1BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;2;terca das 19:00 às 21:00, sala A2-S105-SB, semanal/sexta das 21:00 às 23:00, sala A2-S105-SB, quinzenal I;quinta das 21:00 às 23:00, sala A2-L003-SB, semanal 
+G;DABIS0005-15SA;Bases Computacionais da Ciência;Q1;Diurno;SA;2;0;quarta das 16:00 às 18:00, sala 402-2, semanal 
+G;NABIS0005-15SA;Bases Computacionais da Ciência;Q1;Noturno;SA;2;0;quarta das 21:00 às 23:00, sala 402-2, semanal 
+G;NA9BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. 404-2, semanal 
+G;DAMCTA007-17SA;Compiladores;Q2;Diurno;SA;4;segunda das 08:00 às 10:00, Lab. S - 308-2, semanal ;quarta das 10:00 às 12:00, Lab. 407-2, semanal 
+G;NA1MCTA007-17SA;Compiladores;Q2;Noturno;SA;4;segunda das 19:00 às 21:00, Lab. S - 309-2, semanal ;quarta das 21:00 às 23:00, Lab. 402-2, semanal 
+G;NAMCTB015-13SA;Funções de Variáveis Complexas;Q1;Noturno;SA;6;segunda das 19:00 às 21:00, sala S - 501, semanal/quarta das 21:00 às 23:00, sala S - 501, semanal/sexta das 19:00 às 21:00, sala S - 501, semanal ;0
+G;NA1MCTB001-17SA;Álgebra Linear;Q3;Noturno;SA;6;segunda das 19:00 às 21:00, sala A - 110-0, semanal/quarta das 21:00 às 23:00, sala A - 110-0, semanal/sexta das 19:00 às 21:00, sala A - 110-0, semanal ;0
+G;NB1MCTB001-17SA;Álgebra Linear;Q3;Noturno;SA;6;segunda das 21:00 às 23:00, sala S - 204-0, semanal/quarta das 19:00 às 21:00, sala S - 205-0, semanal/sexta das 21:00 às 23:00, sala S - 205-0, semanal ;0
+PG;;Fundamentos de Cálculo;Q2;;SA;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA3BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. A - 104-0, semanal/sexta das 21:00 às 23:00, Lab. A - 104-0, semanal ;0
+G;NB3BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. A - 114-0, semanal/sexta das 19:00 às 21:00, Lab. A - 114-0, semanal ;0
+G;;Coordenador de Introdução às Equações Diferenciais Ordinárias;Q2;;;3;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;FIS404M172;Relatividade Geral;Q2;;SA;4;#N/D;#N/D
+G;DZBIS0003-15;Bases Matemáticas;Q3;Diurno;15;4;#N/D;#N/D
+G;DABCM0504-15SA;Natureza da Informação;Q1;Diurno;SA;3;segunda das 14:00 às 16:00, sala A - 104-0, quinzenal II/quarta das 16:00 às 18:00, sala A - 104-0, semanal ;0
+G;NABCM0504-15SA;Natureza da Informação;Q1;Noturno;SA;3;segunda das 19:00 às 21:00, sala A - 104-0, quinzenal II/quarta das 21:00 às 23:00, sala A - 104-0, semanal ;0
+G;NA1BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 101-0, semanal/sexta das 21:00 às 23:00, sala A - 101-0, quinzenal I;quinta das 21:00 às 23:00, sala L501, semanal 
+G;DA2BCM0504-15SA;Natureza da Informação;Q3;Diurno;SA;3;segunda das 08:00 às 10:00, sala A - 101-0, quinzenal II/quinta das 10:00 às 12:00, sala A - 101-0, semanal ;0
+G;DB2BCM0504-15SA;Natureza da Informação;Q3;Diurno;SA;3;segunda das 10:00 às 12:00, sala A - 105-0, quinzenal II/quinta das 08:00 às 10:00, sala A - 105-0, semanal ;0
+G;DSBCM0505-15SA;Processamento da Informação - EAD;Q3;Diurno;SA;2;"Aula Inaugural dia 08/02/17 das 17:00 às 19:00, salas 205-0 e 207-0; Primeira Prova dia 15/03/17 das 17:00 às 19:00, salas 205-0 e 207-0 "; ECONTROS SERÁO BREVEMENTE PUBLICADOS
+PG;CCM104D173;Teoria da Computação;Q3;;SA;2;#N/D;#N/D
+PG;CCM104M173;Teoria da Computação;Q3;;SA;2;#N/D;#N/D
+EX;;Programação em Python para Iniciantes;Q3;;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DB6BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 10:00 às 12:00, sala A - 105-0, semanal/sexta das 08:00 às 10:00, sala A - 105-0, quinzenal I;quinta das 08:00 às 10:00, sala 402-2, semanal 
+G;NA4BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;3;terca das 19:00 às 21:00, sala A - 102-0, semanal/sexta das 21:00 às 23:00, sala A - 102-0, quinzenal I;quinta das 21:00 às 23:00, sala L504, semanal 
+G;NA5BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 19:00 às 21:00, sala A - 102-0, semanal/sexta das 21:00 às 23:00, sala A - 102-0, quinzenal I;quinta das 21:00 às 23:00, sala L505, semanal 
+G;NA6BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;1;terca das 19:00 às 21:00, sala A - 102-0, semanal/sexta das 21:00 às 23:00, sala A - 102-0, quinzenal I;quinta das 21:00 às 23:00, sala L506, semanal 
+G;DA1MCTA018-13SA;Programação Orientada a Objetos;Q2;Diurno;SA;2;terca das 08:00 às 10:00, Lab. S - 311-2, semanal ;quinta das 08:00 às 10:00, Lab. 407-2, semanal 
+G;DA2MCTA018-13SA;Programação Orientada a Objetos;Q2;Diurno;SA;2;terca das 08:00 às 10:00, Lab. S - 311-2, semanal ;quinta das 10:00 às 12:00, Lab. 407-2, semanal 
+G;NA3MCTA018-13SA;Programação Orientada a Objetos;Q2;Noturno;SA;2;terca das 19:00 às 21:00, Lab. S - 301-3, semanal ;quinta das 19:00 às 21:00, Lab. 403-2, semanal 
+G;NA4MCTA018-13SA;Programação Orientada a Objetos;Q2;Noturno;SA;2;terca das 19:00 às 21:00, Lab. S - 301-3, semanal ;quinta das 21:00 às 23:00, Lab. 404-2, semanal 
+G;DA1BCN0407-15SB;Funções de Várias Variáveis;Q1;Diurno;SB;4;segunda das 10:00 às 12:00, sala A1-S203-SB, semanal/quinta das 08:00 às 10:00, sala A1-S203-SB, semanal ;0
+G;DB1BCN0407-15SB;Funções de Várias Variáveis;Q1;Diurno;SB;4;segunda das 08:00 às 10:00, sala A1-S205-SB, semanal/quinta das 10:00 às 12:00, sala A1-S205-SB, semanal ;0
+G;DA2BCN0404-15SB;Geometria Analítica;Q3;Diurno;SB;3;segunda das 08:00 às 10:00, sala A1-S202-SB, quinzenal I/sexta das 08:00 às 10:00, sala A1-S202-SB, semanal ;0
+G;NA1BCN0404-15SB;Geometria Analítica;Q3;Noturno;SB;3;segunda das 19:00 às 21:00, sala A1-S201-SB, quinzenal I/sexta das 19:00 às 21:00, sala A1-S201-SB, semanal ;0
+G;NBBCN0404-15SB;Geometria Analítica;Q3;Noturno;SB;3;segunda das 19:00 às 21:00, sala A2-S105-SB, quinzenal I/quinta das 21:00 às 23:00, sala A2-S105-SB, semanal ;0
+G;DA2BCN0407-15SA;Funções de Várias Variáveis;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala A - 102-0, semanal/quinta das 08:00 às 10:00, sala A - 102-0, semanal ;0
+G;DA1BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. A - 102-0, semanal/sexta das 10:00 às 12:00, Lab. A - 102-0, semanal ;0
+G;DA1BCN0402-15SA;Funções de Uma Variável;Q3;Diurno;SA;4;terca das 10:00 às 12:00, sala A - 102-0, semanal/quinta das 08:00 às 10:00, sala A - 102-0, semanal ;0
+G;DABCM0506-15SB;Comunicação e Redes;Q1;Diurno;SB;3;quarta das 16:00 às 18:00, sala A1-S202-SB, semanal/sexta das 14:00 às 16:00, sala A1-S202-SB, quinzenal II;0
+G;NABCM0506-15SB;Comunicação e Redes;Q1;Noturno;SB;3;quarta das 21:00 às 23:00, sala A2-S201-SB, semanal/sexta das 19:00 às 21:00, sala A2-S201-SB, quinzenal II;0
+G;DA1BCM0504-15SB;Natureza da Informação;Q3;Diurno;SB;3;segunda das 08:00 às 10:00, sala A1-S201-SB, quinzenal II/quinta das 10:00 às 12:00, sala A1-S201-SB, semanal ;0
+G;DBBCM0504-15SB;Natureza da Informação;Q3;Diurno;SB;3;segunda das 10:00 às 12:00, sala A2-S101-SB, quinzenal II/quinta das 08:00 às 10:00, sala A2-S101-SB, semanal ;0
+G;NA1BCM0504-15SB;Natureza da Informação;Q3;Noturno;SB;3;segunda das 19:00 às 21:00, sala A1-S201-SB, quinzenal II/quinta das 21:00 às 23:00, sala A1-S201-SB, semanal ;0
+G;NBBCM0504-15SB;Natureza da Informação;Q3;Noturno;SB;3;segunda das 21:00 às 23:00, sala A2-S101-SB, quinzenal II/quinta das 19:00 às 21:00, sala A2-S101-SB, semanal ;0
+G;NAMCTB001-13SA;Álgebra Linear;Q1;Noturno;SA;6;segunda das 19:00 às 21:00, sala S - 204-0, semanal/quarta das 21:00 às 23:00, sala S - 204-0, semanal/sexta das 19:00 às 21:00, sala S - 204-0, semanal ;0
+G;NAMCZB021-13SA;Introdução às Curvas Algébricas;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala L704, semanal/quarta das 19:00 às 21:00, sala L704, semanal ;0
+G;NAMCTB001-17SB;Álgebra Linear;Q3;Noturno;SB;6;segunda das 19:00 às 21:00, Lab. A1-S206-SB, semanal/quarta das 21:00 às 23:00, Lab. A1-S206-SB, semanal/sexta das 19:00 às 21:00, Lab. A1-S206-SB, semanal ;0
+G;NABCN0407-15SB;Funções de Várias Variáveis;Q1;Noturno;SB;4;segunda das 21:00 às 23:00, sala A2-S201-SB, semanal/quinta das 19:00 às 21:00, sala A2-S201-SB, semanal ;0
+G;NBBCN0407-15SB;Funções de Várias Variáveis;Q1;Noturno;SB;4;segunda das 19:00 às 21:00, sala A2-S201-SB, semanal/quinta das 21:00 às 23:00, sala A2-S201-SB, semanal ;0
+PG;;Análise Reta;Q1;;SA;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA4BCN0402-15SA;Funções de Uma Variável;Q3;Noturno;SA;4;terca das 21:00 às 23:00, sala S - 214-0, semanal/quinta das 19:00 às 21:00, sala S - 214-0, semanal ;0
+G;DABIS0003-15SA;Bases Matemáticas;Q3;Diurno;SA;4;terca das 17:00 às 19:00, sala S - 207-0, semanal/sexta das 17:00 às 19:00, sala S - 207-0, semanal ;0
+G;DBMCTB001-13SA;Álgebra Linear;Q1;Diurno;SA;6;segunda das 10:00 às 12:00, sala S - 214-0, semanal/quarta das 08:00 às 10:00, sala S - 214-0, semanal/sexta das 10:00 às 12:00, sala S - 214-0, semanal ;0
+G;DAMCTB001-17SA;Álgebra Linear;Q3;Diurno;SA;6;segunda das 08:00 às 10:00, Lab. A - 113-0, semanal/quarta das 10:00 às 12:00, Lab. A - 113-0, semanal/sexta das 08:00 às 10:00, Lab. A - 113-0, semanal ;0
+G;DBMCTB001-17SA;Álgebra Linear;Q3;Diurno;SA;6;segunda das 10:00 às 12:00, sala S - 212-0, semanal/quarta das 08:00 às 10:00, sala S - 208-0, semanal/sexta das 10:00 às 12:00, sala S - 205-0, semanal ;0
+G;;Coordenador de Álgebra Linear;Q3;Noturno;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DA2BIS0005-15SB;Bases Computacionais da Ciência;Q1;Diurno;SB;2;0;terca das 10:00 às 12:00, sala A1-L101-SB, semanal 
+G;DB2BIS0005-15SB;Bases Computacionais da Ciência;Q1;Diurno;SB;2;0;terca das 08:00 às 10:00, sala A2-L001-SB, semanal 
+G;DAESZI013-13SA;Informática Industrial;Q1;Diurno;SA;4;0;segunda das 08:00 às 12:00, sala 404-2, semanal 
+G;DA4BIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;segunda das 10:00 às 12:00, Lab. A2-L003-SB, semanal 
+G;NA3BIS0005-15SB;Bases Computacionais da Ciência;Q2;Noturno;SB;2;0;terca das 21:00 às 23:00, sala A2-L001-SB, semanal 
+G;NB3BIS0005-15SB;Bases Computacionais da Ciência;Q2;Noturno;SB;2;0;segunda das 19:00 às 21:00, Lab. A1-L002-SB, semanal 
+G;NAMCTB009-13SA;Cálculo Numérico;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala S - 205-0, semanal/quarta das 21:00 às 23:00, sala S - 205-0, semanal ;0
+G;NBMCTB009-13SA;Cálculo Numérico;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 207-0, semanal/quarta das 19:00 às 21:00, sala S - 207-0, semanal ;0
+G;NAMCTB009-17SA;Cálculo Numérico;Q2;Noturno;SA;4;quarta das 19:00 às 21:00, Lab. A - 105-0, semanal/sexta das 21:00 às 23:00, Lab. S - 211-0, semanal ;0
+G;NBMCTB009-17SA;Cálculo Numérico;Q2;Noturno;SA;4;quarta das 21:00 às 23:00, Lab. A - 105-0, semanal/sexta das 19:00 às 21:00, Lab. S - 207-0, semanal ;0
+G;DAMCZC016-15SB;Neurociência da Cognição Musical;Q2;Diurno;SB;2;sexta das 14:00 às 16:00, Lab. A2-S305-SB, semanal ;0
+G;NAMCZC016-15SB;Neurociência da Cognição Musical;Q2;Noturno;SB;2;sexta das 19:00 às 21:00, Lab. A2-S307-SB, semanal ;0
+EX;;Projeto Ativamente UFABC;Q3;;;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA3BCS0002-15SA;Projeto Dirigido;Q2;Noturno;SA;2;segunda das 21:00 às 23:00, sala S - 210-0, semanal ;0
+G;NB2BCS0002-15SA;Projeto Dirigido;Q2;Noturno;SA;2;segunda das 19:00 às 21:00, sala S - 307-1, semanal ;0
+G;NA3BCN0407-15SA;Funções de Várias Variáveis;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala A - 103-0, semanal/quinta das 19:00 às 21:00, sala A - 103-0, semanal ;0
+G;NB3BCN0407-15SA;Funções de Várias Variáveis;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala A - 106-0, semanal/quinta das 21:00 às 23:00, sala A - 106-0, semanal ;0
+G;;Coordenador de Funções de Várias Variáveis;Q1;Noturno;SA;3;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA3BCN0404-15SA;Geometria Analítica;Q3;Noturno;SA;3;segunda das 19:00 às 21:00, sala A - 103-0, quinzenal I/sexta das 19:00 às 21:00, sala A - 103-0, semanal ;0
+G;NB3BCN0404-15SA;Geometria Analítica;Q3;Noturno;SA;3;segunda das 21:00 às 23:00, sala A - 106-0, quinzenal I/sexta das 21:00 às 23:00, sala A - 106-0, semanal ;0
+G;DAMCZC007-15SB;Ergonomia Cognitiva;Q1;Diurno;SB;3;terca das 08:00 às 10:00, sala A1-S106-SB, semanal/sexta das 10:00 às 12:00, sala A1-S106-SB, semanal ;0
+G;DAMCTC020-15SB;Psicologia Experimental;Q2;Diurno;SB;6;quarta das 10:00 às 12:00, Lab. A1-S105-SB, semanal ;sexta das 08:00 às 12:00, Lab. A1-L101-SB, semanal 
+G;DAMCZC012-15SB;Sensação e Percepção;Q3;Diurno;SB;4;quarta das 10:00 às 12:00, sala A1-S106-SB, semanal/sexta das 08:00 às 10:00, sala A1-S106-SB, semanal ;0
+G;DANHZ5020-15SA;Educação inclusiva;Q3;Diurno;SA;2;segunda das 14:00 às 16:00, sala S - 308-2, semanal ;0
+G;DANHZ5020-15SB;Educação inclusiva;Q3;Diurno;SB;2;sexta das 16:00 às 18:00, sala A1-S103-SB, semanal ;0
+G;NANHZ5020-15SA;Educação inclusiva;Q3;Noturno;SA;2;segunda das 19:00 às 21:00, sala S - 308-2, semanal ;0
+G;NANHZ5020-15SB;Educação inclusiva;Q3;Noturno;SB;2;sexta das 19:00 às 21:00, sala A2-S308-SB, semanal ;0
+G;DA3BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. A - 104-0, semanal/sexta das 10:00 às 12:00, Lab. A - 104-0, semanal ;0
+G;DB3BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. A - 107-0, semanal/sexta das 08:00 às 10:00, Lab. A - 107-0, semanal ;0
+G;NAMCTB021-17SA;Probabilidade;Q3;Noturno;SA;4;terca das 21:00 às 23:00, sala S - 502, semanal/quinta das 19:00 às 21:00, sala S - 502, semanal ;0
+PG;;Equações Algébricas e Polinômios;Q3;Noturno;;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA1BCN0407-15SA;Funções de Várias Variáveis;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala A - 101-0, semanal/quinta das 19:00 às 21:00, sala A - 101-0, semanal ;0
+G;NB1BCN0407-15SA;Funções de Várias Variáveis;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala A - 107-0, semanal/quinta das 21:00 às 23:00, sala A - 107-0, semanal ;0
+G;DAMCTB011-17SA;Equações Diferenciais Ordinárias;Q3;Diurno;SA;4;terca das 08:00 às 10:00, sala S - 502, semanal/sexta das 10:00 às 12:00, sala S - 502, semanal ;0
+G;DANHZ3002-15SA;Dinâmica Não Linear e Caos;Q3;Diurno;SA;4;quarta das 14:00 às 16:00, sala S - 310-3, semanal/sexta das 14:00 às 16:00, sala S - 308-3, semanal ;0
+G;DA1BCM0505-15SB;Processamento da Informação;Q2;Diurno;SB;3;terca das 08:00 às 10:00, sala A2-S105-SB, semanal/sexta das 10:00 às 12:00, sala A2-S105-SB, quinzenal I;quinta das 10:00 às 12:00, sala A2-L003-SB, semanal 
+G;DB9BIS0005-15SA;Bases Computacionais da Ciência;Q2;Diurno;SA;2;0;segunda das 08:00 às 10:00, Lab. L501, semanal 
+G;NA6BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. L703, semanal 
+G;NB9BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 19:00 às 21:00, Lab. L501, semanal 
+G;NAMCZA016-15SA;Gestão de projetos de software;Q3;Noturno;SA;4;segunda das 19:00 às 21:00, sala S - 301-3, semanal/quinta das 21:00 às 23:00, sala S - 301-3, semanal ;0
+G;DAMCZA019-17SA;Programação para Web;Q3;Diurno;SA;4;quarta das 08:00 às 10:00, sala S - 301-3, semanal ;segunda das 10:00 às 12:00, lab. 407-2, semanal 
+G;DAMCZA020-13SA;Programação Paralela;Q1;Diurno;SA;4;0;segunda das 10:00 às 12:00, sala 408-2, semanal/quinta das 08:00 às 10:00, sala 408-2, semanal 
+G;DA3BIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;terca das 10:00 às 12:00, sala A2-L001-SB, semanal 
+G;DB3BIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;terca das 08:00 às 10:00, sala A2-L003-SB, semanal 
+PG;CCM303D172;Programação Paralela e Concorrente;Q2;;SA;4;#N/D;#N/D
+G;NAMCZC013-15SB;Memória e Aprendizagem;Q1;Noturno;SB;4;segunda das 19:00 às 21:00, sala A1-S106-SB, semanal/quarta das 19:00 às 21:00, sala A1-S106-SB, semanal ;0
+G;DAMCTC018-15SB;Neuropsicofarmacologia;Q2;Diurno;SB;4;terca das 08:00 às 10:00, Lab. A1-S105-SB, semanal/quinta das 10:00 às 12:00, Lab. A1-S105-SB, semanal ;0
+G;NAMCTC018-15SB;Neuropsicofarmacologia;Q2;Noturno;SB;4;terca das 19:00 às 21:00, Lab. A1-S105-SB, semanal/quinta das 21:00 às 23:00, Lab. A1-S105-SB, semanal ;0
+G;DAMCTC024-15SB;Neuroetologia;Q3;Diurno;SB;4;terca das 10:00 às 12:00, sala A2-S308-SB, semanal/quinta das 08:00 às 10:00, sala A2-S308-SB, semanal ;0
+G;DAMCTD006-13SA;Fundamentos de Análise;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala S - 305-2, semanal/quarta das 08:00 às 10:00, sala S - 305-2, semanal ;0
+G;NAMCTD006-13SA;Fundamentos de Análise;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 305-2, semanal/quarta das 19:00 às 21:00, sala S - 305-2, semanal ;0
+G;NAMCTD011-13SA;Práticas de Ensino de Matemática no Ensino Fundamental;Q1;Noturno;SA;4;0;segunda das 19:00 às 21:00, sala 401-2, semanal/quarta das 21:00 às 23:00, sala 401-2, semanal 
+G;NAMCTD012-13SA;Práticas de Ensino de Matemática II;Q3;Noturno;SA;3;0;terca das 19:30 às 21:00, lab. 401-2, semanal/quarta das 21:00 às 22:30, lab. 401-2, semanal 
+G;NAMCTD015-13SA;Tendências em Educação Matemática;Q3;Noturno;SA;4;0;terca das 21:00 às 23:00, lab. 401-2, semanal/quarta das 19:00 às 21:00, lab. 401-2, semanal 
+G;DABCN0405-15SB;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SB;4;terca das 08:00 às 10:00, Lab. A2-S105-SB, semanal/sexta das 10:00 às 12:00, Lab. A2-S105-SB, semanal ;0
+G;DBBCN0405-15SB;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SB;4;terca das 10:00 às 12:00, Lab. A2-S201-SB, semanal/sexta das 08:00 às 10:00, Lab. A2-S201-SB, semanal ;0
+G;DA2BCN0404-15SA;Geometria Analítica;Q3;Diurno;SA;3;segunda das 08:00 às 10:00, sala A - 101-0, quinzenal I/sexta das 08:00 às 10:00, sala A - 101-0, semanal ;0
+G;DB2BCN0404-15SA;Geometria Analítica;Q3;Diurno;SA;3;segunda das 10:00 às 12:00, sala A - 105-0, quinzenal I/sexta das 10:00 às 12:00, sala A - 105-0, semanal ;0
+G;DAMCTB015-13SA;Funções de Variáveis Complexas;Q1;Diurno;SA;6;segunda das 08:00 às 10:00, sala S - 501, semanal/quarta das 10:00 às 12:00, sala S - 501, semanal/sexta das 08:00 às 10:00, sala S - 501, semanal ;0
+G;DA2BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Diurno;SA;3;terca das 10:00 às 12:00, Lab. S - 211-0, quinzenal II/quarta das 08:00 às 10:00, Lab. S - 211-0, semanal ;0
+G;DB2BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Diurno;SA;3;terca das 08:00 às 10:00, Lab. A - 114-0, quinzenal II/quarta das 10:00 às 12:00, Lab. A - 114-0, semanal ;0
+G;DA3BCN0402-15SA;Funções de Uma Variável;Q3;Diurno;SA;4;terca das 10:00 às 12:00, sala A - 103-0, semanal/quinta das 08:00 às 10:00, sala A - 103-0, semanal ;0
+G;DB3BCN0402-15SA;Funções de Uma Variável;Q3;Diurno;SA;4;terca das 08:00 às 10:00, sala A - 106-0, semanal/quinta das 10:00 às 12:00, sala A - 106-0, semanal ;0
+G;NAMCTB004-13SA;Análise no Rn I;Q1;Noturno;SA;4;terca das 19:00 às 21:00, sala S - 501, semanal/quinta das 21:00 às 23:00, sala S - 501, semanal ;0
+G;DA1BIS0003-15SA;Bases Matemáticas;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. A - 101-0, semanal/sexta das 08:00 às 10:00, Lab. A - 101-0, semanal ;0
+G;DB1BIS0003-15SA;Bases Matemáticas;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. A - 105-0, semanal/sexta das 10:00 às 12:00, Lab. A - 105-0, semanal ;0
+G;NAMCTB006-13SA;Análise Real II;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala S - 501, semanal/quinta das 21:00 às 23:00, sala S - 501, semanal ;0
+G;DAMCZB030-13SA;Teoria Axiomática dos Conjuntos;Q1;Diurno;SA;4;terca das 08:00 às 10:00, sala L704, semanal/sexta das 10:00 às 12:00, sala L704, semanal ;0
+G;NA1BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. A - 101-0, semanal/sexta das 19:00 às 21:00, Lab. A - 101-0, semanal ;0
+G;NB1BIS0003-15SA;Bases Matemáticas;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. A - 105-0, semanal/sexta das 21:00 às 23:00, Lab. A - 105-0, semanal ;0
+PG;MAT160M172;Topologia Geral;Q2;;SA;4;#N/D;#N/D
+G;DA6BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 08:00 às 10:00, sala A - 102-0, semanal/sexta das 10:00 às 12:00, sala A - 102-0, quinzenal I;quinta das 10:00 às 12:00, sala 409-2, semanal 
+G;DB4BCM0505-15SA;Processamento da Informação;Q1;Diurno;SA;2;terca das 10:00 às 12:00, sala A - 105-0, semanal/sexta das 08:00 às 10:00, sala A - 105-0, quinzenal I;quinta das 08:00 às 10:00, sala L504, semanal 
+G;NA6BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 19:00 às 21:00, sala A - 102-0, semanal/sexta das 21:00 às 23:00, sala A - 102-0, quinzenal I;quinta das 21:00 às 23:00, sala L506, semanal 
+G;NB4BCM0505-15SA;Processamento da Informação;Q1;Noturno;SA;2;terca das 21:00 às 23:00, sala A - 108-0, semanal/sexta das 19:00 às 21:00, sala A - 108-0, quinzenal I;quinta das 19:00 às 21:00, sala L504, semanal 
+EX;;Internet e Tecnologias Web;Q1;;SA;4,75;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DAMCTA010-15SA;Engenharia de Software;Q1;Diurno;SA;4;terca das 10:00 às 12:00, sala S - 301-2, semanal/sexta das 08:00 às 10:00, sala S - 301-2, semanal ;0
+G;DB2BCM0506-15SA;Comunicação e Redes;Q2;Diurno;SA;3;segunda das 10:00 às 12:00, Lab. S - 213-0, semanal/terca das 08:00 às 10:00, Lab. S - 213-0, quinzenal I;0
+G;NA3BCM0506-15SA;Comunicação e Redes;Q2;Noturno;SA;3;segunda das 19:00 às 21:00, Lab. S - 205-0, semanal/terca das 21:00 às 23:00, Lab. S - 205-0, quinzenal I;0
+G;DAMCTA037-17SA;Banco de Dados;Q3;Diurno;SA;4;segunda das 08:00 às 10:00, sala S - 308-2, semanal/quinta das 10:00 às 12:00, sala S - 308-2, quinzenal II;quinta das 10:00 às 12:00, lab. 407-2, quinzenal I
+G;NA1MCTA037-17SA;Banco de Dados;Q3;Noturno;SA;2;segunda das 19:00 às 21:00, sala S - 206-0, semanal/quinta das 21:00 às 23:00, sala S - 206-0, quinzenal II;quinta das 21:00 às 23:00, lab. 407-2, quinzenal I
+G;NAMCTA037-17SA;Banco de Dados;Q3;Noturno;SA;2;segunda das 19:00 às 21:00, sala S - 206-0, semanal/quinta das 21:00 às 23:00, sala S - 206-0, quinzenal II;quinta das 21:00 às 23:00, lab. 409-2, quinzenal I
+PG;MAT112M171;Álgebra Linear e Multilinear;Q1;;SA;4;#N/D;#N/D
+G;DA1MCTB010-13SA;Cálculo Vetorial e Tensorial;Q1;Diurno;SA;4;segunda das 10:00 às 12:00, sala A - 107-0, semanal/quinta das 08:00 às 10:00, sala A - 107-0, semanal ;0
+G;DAMCTB003-17SA;Álgebra Linear Avançada II;Q3;Diurno;SA;4;terca das 10:00 às 12:00, sala S - 501, semanal/quinta das 08:00 às 10:00, sala S - 501, semanal ;0
+G;DANHZ3019-15SA;Fundamentos da Mecânica dos Fluidos;Q3;Diurno;SA;4;terca das 08:00 às 10:00, sala S - 308-3, semanal/quinta das 10:00 às 12:00, sala S - 308-3, semanal ;0
+G;NA1BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. L502, semanal 
+G;NB1BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 19:00 às 21:00, Lab. L502, semanal 
+PG;CCM007M172;Fundamentos de Matemática para a Computação;Q2;;SA;4;#N/D;#N/D
+G;DA1MCTA014-15SA;Inteligência Artificial;Q3;Diurno;SA;2;segunda das 10:00 às 12:00, sala S - 301-2, semanal/quarta das 08:00 às 10:00, sala S - 302-2, quinzenal II;quarta das 08:00 às 10:00, lab. 408-2, quinzenal I
+G;DAMCTA014-15SA;Inteligência Artificial;Q3;Diurno;SA;2;segunda das 10:00 às 12:00, sala S - 301-2, semanal/quarta das 08:00 às 10:00, sala S - 302-2, quinzenal II;quarta das 08:00 às 10:00, lab. 407-2, quinzenal I
+G;NA1MCTA014-15SA;Inteligência Artificial;Q3;Noturno;SA;2;segunda das 21:00 às 23:00, sala S - 214-0, semanal/quarta das 19:00 às 21:00, sala S - 214-0, quinzenal II;quarta das 19:00 às 21:00, lab. 409-2, quinzenal I
+G;NAMCTA014-15SA;Inteligência Artificial;Q3;Noturno;SA;2;segunda das 21:00 às 23:00, sala S - 214-0, semanal/quarta das 19:00 às 21:00, sala S - 214-0, quinzenal II;quarta das 19:00 às 21:00, lab. 407-2, quinzenal I
+G;;Estágio Supervisionado em Matemática - Ensino Fundamental;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DANHI5002-15SA;Didática;Q2;Diurno;SA;4;segunda das 08:00 às 10:00, Lab. A - 110-0, semanal/quarta das 10:00 às 12:00, Lab. A - 110-0, semanal ;0
+G;;Coordenadora de Projeto Dirigido;Q2;;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+G;;Coordenadora de Projeto Dirigido;Q3;Noturno;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NABIN0406-15SB;Introdução à Probabilidade e à Estatística;Q3;Noturno;SB;3;terca das 19:00 às 21:00, Lab. A2-S103-SB, quinzenal I/sexta das 21:00 às 23:00, Lab. A2-S103-SB, semanal ;0
+G;NBBIN0406-15SB;Introdução à Probabilidade e à Estatística;Q3;Noturno;SB;3;terca das 21:00 às 23:00, Lab. A2-S104-SB, quinzenal I/sexta das 19:00 às 21:00, Lab. A2-S104-SB, semanal ;0
+G;DA2BCN0402-15SA;Funções de Uma Variável;Q3;Diurno;SA;4;terca das 10:00 às 12:00, sala A - 101-0, semanal/quinta das 08:00 às 10:00, sala A - 101-0, semanal ;0
+G;DB2BCN0402-15SA;Funções de Uma Variável;Q3;Diurno;SA;4;terca das 08:00 às 10:00, sala A - 105-0, semanal/quinta das 10:00 às 12:00, sala A - 105-0, semanal ;0
+PG;CHS001M702;Métodos e Planejamento de Pesquisa;Q2;;SA;2;#N/D;#N/D
+G;DANHZ5019-15SA;Tecnologias da Informação e Comunicação na Educação;Q2;Diurno;SA;3;terca das 10:00 às 11:30, Lab. S - 504, semanal/quinta das 08:30 às 10:00, Lab. S - 504, semanal ;0
+G;NANHZ5019-15SA;Tecnologias da Informação e Comunicação na Educação;Q2;Noturno;SA;3;terca das 21:00 às 22:30, Lab. A - 110-0, semanal/quinta das 19:30 às 21:00, Lab. A - 110-0, semanal ;0
+G;DANHT5004-15SA;Educação Científica, Sociedade e Cultura;Q3;Diurno;SA;4;segunda das 10:00 às 12:00, Lab. S - 305-3, semanal/quarta das 08:00 às 10:00, Lab. S - 305-3, semanal ;0
+EX;;Antártica ou Antartida??;Q3;;SA;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NA2BCN0404-15SB;Geometria Analítica;Q3;Noturno;SB;3;segunda das 19:00 às 21:00, sala A1-S202-SB, quinzenal I/sexta das 19:00 às 21:00, sala A1-S202-SB, semanal ;0
+G;;Coordenador de Geometria Analítica;Q3;Noturno;;3;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCTB012-13SA;Equações Diferenciais Parciais;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala S - 502, semanal/quinta das 21:00 às 23:00, sala S - 502, semanal ;0
+G;DA4BIS0003-15SA;Bases Matemáticas;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. A - 104-0, semanal/sexta das 08:00 às 10:00, Lab. A - 104-0, semanal ;0
+G;NA2BIS0003-15SB;Bases Matemáticas;Q2;Noturno;SB;4;terca das 21:00 às 23:00, Lab. A2-S105-SB, semanal/sexta das 19:00 às 21:00, Lab. A2-S105-SB, semanal ;0
+G;NBBIS0003-15SB;Bases Matemáticas;Q2;Noturno;SB;4;terca das 19:00 às 21:00, Lab. A2-S201-SB, semanal/sexta das 21:00 às 23:00, Lab. A2-S201-SB, semanal ;0
+G;DA1MCTC023-15SB;Neuroanatomia;Q1;Diurno;SB;1,5;quarta das 10:00 às 12:00, sala A2-S206-SB, quinzenal I/sexta das 08:00 às 10:00, sala A2-S206-SB, semanal ;quarta das 10:00 às 12:00, sala A1-L302-SB, quinzenal II
+G;DAMCTC023-15SB;Neuroanatomia;Q1;Diurno;SB;2,5;quarta das 10:00 às 12:00, sala A2-S206-SB, quinzenal I/sexta das 08:00 às 10:00, sala A2-S206-SB, semanal ;quarta das 10:00 às 12:00, sala A1-L305-SB, quinzenal II
+G;NA1MCTC023-15SB;Neuroanatomia;Q1;Noturno;SB;1,5;quarta das 21:00 às 23:00, sala A2-S307-SB, quinzenal I/sexta das 19:00 às 21:00, sala A2-S203-SB, semanal ;quarta das 21:00 às 23:00, sala A1-L302-SB, quinzenal II
+G;NAMCTC023-15SB;Neuroanatomia;Q1;Noturno;SB;2,5;quarta das 21:00 às 23:00, sala A2-S307-SB, quinzenal I/sexta das 19:00 às 21:00, sala A2-S203-SB, semanal ;quarta das 21:00 às 23:00, sala A1-L305-SB, quinzenal II
+G;DAMCTC007-15SB;Pesquisa e Comunicação Científica;Q2;Diurno;SB;2;terca das 10:00 às 12:00, Lab. A2-S305-SB, semanal ;0
+G;NAMCTC007-15SB;Pesquisa e Comunicação Científica;Q2;Noturno;SB;2;terca das 21:00 às 23:00, Lab. A2-S204-SB, semanal ;0
+G;NAMCTC020-15SB;Psicologia Experimental;Q2;Noturno;SB;2;quarta das 21:00 às 23:00, Lab. A1-S105-SB, semanal ;sexta das 19:00 às 23:00, Lab. A1-L101-SB, semanal 
+G;DAMCZC002-15SB;Bases Neurais da Motricidade;Q3;Diurno;SB;4;terca das 08:00 às 10:00, sala A1-S106-SB, semanal/quinta das 10:00 às 12:00, sala A2-S302-SB, semanal ;0
+EX;;Neurociência e Educação - Desmistificando o Cérebro;Q3;;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABCN0404-15SB;Geometria Analítica;Q1;Diurno;SB;3;segunda das 16:00 às 18:00, sala A2-S102-SB, quinzenal I/quinta das 14:00 às 16:00, sala A2-S102-SB, semanal ;0
+G;DAMCTB009-17SB;Cálculo Numérico;Q2;Diurno;SB;4;segunda das 08:00 às 10:00, Lab. A2-S106-SB, semanal/quarta das 10:00 às 12:00, Lab. A2-S106-SB, semanal ;0
+G;NAMCTB009-17SB;Cálculo Numérico;Q2;Noturno;SB;4;segunda das 19:00 às 21:00, Lab. A2-S106-SB, semanal/quarta das 21:00 às 23:00, Lab. A2-S106-SB, semanal ;0
+G;NA1BCN0402-15SB;Funções de Uma Variável;Q3;Noturno;SB;4;terca das 21:00 às 23:00, sala A1-S201-SB, semanal/quinta das 19:00 às 21:00, sala A1-S201-SB, semanal ;0
+G;NB1BCN0402-15SB;Funções de Uma Variável;Q3;Noturno;SB;4;terca das 19:00 às 21:00, sala A2-S101-SB, semanal/quinta das 21:00 às 23:00, sala A2-S101-SB, semanal ;0
+G;DA1BCM0505-15SB;Processamento da Informação;Q2;Diurno;SB;2;terca das 08:00 às 10:00, sala A2-S105-SB, semanal/sexta das 10:00 às 12:00, sala A2-S105-SB, quinzenal I;quinta das 10:00 às 12:00, sala A2-L003-SB, semanal 
+G;DAMCTA009-13SA;Computadores, Ética e Sociedade;Q2;Diurno;SA;2;terca das 10:00 às 12:00, Lab. S - 311-2, semanal ;0
+G;NAMCTA009-13SA;Computadores, Ética e Sociedade;Q2;Noturno;SA;2;terca das 21:00 às 23:00, Lab. S - 311-2, semanal ;0
+G;DAMCZA015-13SA;Mineração de Dados;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. S - 307-2, semanal ;quinta das 10:00 às 12:00, Lab. 409-2, semanal 
+G;DA2BCM0504-15SB;Natureza da Informação;Q3;Diurno;SB;3;segunda das 08:00 às 10:00, sala A1-S202-SB, quinzenal II/quinta das 10:00 às 12:00, sala A1-S202-SB, semanal ;0
+G;DA1MCTA014-15SA;Inteligência Artificial;Q3;Diurno;SA;1;segunda das 10:00 às 12:00, sala S - 301-2, semanal/quarta das 08:00 às 10:00, sala S - 302-2, quinzenal II;quarta das 08:00 às 10:00, lab. 408-2, quinzenal I
+G;NA1MCTA014-15SA;Inteligência Artificial;Q3;Noturno;SA;1;segunda das 21:00 às 23:00, sala S - 214-0, semanal/quarta das 19:00 às 21:00, sala S - 214-0, quinzenal II;quarta das 19:00 às 21:00, lab. 409-2, quinzenal I
+G;NABCN0404-15SB;Geometria Analítica;Q1;Noturno;SB;3;segunda das 21:00 às 23:00, sala A2-S102-SB, quinzenal I/quinta das 19:00 às 21:00, sala A2-S102-SB, semanal ;0
+G;NBBCN0404-15SB;Geometria Analítica;Q1;Noturno;SB;3;segunda das 19:00 às 21:00, sala A2-S105-SB, quinzenal I/quinta das 21:00 às 23:00, sala A2-S105-SB, semanal ;0
+G;NA3BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Noturno;SA;3;terca das 21:00 às 23:00, Lab. S - 205-0, quinzenal II/quarta das 19:00 às 21:00, Lab. S - 205-0, semanal ;0
+G;NAMCTB020-17SA;Teoria da Medida e Integração;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. S - 502, semanal/sexta das 21:00 às 23:00, Lab. S - 502, semanal ;0
+G;DAMCTB006-13SA;Análise Real II;Q3;Diurno;SA;4;terca das 08:00 às 10:00, sala S - 501, semanal/quinta das 10:00 às 12:00, sala S - 501, semanal ;0
+G;NAMCTC014-13SB;Introdução à Inferência Estatística;Q1;Noturno;SB;4;terca das 21:00 às 23:00, sala A2-S106-SB, semanal/quinta das 19:00 às 21:00, sala A2-S106-SB, semanal ;0
+G;NAMCZB028-13SA;Processos Estocásticos;Q1;Noturno;SA;4;terca das 19:00 às 21:00, sala L604, semanal/sexta das 21:00 às 23:00, sala L604, semanal ;0
+G;NAMCTB008-17SA;Cálculo de Probabilidade;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. S - 501, semanal/sexta das 19:00 às 21:00, Lab. S - 501, semanal ;0
+PG;;Matemática Discreta;Q2;;SA;4;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABIN0406-15SB;Introdução à Probabilidade e à Estatística;Q3;Diurno;SB;3;terca das 08:00 às 10:00, Lab. A2-S103-SB, quinzenal I/sexta das 10:00 às 12:00, Lab. A2-S103-SB, semanal ;0
+G;DBBIN0406-15SB;Introdução à Probabilidade e à Estatística;Q3;Diurno;SB;3;terca das 10:00 às 12:00, Lab. A2-S104-SB, quinzenal I/sexta das 08:00 às 10:00, Lab. A2-S104-SB, semanal ;0
+G;DABCM0506-15SA;Comunicação e Redes;Q1;Diurno;SA;3;quarta das 16:00 às 18:00, sala A - 105-0, semanal/sexta das 14:00 às 16:00, sala A - 105-0, quinzenal II;0
+G;NABCM0506-15SA;Comunicação e Redes;Q1;Noturno;SA;3;quarta das 21:00 às 23:00, sala A - 108-0, semanal/sexta das 19:00 às 21:00, sala A - 108-0, quinzenal II;0
+G;NA2BCM0506-15SA;Comunicação e Redes;Q2;Noturno;SA;3;segunda das 19:00 às 21:00, Lab. S - 208-0, semanal/terca das 21:00 às 23:00, Lab. S - 208-0, quinzenal I;0
+G;NA4BIS0005-15SA;Bases Computacionais da Ciência;Q2;Noturno;SA;2;0;segunda das 21:00 às 23:00, Lab. L505, semanal 
+G;NAMCZA006-17SA;Computação Evolutiva e Conexionista;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. S - 302-3, semanal/quinta das 21:00 às 23:00, Lab. S - 311-3, semanal ;0
+G;NA2BCM0504-15SB;Natureza da Informação;Q3;Noturno;SB;3;segunda das 19:00 às 21:00, sala A1-S202-SB, quinzenal II/quinta das 21:00 às 23:00, sala A1-S202-SB, semanal ;0
+G;NA3BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;3;terca das 19:00 às 21:00, sala A2-S102-SB, semanal/sexta das 21:00 às 23:00, sala A2-S102-SB, quinzenal I;quinta das 21:00 às 23:00, sala A1-L101-SB, semanal 
+G;NB1BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;3;terca das 21:00 às 23:00, sala A2-S105-SB, semanal/sexta das 19:00 às 21:00, sala A2-S105-SB, quinzenal I;quinta das 19:00 às 21:00, sala A2-L003-SB, semanal 
+EX;;Computação Móvel;Q2;;;4,75;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;MAT220D171;Análise Funcional;Q1;;SA;4;#N/D;#N/D
+G;DA2BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SA;4;terca das 08:00 às 10:00, Lab. A - 103-0, semanal/sexta das 10:00 às 12:00, Lab. A - 103-0, semanal ;0
+G;DB2BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. A - 106-0, semanal/sexta das 08:00 às 10:00, Lab. A - 106-0, semanal ;0
+G;DAMCTB013-13SA;Evolução dos Conceitos Matemáticos;Q3;Diurno;SA;4;segunda das 08:00 às 10:00, sala A - 110-0, semanal/quinta das 10:00 às 12:00, sala A - 110-0, semanal ;0
+G;DAMCTD007-13SA;Fundamentos de Geometria;Q1;Diurno;SA;4;terca das 10:00 às 12:00, sala A - 110-0, semanal/quinta das 08:00 às 10:00, sala A - 110-0, semanal ;0
+G;DAMCTD009-13SA;Geometria Plana e Construções Geométricas;Q1;Diurno;SA;4;terca das 08:00 às 10:00, sala A - 110-0, semanal/quinta das 10:00 às 12:00, sala A - 110-0, semanal ;0
+G;;Estágio Supervisonado em Matemática - Ensino Médio;Q1;Noturno;SA;2;0;Terça das 14:00 às18:00, Lab. 407-2
+EX;;O Ensino de Álgebra para a Educação Básica;Q1;;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;ENS190M172;Didática da Matemática;Q2;;SA;2;#N/D;#N/D
+G;DAMCTD014-13SA;Práticas de Ensino de Matemática I;Q2;Diurno;SA;3;0;segunda das 08:30 às 10:00, Lab. 401-2, semanal/quarta das 10:00 às 11:30, Lab. 401-2, semanal 
+G;DAMCTD015-13SA;Tendências em Educação Matemática;Q2;Diurno;SA;4;0;segunda das 16:00 às 18:00, Lab. 401-2, semanal/quarta das 14:00 às 16:00, Lab. 401-2, semanal 
+G;NA1NHI5002-15SA;Didática;Q2;Noturno;SA;4;segunda das 19:00 às 21:00, Lab. S - 305-3, semanal/quarta das 21:00 às 23:00, Lab. S - 305-3, semanal ;0
+G;NAMCTD010-13SA;História da Matemática;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala A - 110-0, semanal/quarta das 19:00 às 21:00, sala A - 110-0, semanal ;0
+G;DAMCTD010-13SA;História da Matemática;Q3;Diurno;SA;0,67;terca das 08:00 às 10:00, Lab. A - 110-0, semanal/quinta das 10:00 às 12:00, Lab. A - 110-0, semanal ;0
+G;NAMCTB013-13SA;Evolução dos Conceitos Matemáticos;Q3;Noturno;SA;0,67;segunda das 19:00 às 21:00, sala S - 306-3, semanal/quinta das 21:00 às 23:00, sala S - 306-3, semanal ;0
+G;NAMCTD013-13SA;Práticas de Ensino de Matemática III;Q1;Noturno;SA;3;0;terca das 21:00 às 22:30, sala 401-2, semanal/quinta das 19:30 às 21:00, sala 401-2, semanal 
+G;NBNHI5001-15SA;Desenvolvimento e Aprendizagem;Q1;Noturno;SA;4;terca das 19:00 às 21:00, sala S - 307-2, semanal/quinta das 21:00 às 23:00, sala S - 307-2, semanal ;0
+G;;Coordenadora de Desenvolvimento e Aprendizagem;Q1;Noturno;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCTB013-13SA;Evolução dos Conceitos Matemáticos;Q3;Noturno;SA;1,6;segunda das 19:00 às 21:00, sala S - 306-3, semanal/quinta das 21:00 às 23:00, sala S - 306-3, semanal ;0
+G;DANHI5011-13SA;Políticas Educacionais;Q3;Diurno;SA;3;segunda das 08:30 às 10:00, sala S - 307-2, semanal/quarta das 10:00 às 11:30, sala S - 307-2, semanal ;0
+G;NANHI5011-13SA;Políticas Educacionais;Q3;Noturno;SA;3;segunda das 21:00 às 22:30, sala S - 006-0, semanal/quarta das 19:30 às 21:00, sala S - 006-0, semanal ;0
+G;;Coordenadora de Políticas Educacionais;Q3;Noturno;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;NAMCTB022-13SA;Sequências e Séries;Q1;Noturno;SA;4;quarta das 19:00 às 21:00, sala S - 301-2, semanal/sexta das 21:00 às 23:00, sala S - 301-2, semanal ;0
+G;NA1BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Noturno;SA;3;terca das 21:00 às 23:00, Lab. S - 204-0, quinzenal II/quarta das 19:00 às 21:00, Lab. S - 204-0, semanal ;0
+G;NB1BIN0406-15SA;Introdução à Probabilidade e à Estatística;Q2;Noturno;SA;3;terca das 19:00 às 21:00, Lab. S - 207-0, quinzenal II/quarta das 21:00 às 23:00, Lab. S - 207-0, semanal ;0
+G;;Coordenador de Introdução à Probabilidade e à Estatística;Q2;;;3;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABIN0406-15SA;Introdução à Probabilidade e à Estatística;Q3;Diurno;SA;3;terca das 17:00 às 19:00, sala A - 108-0, quinzenal II/sexta das 17:00 às 19:00, sala A - 108-0, semanal ;0
+G;;Coordenador de Introdução à Probabilidade e à Estatística;Q3;Noturno;;1;0;Terça das 14:00 às18:00, Lab. 407-2
+G;DABCN0402-15SB;Funções de Uma Variável;Q1;Diurno;SB;4;segunda das 14:00 às 16:00, sala A2-S102-SB, semanal/quinta das 16:00 às 18:00, sala A2-S102-SB, semanal ;0
+G;NABCN0402-15SB;Funções de Uma Variável;Q1;Noturno;SB;4;segunda das 21:00 às 23:00, sala A2-S101-SB, semanal/quinta das 19:00 às 21:00, sala A2-S101-SB, semanal ;0
+G;NBBCN0402-15SB;Funções de Uma Variável;Q1;Noturno;SB;4;segunda das 19:00 às 21:00, sala A2-S102-SB, semanal/quinta das 21:00 às 23:00, sala A2-S102-SB, semanal ;0
+G;DB1BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Diurno;SA;4;terca das 10:00 às 12:00, Lab. A - 105-0, semanal/sexta das 08:00 às 10:00, Lab. A - 105-0, semanal ;0
+G;NA1BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SA;4;terca das 19:00 às 21:00, Lab. A - 102-0, semanal/sexta das 21:00 às 23:00, Lab. A - 102-0, semanal ;0
+G;NB1BCN0405-15SA;Introdução às Equações Diferenciais Ordinárias;Q2;Noturno;SA;4;terca das 21:00 às 23:00, Lab. A - 105-0, semanal/sexta das 19:00 às 21:00, Lab. A - 105-0, semanal ;0
+G;DA1BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;1,5;terca das 08:00 às 10:00, sala A2-S105-SB, semanal/sexta das 10:00 às 12:00, sala A2-S105-SB, quinzenal I;quinta das 10:00 às 12:00, sala A2-L003-SB, semanal 
+G;DA2BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;1,5;terca das 08:00 às 10:00, sala A2-S105-SB, semanal/sexta das 10:00 às 12:00, sala A2-S105-SB, quinzenal I;quinta das 10:00 às 12:00, sala A1-L002-SB, semanal 
+G;DB1BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;1,5;terca das 10:00 às 12:00, sala A2-S105-SB, semanal/sexta das 08:00 às 10:00, sala A2-S105-SB, quinzenal I;quinta das 08:00 às 10:00, sala A2-L003-SB, semanal 
+G;DB2BCM0505-15SB;Processamento da Informação;Q1;Diurno;SB;1,5;terca das 10:00 às 12:00, sala A2-S105-SB, semanal/sexta das 08:00 às 10:00, sala A2-S105-SB, quinzenal I;quinta das 08:00 às 10:00, sala A1-L002-SB, semanal 
+G;NA1BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;1,5;terca das 19:00 às 21:00, sala A2-S105-SB, semanal/sexta das 21:00 às 23:00, sala A2-S105-SB, quinzenal I;quinta das 21:00 às 23:00, sala A2-L003-SB, semanal 
+G;NA2BCM0505-15SB;Processamento da Informação;Q1;Noturno;SB;1,5;terca das 19:00 às 21:00, sala A2-S105-SB, semanal/sexta das 21:00 às 23:00, sala A2-S105-SB, quinzenal I;quinta das 21:00 às 23:00, sala A1-L002-SB, semanal 
+G;DA2BIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;terca das 10:00 às 12:00, sala A1-L101-SB, semanal 
+G;DB2BIS0005-15SB;Bases Computacionais da Ciência;Q2;Diurno;SB;2;0;terca das 08:00 às 10:00, sala A2-L001-SB, semanal 
+G;NAMCZA047-14SA;Sistemas Multi-Robôs Sociais;Q3;Noturno;SA;4;terca das 19:00 às 21:00, sala S - 308-2, semanal ;sexta das 21:00 às 23:00, lab. 406-2, semanal 
+G;DAMCTB012-13SA;Equações Diferenciais Parciais;Q1;Diurno;SA;4;segunda das 08:00 às 10:00, sala S - 502, semanal/quinta das 10:00 às 12:00, sala S - 502, semanal ;0
+G;DA1BIS0003-15SB;Bases Matemáticas;Q2;Diurno;SB;4;terca das 10:00 às 12:00, Lab. A2-S102-SB, semanal/sexta das 08:00 às 10:00, Lab. A2-S102-SB, semanal ;0
+G;DBBIS0003-15SB;Bases Matemáticas;Q2;Diurno;SB;4;terca das 08:00 às 10:00, Lab. A2-S201-SB, semanal/sexta das 10:00 às 12:00, Lab. A2-S201-SB, semanal ;0
+G;DA1BCN0402-15SB;Funções de Uma Variável;Q3;Diurno;SB;4;terca das 10:00 às 12:00, sala A1-S201-SB, semanal/quinta das 08:00 às 10:00, sala A1-S201-SB, semanal ;0
+G;DB1BCN0402-15SB;Funções de Uma Variável;Q3;Diurno;SB;4;terca das 08:00 às 10:00, sala A2-S101-SB, semanal/quinta das 10:00 às 12:00, sala A2-S101-SB, semanal ;0
+G;DAMCTC011-15SA;Psicologia Cognitiva;Q1;Diurno;SA;1;terca das 14:00 às 16:00, sala S - 302-2, semanal/quinta das 14:00 às 16:00, sala S - 302-2, semanal ;0
+PG;NCG003D171;Ciências Cognitivas;Q1;;SB;3;#N/D;#N/D
+G;DAMCTC011-15SB;Psicologia Cognitiva;Q3;Diurno;SB;4;terca das 08:00 às 10:00, sala A1-S105-SB, semanal/quarta das 10:00 às 12:00, sala A1-S105-SB, semanal ;0
+PG;NCG003D173;Ciências Cognitivas;Q3;;SB;0,5;#N/D;#N/D
+PG;NCG003M173;Ciências Cognitivas;Q3;;SB;0,5;#N/D;#N/D
+G;NABCN0402-15SA;Funções de Uma Variável;Q1;Noturno;SA;4;segunda das 21:00 às 23:00, sala S - 208-0, semanal/quinta das 19:00 às 21:00, sala S - 208-0, semanal ;0
+G;NBBCN0402-15SA;Funções de Uma Variável;Q1;Noturno;SA;4;segunda das 19:00 às 21:00, sala A - 108-0, semanal/quinta das 21:00 às 23:00, sala A - 108-0, semanal ;0
+G;;Coordenadora de Funções de Uma Variável;Q1;Noturno;SA;1;0;Terça das 14:00 às18:00, Lab. 407-2
+PG;MAT211D171;Álgebra I;Q1;;SA;4;#N/D;#N/D
+G;NA2BCN0404-15SA;Geometria Analítica;Q3;Noturno;SA;3;segunda das 19:00 às 21:00, sala A - 102-0, quinzenal I/sexta das 19:00 às 21:00, sala A - 102-0, semanal ;0
+G;NB2BCN0404-15SA;Geometria Analítica;Q3;Noturno;SA;3;segunda das 21:00 às 23:00, sala A - 105-0, quinzenal I/sexta das 21:00 às 23:00, sala A - 105-0, semanal ;0

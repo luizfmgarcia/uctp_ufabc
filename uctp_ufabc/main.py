@@ -3,30 +3,26 @@
 import objects
 import uctp
 import ioData
+import cProfile
 
 """
 -Verificar se há variaveis/List importantes sendo modificadas quando n deveriam !
 -Erros nos comments - verificar com notepad++ !
 -Nomes de variaveis ruins !
+-Rever uso de float()
 -Corrigir [1 for s in a if sName in s] ver se existe string em list of strings
+-   prof_data = [prof[i].get() for i in range(len(prof))]
+    charges_EachProf = [int(pCharge) for _, _, pCharge, _, _, _, _, _, _ in prof_data]
 -uso de _, remover espa;os em branco....
 
--PErmitir maior variacao de individuos feasible?
-    -Reformular SelectionF para ter uma parte elitista e outra com roleta?
+-SelectionF com uma parte elitista e outra com roleta?
 -Reformular f2 para apenas contagem de meterias de preferencia(sem levar em conta posicao no vetor)?
 -Ou adicionar mais um f6 com essa contagem....
 -offspringF parte vai para crossover e o resto sofre mutacao randomica?
 
 -havendo acumulo de disciplinas em poucos prof
--muitas materias n sao de pref
-    -Criar X funcoes novas totalmente aleatorias toda rodada?
-    -rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, e/ou tirar materia de um
-        que nao tem pref e dar pra qm tem pref
-
--Contador de iteracoes que finaliza o algoritmo qundo nao acha solucao melhor dps de um tempo?
--Ou a possibilidade de uma tecla para finalizar o algoritmo e ainda assim apresentar um resultado?
--Perguntar no inicio se quer apagar runs anteriores ou criar uma pasta GenerationsCSV nova
--Quando chegar no maxiter perguntar se quer finalizar ou continuar e qnto mais rounds
+-rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, e/ou tirar materia de um
+ que nao tem pref e dar pra qm tem pref
 """
 
 #==============================================================================================================
@@ -35,18 +31,30 @@ import ioData
 
 # main
 class main:
+    # Record Run Info Start
+    pr = cProfile.Profile()
+    pr.enable()
+
     #----------------------------------------------------------------------------------------------------------
     # CONFIGURATION
 
+    # RUN CONFIG
     # Set '1' to allow, during the run, the print on terminal of some steps
     prt = 1
-
     # Max Number of iterations to get a solution
-    maxIter = 20000
+    maxIter = 20
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
     numCand = 50
-
-    # Operators Config (Must be between '0' and '100')
+    # Initial number of solutions generated randomly
+    numCandInit = 1000
+    # Number of new solutions (created generated randomly) every round
+    randNewSol = 100
+    # Convergence Detector: num of iterations passed since last MaxFit found
+    convergDetect = 500 # -1 do not consider this condition
+    # Max Fitness value that must find to stop the run before reach 'maxIter'
+    stopFitValue = 0.9 # -1 do not consider this condition
+ 
+    # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
     pctParentsCross = 100
     # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer 
@@ -54,19 +62,23 @@ class main:
     # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
     pctElitism = 100
 
-    # Weights (must be float)
+    # WEIGHTS CONFIG (must be Float)
     w_alpha = 1.0   # i1 - Prof without Subj
     w_beta = 3.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 2.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
-    w_delta = 2.0   # f1 - Balance of distribution of Subjs between Profs
-    w_omega = 3.0   # f2 - Profs preference Subjects
+    w_delta = 3.0   # f1 - Balance of distribution of Subjs between Profs
+    w_omega = 2.0   # f2 - Profs preference Subjects
     w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
     w_rho = 1.3     # f5 - Profs with Subjs in Campus
     weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
+
+    # Gathering all variables
+    config = [maxIter, numCand, numCandInit, randNewSol, convergDetect, stopFitValue, pctParentsCross, 
+            pctMut, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
     
     #----------------------------------------------------------------------------------------------------------
-    # CREATION OF MAIN VARIABLES
+    # MAIN VARIABLES
 
     # to access UCTP Main methods and creating Solutions (List of Candidates)
     uctp = uctp.UCTP()
@@ -80,61 +92,47 @@ class main:
     prof, subj = [], []
     # Other variables
     maxFeaIndex, minInf, maxInf, avgInf, minFea, maxFea, avgFea = [], 0, 0, 0, 0, 0, 0
+    # Flag to mark when appears the first Feasible Solution during a run
+    firstFeasSol = -1
+    # Variables that records when current MaxFit Feas Sol appears and its Fit value
+    lastMaxIter, lastMax = 0, 0
+    # Initial Iteration value
+    curIter = 0
 
     #----------------------------------------------------------------------------------------------------------
     # START OF THE WORK
     
+    # Creating folders if is needed
+    ioData.startOutFolders()
+    
     # Getting data to work with
     ioData.getData(subj, prof)
-    ioData.startOutFolders()
 
     # Creating the first 'numCand' candidates (First Generation)
-    uctp.start(solutionsNoPop, subj, prof, numCand)
+    uctp.start(solutionsNoPop, subj, prof, numCandInit)
     
-    # Extracting basic info about Prof's Subj Pref
+    # Extracting basic info about Prof's Subj Preferences
     subjIsPref = uctp.extractSubjIsPref(subj, prof)
-    pIndex, sIndex, pName, sName = 0, 0, '', ''
-    if(prt == 1):
-        for pIndex in range(len(prof)):
-                # Getting data of current Prof
-                pName, _, _, _, _, _, _, _, _ = prof[pIndex].get()
-                # All Relations of one Prof
-                for sIndex in range(len(subj)):
-                    # Getting data of current Subj
-                    _, _, sName, _, _, _, _, _ = subj[sIndex].get()
-                    if(subjIsPref[pIndex][sIndex]!=0): print(pName, sName, subjIsPref[pIndex][sIndex])
-        print("")
 
     # Classification and Fitness calc of the first candidates
     uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights)
     uctp.calcFit(solutionsI, solutionsF, prof, subj, weights)
 
     # Print and export generated data
-    if(prt == 1): print('Iteration: 0')
-    maxFeaIndex, _, _, _, _, maxFea, _ = ioData.outDataMMA(solutionsI, solutionsF, 0)
-
-    # Flag to mark when appears the first Feasible Solution during a run
-    firstFeasSol = -1
-    # Mark when current MaxFit Feas Sol appears and its fit value
-    lastMaxIter, lastMax = 0, 0
+    if(prt == 1): ioData.printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter)
+    maxFeaIndex, _, _, _, _, maxFea, _ = ioData.outDataMMA(solutionsI, solutionsF, curIter)
+    curIter = curIter + 1
     if(len(maxFeaIndex) != 0): lastMax = maxFea
-    
-    curIter = 1
 
     #----------------------------------------------------------------------------------------------------------
     # MAIN WORK - iterations of GA-Algorithm to find a solution
     
-    if(prt == 1): print("\nStarting hard work...\n")
-    
-    while(uctp.stop(curIter, maxIter, solutionsI, solutionsF)):
-        # Important Info to output and follow on terminal during the run
-        if(prt == 1):
-            print('Iteration:', curIter, 'of', maxIter, '/ Working with (Prof/Subj):', len(prof), '/', len(subj))
-            if(firstFeasSol != -1): 
-                print('First Feas Sol at (iter): ', firstFeasSol, '/ Cur Max Feas Sol at (iter): ', lastMaxIter, '/ Num Iter since last Max:', curIter - lastMaxIter)
+    while(uctp.stop(curIter, maxIter, lastMaxIter, convergDetect, maxFea, stopFitValue)):
+        # First print of each run
+        if(prt == 1): ioData.printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter)
         
         # Creating new Random Solutions
-        for _ in range(int(numCand*30/100)): solutionsNoPop.addCand(uctp.newCandRand(subj, prof))
+        for _ in range(randNewSol): solutionsNoPop.addCand(uctp.newCandRand(subj, prof))
         
         # Choosing Parents to generate children (put all new into 'solutionsNoPop')
         uctp.offspringI(solutionsNoPop, solutionsI, prof, subj)
@@ -151,6 +149,9 @@ class main:
         # Print and export generated data
         maxFeaIndex, minInf, maxInf, avgInf, minFea, maxFea, avgFea = ioData.outDataMMA(solutionsI, solutionsF, curIter)
         
+        # Last print of each run
+        if(prt == 1): ioData.printTail(solutionsI, solutionsF, minInf, maxInf, avgInf, minFea, maxFea, avgFea)
+    
         # Register of the 'Iteration' that appeared the first Feas Sol
         if(firstFeasSol == -1 and len(solutionsF.getList()) != 0): firstFeasSol = curIter
         
@@ -159,26 +160,19 @@ class main:
             lastMax = maxFea
             lastMaxIter = curIter
 
-        # Important Info to output and follow on terminal during the run
-        if(prt == 1):
-            if(minInf != 0): print('Infeasibles (', len(solutionsI.getList()), ') Min:', minInf, 'Max:', maxInf, 'Avg:', avgInf)
-            else: print('No Infeasibles Solutions!')
-            if(minFea != 1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', avgFea)
-            else: print('No Feasibles Solutions!')
-            print("")
-        
-        if(curIter - lastMaxIter>=500): break
         # Next Iteration
         curIter = curIter + 1
     # End of While (Iterations) - Stop condition verified
     
     #----------------------------------------------------------------------------------------------------------
+    # FINAL processing of the data
     
-    # Final - last processing of the data
     # Export last generation of candidates and Config-Run Info
-    config = [maxIter, numCand, pctParentsCross, pctMut, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
     #ioData.outDataGeneration(solutionsI, solutionsF, curIter, prof, subj)
-    ioData.finalOutData(solutionsI, solutionsF, curIter, prof, subj, maxFeaIndex, config)
+    fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3 = ioData.finalOutData(solutionsI, solutionsF, curIter, prof, subj, maxFeaIndex, config)
+    ioData.printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3)
+    # Record Run Info End
+    ioData.outRunData(pr)
     if(prt == 1): print("End of works")
-    
-#==============================================================================================================
+
+#==============================================================================================================    

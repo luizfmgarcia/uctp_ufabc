@@ -4,11 +4,52 @@ import objects
 import uctp
 import csv
 import os
-import sys
 import shutil
+import cProfile
+import pstats
+import io
 
 # Set '1' to allow, during the run, the print on terminal of some steps
-prt = 1
+prt = 0
+
+# Output directory name
+mainOutName = 'results'
+currOutName = 'run_'
+inputName = 'workdata'
+# Output directories path
+originaltDir = os.getcwd()
+inputDir = originaltDir + os.sep + inputName + os.sep
+mainFilePath = originaltDir + os.sep + mainOutName + os.sep
+currFilePath = ''
+
+#==============================================================================================================
+
+# Get current directory and (re)create new mainFilePath directory - may delete past runs' data
+def startOutFolders():
+    # Verify if already exists main folder
+    if not os.path.exists(mainFilePath): os.makedirs(mainFilePath)
+    else:
+        # Ask to user if wants delete past runs folders/files
+        ask = 'a'
+        while(ask != "s" and ask != ""): ask = input("Deseja apagar antigos resultados? Sim('s')/Não('enter'): ")
+        if(ask == "s"):
+            shutil.rmtree(mainFilePath)
+            os.makedirs(mainFilePath)
+    
+    # Creating a new folder for this run
+    i = 0
+    while(os.path.exists(mainFilePath + currOutName + str(i))): i = i + 1
+    global currFilePath 
+    currFilePath = mainFilePath + currOutName + str(i) + os.sep
+    os.makedirs(currFilePath)
+
+    # Starting the MAIN OUT CSV with the titles (MinMaxAvg)
+    outName = currFilePath + 'totalMinMaxAvg.csv'
+    with open(outName, 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow(['Pop', 'Iter', 'Min', 'Max', 'Avg'])
+    # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
+    csvfile.close()
 
 #==============================================================================================================
     
@@ -16,7 +57,7 @@ prt = 1
 def getData(subj, prof):
     # Read the data of Professors and create the respective objects
     if(prt == 1): print("Getting data of Professors...", end='')
-    with open('professors.csv', encoding='unicode_escape') as csvfile:
+    with open(inputDir + 'professors.csv', encoding='unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         if(prt == 1): print("Setting Professors...")
         for row in spamreader:
@@ -31,7 +72,7 @@ def getData(subj, prof):
                 datas[8] = datas[8].split('/')
                 # Creating and saving a new Prof.
                 prof.append(objects.Prof(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7], datas[8]))
-                if(prt == 1): print(datas)
+                #if(prt == 1): print(datas)
             else:
                 if(prt == 1):
                     print("This professor register has some missing data! It will not be used.")
@@ -39,10 +80,8 @@ def getData(subj, prof):
     csvfile.close()
     
     # Read the data of Subjects and create the respective objects
-    if(prt == 1):
-        print(" ")
-        print("Getting datas of Subjects...", end='')
-    with open('subjects.csv', encoding='unicode_escape') as csvfile:
+    if(prt == 1): print("\nGetting datas of Subjects...", end='')
+    with open(inputDir + 'subjects.csv', encoding='unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         if(prt == 1): print("Setting Subjects...")
         for row in spamreader:
@@ -85,43 +124,35 @@ def getData(subj, prof):
                     datas.pop(8)
                     # Creating and saving the new Subj.
                     subj.append(objects.Subject(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7]))
-                    if(prt == 1): print(datas)
+                    #if(prt == 1): print(datas)
             else:
                 if(prt == 1): print("This subject register has some missing data! It will not be used.")
-                #if(prt == 1): print(datas)
+                if(prt == 1): print(datas)
     csvfile.close()
     
     if(prt == 1): print("Data Obtained!")
-    
-#==============================================================================================================
-
-# Get current directory and (re)create new 'generationsCSV' directory - delete past runs' data
-def startOutFolders():
-    currentDir = os.getcwd()
-    newDir = currentDir + os.sep + 'generationsCSV' + os.sep
-    if not os.path.exists(newDir): os.makedirs(newDir)
-    else:
-        shutil.rmtree(newDir)
-        os.makedirs(newDir)
-    
-    # this code starts the MAIN OUT CSV with the titles (MinMaxAvg)
-    outName = newDir + 'totalMinMaxAvg.csv'
-    with open(outName, 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(['Pop', 'Iter', 'Min', 'Max', 'Avg'])
-    # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
-    csvfile.close()
 
 #==============================================================================================================
 
-# Extract information - auxiliary function to gathering all important info
+# Output run data obtained by cProfile
+def outRunData(pr):
+    pr.disable()
+    s = io.StringIO()
+    ps = pstats.Stats(pr, stream=s).sort_stats('tottime')
+    ps.print_stats()
+    outName = currFilePath + 'runInfo_cProfile.txt'
+    with open(outName, 'w+') as f:
+        f.write(s.getvalue())
+
+#==============================================================================================================
+
+# Extract information - auxiliary function to gathering all important info of a solution
 def extractInfo(cand, prof, subj):
     # Collecting Profs names in 'prof'
     profData = [p.get() for p in prof]
     profName = [pName for pName, _, _, _, _, _, _, _, _ in profData]
 
-        
-    # Getting other info
+    # Getting others info
     prof_relations, conflicts_i2, conflicts_i3 = cand.getInfVariables()
     prof_relations, subjPref, periodPref, quadSabbNotPref, campusPref, difCharge = cand.getFeaVariables()
     
@@ -132,7 +163,7 @@ def extractInfo(cand, prof, subj):
     if(len(periodPref) == 0): _, periodPref = uctp.UCTP().f4(subj, prof, prof_relations)
     if(len(campusPref) == 0): _, campusPref = uctp.UCTP().f5(subj, prof, prof_relations)
 
-    # Extracting the number of each occurence
+    # Extracting the number of each occurence for each professor and its relations
     # [profName, numSubjs, numSubjNotPrefered, numPeriodNotPref, numQuadriSabbathPref, numCampusNotPref, numI2, numI3, difCharge]
     info = [[profName[i],
             len(prof_relations[i]), 
@@ -144,7 +175,7 @@ def extractInfo(cand, prof, subj):
             len(conflicts_i3[i]),
             difCharge[i]] for i in range(len(prof))]
         
-    # Last line sums total data
+    # Last line sums all professors data
     total = ['Total', 0, 0, 0, 0, 0, 0, 0, 0]
     for j in range(1,9): total[j] = sum([i[j] for i in info])
     info.append(total)
@@ -157,17 +188,17 @@ def extractInfo(cand, prof, subj):
 def outDataMMA(solutionsI, solutionsF, iter):
     if(prt == 1): print("Exporting data....", end='')
     
-    minInf, maxInf, avgInf = 0, -1, 0
     # Find Min/Max Fitness in the Infeasible Pop.
+    minInf, maxInf, avgInf = 0, -1, 0
     for cand in solutionsI.getList():
         avgInf = avgInf + cand.getFitness()
         if(cand.getFitness() > maxInf): maxInf = cand.getFitness()
         if(cand.getFitness() < minInf): minInf = cand.getFitness()
     if(len(solutionsI.getList()) != 0): avgInf = avgInf / len(solutionsI.getList())
     
+    # Find Min/Max Fitness in the Feasible Pop.
     minFea, maxFea, avgFea = 1, 0, 0
     maxFeaIndex = [] # Recording the best solutions found
-    # Find Min/Max Fitness in the Feasible Pop.
     for cand in solutionsF.getList():
         avgFea = avgFea + cand.getFitness()
         if(cand.getFitness() == maxFea):
@@ -179,10 +210,8 @@ def outDataMMA(solutionsI, solutionsF, iter):
             minFea = cand.getFitness()
     if(len(solutionsF.getList()) != 0): avgFea = avgFea / len(solutionsF.getList())
     
-    # get current directory, 'generationsCSV' dir., and CSV file to be modified with current generation Min/Max Fitness
-    currentDir = os.getcwd()
-    newDir = currentDir + os.sep + 'generationsCSV' + os.sep
-    outName = newDir + 'totalMinMaxAvg.csv'
+    # Get current directory, currFilePath dir., and CSV file to be modified with current generation Min/Max Fitness
+    outName = currFilePath + 'totalMinMaxAvg.csv'
     with open(outName, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         if(minInf != 0): spamwriter.writerow(['Inf', iter, minInf, maxInf, avgInf])
@@ -199,24 +228,21 @@ def outDataMMA(solutionsI, solutionsF, iter):
 # Create a CSV File for each Candidate and one CSV to gather the Fitness of all Candidates:
 def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
     if(prt == 1): print("Exporting all Generation (Solutions) data....", end='')
-    # get current directory and go to 'generationsCSV' dir
-    currentDir = os.getcwd()
-    newDir = currentDir + os.sep + 'generationsCSV' + os.sep
-    # In 'generationsCSV' dir, create new 'gen' dir
-    newDir = newDir + 'Gen' + str(num) + os.sep
+    
+    # In currFilePath dir, create new 'gen' dir
+    newDir = currFilePath + 'Gen' + str(num) + os.sep
     if not os.path.exists(newDir): os.makedirs(newDir)
     
-    # Main titles to output datas
+    # Main titles used when output datas
     titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
     titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
-    
+    # Each population info will be iterate
     pop, typePop = [solutionsI.getList(), solutionsF.getList()], ['Inf', 'Fea']
 
-    # All Candidates of a Generation - Each Population
+    # All Candidates of a Generation - doing for each population
     for j in range(len(pop)):
         i = 0
         for cand in pop[j]:
-            datas = []
             # Start output info of the solution
             outName = newDir + 'Gen' + str(num) + '_cand' + typePop[j] + str(i) + '.csv'
             with open(outName, 'w', newline='') as csvfile:
@@ -266,51 +292,56 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
 #==============================================================================================================
 
 def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config=[]):
-    if(prt == 1): print("Exporting final data....", end='')
+    print("Exporting final data....", end='')
     
     # Main titles to output datas
-    titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
+    titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
+                'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
+                'pPrefSubjQ3List', 'pPrefSubjLimList']
     titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
-    titles3 = ['iterations', 'numCand', 'pctParentsCross', 'pctMut', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
-
-    # Output Run-Config and Final best result
-    currentDir = os.getcwd()
-    outName = currentDir + os.sep + 'generationsCSV' + os.sep + 'runConfigResult.csv'
+    titles3 = ['maxIter', 'numCand', 'numCandInit', 'randNewSol', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
+            'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
+    
+    # Output Run-Config and Final best results (different of each other)
+    outName = currFilePath + 'runConfigResult.csv'
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         
-        # Config info
+        # All Config info
         spamwriter.writerow(titles3)
         spamwriter.writerow(config)
         spamwriter.writerow('')
 
-        # If best solutions found
+        # If feasible solutions were found
         if(len(maxFeaIndex)!=0):
+            # Lists of data of all different solutions with same max fit found
             maxCand, fitMaxData, maxData, resumeMaxData, maxInfo, info_alreadyShow = [], [], [], [], [], []
+            # Every feasible solution with same max fit
             for m in range(len(maxFeaIndex)):
-                # Finding best Feasible Solution and its Fitness
+                # Getting the solution and its fitness
                 maxCand.append(solutionsF.getList()[maxFeaIndex[m]])
+                # Getting and recording its data
                 fitMaxData.append(maxCand[m].getFitness())
-                # Recording its data
                 maxData.append([s.get() + p.get() for s, p in maxCand[m].getList()])
                 maxInfo.append(extractInfo(maxCand[m], prof, subj))
 
+                # Checks if is different from something that was already output
                 if(info_alreadyShow.count(maxInfo[m]) == 0): 
+                    # Adding to Lists
                     info_alreadyShow.append(maxInfo[m])
-                    # Resuming the result to show too 'sName' and 'pName' of each relation
+                    # Resuming the result to show only 'sName' and 'pName' of each relation
                     resumeMaxData.append([[row[2], row[8]] for row in maxData[m]])
+
                     # Best Feasible Solution info
-                    spamwriter.writerow(["Best solutions found:", maxFeaIndex])
+                    if(m == 0): spamwriter.writerow(["Best solutions found:", maxFeaIndex])
                     spamwriter.writerow(["Index/Fit:", maxFeaIndex[m], fitMaxData[m]])
                     spamwriter.writerow('')
-
                     # sName + pName
                     spamwriter.writerow(['index', titles1[2], titles1[8]])
                     i = 1
                     for row in resumeMaxData[-1]:
                         spamwriter.writerow([i] + row)
                         i = i + 1
-                    
                     # Extracted Info of one of the best Solutions found
                     spamwriter.writerow('')
                     spamwriter.writerow(titles2)
@@ -318,7 +349,6 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
                     for row in maxInfo[m]:
                         spamwriter.writerow([i] + row)
                         i = i + 1
-
                     # All Details of same solution
                     spamwriter.writerow('')
                     spamwriter.writerow(titles1)
@@ -327,29 +357,71 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
                     spamwriter.writerow('')    
 
         else: spamwriter.writerow("Do not found feasible solutions.")
-    # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
     csvfile.close()
 
-    # Showing important Info in terminal for user
-    if(prt == 1):
-        print("Final Data Exported!", '\n')
+    # Showing important Info on terminal for user
+    print("Final Data Exported!", '\n')
+    
+    return fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3
         
-        import pandas
-        # Printing the Run-Config
-        print("Run-Config of the Algorithm:")
-        with pandas.option_context('display.max_rows', 999):
-            print(pandas.DataFrame(data=[[titles3[i], config[i]] for i in range(len(config))], columns=['config', 'value'], index=None), '\n')
-        
-        # Printing one of the best solutions found
-        if(len(maxFeaIndex)!=0):
-            print("These are the best solutions found:", maxFeaIndex[0])
-            print("Index/Fit:", maxFeaIndex[0], '/', fitMaxData[0])
-            with pandas.option_context('display.max_rows', 999):
-                print(pandas.DataFrame(data=resumeMaxData[0], index=None, columns=[titles1[2], titles1[8]]), '\n')
-                print(pandas.DataFrame(data=maxInfo[0], index=None, columns=titles2), '\n')
+#==============================================================================================================
+
+# First print of a round
+def printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter):
+    if(curIter == 0): print("\nStarting hard work...\n")
+    print('Iteration:', curIter, 'of', maxIter, '/ Working with (Prof/Subj):', len(prof), '/', len(subj))
+    if(firstFeasSol != -1): 
+        print('First Feas Sol at (iter): ', firstFeasSol, '/ Cur Max Feas Sol at (iter): ', lastMaxIter, '/ Num Iter since last Max:', curIter - lastMaxIter)
 
 #==============================================================================================================
 
+# Last print of a round
+def printTail(solutionsI, solutionsF, minInf, maxInf, avgInf, minFea, maxFea, avgFea):
+    if(minInf != 0): print('Infeasibles (', len(solutionsI.getList()), ') Min:', minInf, 'Max:', maxInf, 'Avg:', avgInf)
+    else: print('No Infeasibles Solutions!')
+    if(minFea != 1): print('Feasibles (', len(solutionsF.getList()), ') Min:', minFea, 'Max:', maxFea, 'Avg:', avgFea)
+    else: print('No Feasibles Solutions!')
+    print("")
+
+#==============================================================================================================
+
+# Print (Config + First best solution found) Info
+def printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3):
+    import pandas
+    # Printing the Run-Config
+    print("Run-Config values of the algorithm:")
+    with pandas.option_context('display.max_rows', 999):
+        print(pandas.DataFrame(data=[[titles3[i], config[i]] for i in range(len(config))], columns=['config', 'value'], index=None), '\n')
+    
+    # Printing one of the best solutions found
+    if(len(maxFeaIndex)!=0):
+        print("These are the best solutions found:", maxFeaIndex[0])
+        print("Index/Fit:", maxFeaIndex[0], '/', fitMaxData[0])
+        with pandas.option_context('display.max_rows', 999):
+            print(pandas.DataFrame(data=resumeMaxData[0], index=None, columns=[titles1[2], titles1[8]]), '\n')
+            print(pandas.DataFrame(data=maxInfo[0], index=None, columns=titles2), '\n')       
+
+#==============================================================================================================
+
+# Print all Obj data
+def printObjDataList(objList):
+    for i in objList: print(i.get())
+
+#==============================================================================================================
+
+# Print all Prof's Subj Preference
+def printSubjPref(prof, subj, subjIsPref):
+    for pIndex in range(len(prof)):
+        # Getting data of current Prof
+        pName, _, _, _, _, _, _, _, _ = prof[pIndex].get()
+        # All Relations of one Prof
+        for sIndex in range(len(subj)):
+            # Getting data of current Subj
+            _, _, sName, _, _, _, _, _ = subj[sIndex].get()
+            if(subjIsPref[pIndex][sIndex]!=0): print(pName, sName, subjIsPref[pIndex][sIndex])
+
+#==============================================================================================================
+       
 # Print all data of a Candidate (Professor-Subject Relations)
 def printOneCand(candidate):
     i = 0
@@ -402,7 +474,6 @@ def printAllPopFit(solutions, text=''):
         for cand in solutions.getList():
             print(str(n), ': ', str(cand.getFitness()), ',',)
             n = n + 1
-        print(" ")
     else: print('No Solutions in:' + text)
 
 #==============================================================================================================
