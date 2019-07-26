@@ -6,23 +6,32 @@ import ioData
 import cProfile
 
 """
--Verificar se há variaveis/List importantes sendo modificadas quando n deveriam !
--Erros nos comments - verificar com notepad++ !
--Nomes de variaveis ruins !
--Rever uso de float()
--Corrigir [1 for s in a if sName in s] ver se existe string em list of strings
--   prof_data = [prof[i].get() for i in range(len(prof))]
-    charges_EachProf = [int(pCharge) for _, _, pCharge, _, _, _, _, _, _ in prof_data]
--uso de _, remover espa;os em branco....
+- Sempre procurar por:
+    -Verificar se há variaveis/List importantes sendo modificadas quando n deveriam !
+    -Erros nos comments - verificar com notepad++ !
+    -Nomes de variaveis ruins !
+    -Rever uso de float()
+    -Corrigir [1 for s in a if sName in s] ver se existe string em list of strings
+    -   prof_data = [prof[i].get() for i in range(len(prof))]
+        charges_EachProf = [int(pCharge) for _, _, pCharge, _, _, _, _, _, _ in prof_data]
+    -uso de _, remover espa;os em branco....
+    -rever roulettes (quais com reposicao ou nao, negative)
 
--SelectionF com uma parte elitista e outra com roleta?
--Reformular f2 para apenas contagem de meterias de preferencia(sem levar em conta posicao no vetor)?
--Ou adicionar mais um f6 com essa contagem....
--offspringF parte vai para crossover e o resto sofre mutacao randomica?
+-melhorar:
+    - uso dos weights e o calculo das funcoes Fi e Ff,
+    - f2 - rever a forma de obtencao das variaveis,
+    - mutationI - refatorar e modificar(?)
+    - offspring (100% mutation para quem nao é Parent)
+    - gerar automaticamente os graficos que serão utilizados no trab
 
--havendo acumulo de disciplinas em poucos prof
--rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, e/ou tirar materia de um
- que nao tem pref e dar pra qm tem pref
+- Problemas e adiçoes:
+    -SelectionF com uma parte elitista e outra com roleta?
+    -Reformular f2 para apenas contagem de materias de preferencia(sem levar em conta posicao no vetor)?
+        -Ou adicionar mais um f6 com essa contagem....
+
+    -havendo acumulo de disciplinas em poucos prof
+    -rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, e/ou tirar materia de um
+    que nao tem pref e dar pra qm tem pref
 """
 
 #==============================================================================================================
@@ -44,7 +53,7 @@ class main:
     # Max Number of iterations to get a solution
     maxIter = 20000
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
-    numCand = 100
+    numCand = 30
     # Initial number of solutions generated randomly
     numCandInit = 100
     # Number of new solutions (created generated randomly) every round
@@ -56,9 +65,9 @@ class main:
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 100
-    # Percentage of mutation that maybe each child generated through 'offspringF' process will suffer 
-    pctMut = 90
+    pctParentsCross = 60 # The rest (to complete 100%) will pass through Mutation
+    # Percentage of mutation that maybe each child generated through 'Crossover' process will suffer 
+    pctMut = 10
     # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
     pctElitism = 100
 
@@ -67,7 +76,7 @@ class main:
     w_beta = 3.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 2.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
     w_delta = 3.0   # f1 - Balance of distribution of Subjs between Profs
-    w_omega = 2.7   # f2 - Profs preference Subjects
+    w_omega = 3.7   # f2 - Profs preference Subjects
     w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
     w_rho = 1.3     # f5 - Profs with Subjs in Campus

@@ -4,7 +4,8 @@
 
 # Keep the data of a professor
 class Prof:
-    def __init__(self, name, period, charge, quadriSabbath, prefCampus, prefSubjQ1List, prefSubjQ2List, prefSubjQ3List, prefSubjLimList):
+    def __init__(self, name, period, charge, quadriSabbath, prefCampus, prefSubjQ1List, prefSubjQ2List, 
+                 prefSubjQ3List, prefSubjLimList):
         self.name = name
         self.period = period
         self.charge = charge
@@ -54,15 +55,30 @@ class Candidate:
         self.quadSabbNotPref = []
         self.campusPref = []
         self.difCharge = []
-        
-    def getFitness(self):
-        return self.fitness
     
+    def addRelation(self, Subject, Prof):
+        relation = [Subject, Prof]
+        self.listRelations.append(relation)
+    
+    def setList(self, List):
+        self.listRelations = List
+    
+    def getList(self):
+        return self.listRelations
+        
     def setFitness(self, fit):
         self.fitness = fit
     
-    def getFeaVariables(self):
-        return self.prof_relations, self.subjPref, self.periodPref, self.quadSabbNotPref, self.campusPref, self.difCharge
+    def getFitness(self):
+        return self.fitness
+    
+    def setInfVariables(self, prof_relations, conflicts_i2, conflicts_i3):
+        self.prof_relations = prof_relations
+        self.conflicts_i2 = conflicts_i2
+        self.conflicts_i3 = conflicts_i3
+    
+    def getInfVariables(self):
+        return  self.prof_relations, self.conflicts_i2, self.conflicts_i3
     
     def setFeaVariables(self, prof_relations, subjPref, periodPref, quadSabbNotPref, campusPref, difCharge):
         self.prof_relations = prof_relations
@@ -72,23 +88,8 @@ class Candidate:
         self.campusPref = campusPref
         self.difCharge = difCharge
     
-    def getInfVariables(self):
-        return  self.prof_relations, self.conflicts_i2, self.conflicts_i3
-    
-    def setInfVariables(self, prof_relations, conflicts_i2, conflicts_i3):
-        self.prof_relations = prof_relations
-        self.conflicts_i2 = conflicts_i2
-        self.conflicts_i3 = conflicts_i3
-    
-    def getList(self):
-        return self.listRelations
-    
-    def setList(self, List):
-        self.listRelations = List
-    
-    def addRelation(self, Subject, Prof):
-        relation = [Subject, Prof]
-        self.listRelations.append(relation)
+    def getFeaVariables(self):
+        return self.prof_relations, self.subjPref, self.periodPref, self.quadSabbNotPref, self.campusPref, self.difCharge
     
 #==============================================================================================================
 
@@ -97,16 +98,16 @@ class Solutions:
     def __init__(self):
         self.listCandidates = []
     
-    def getList(self):
-        return self.listCandidates
+    def addCand(self, candidate):
+        self.listCandidates.append(candidate)
     
     def setList(self, List):
         self.listCandidates = List
     
+    def getList(self):
+        return self.listCandidates
+    
     def resetList(self):
         self.listCandidates = []
-    
-    def addCand(self, candidate):
-        self.listCandidates.append(candidate)
     
 #==============================================================================================================

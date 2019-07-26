@@ -184,26 +184,20 @@ class UCTP:
             # Check if the professor has more than 1 relation Prof-Subj to analyze
             if(len(list_subj) > 1):
                 # Getting the data of all Subjects related to current Professor in analysis
-                timetableList_List, quadri_List, campus_List, period_List = [], [], [], []
-
-                for subj_index in list_subj:
-                    _, _, _, sQuadri, sPeriod, sCampus, _, sTimetableList = subj[subj_index].get()
-                    timetableList_List.append(sTimetableList)
-                    quadri_List.append(sQuadri)
-                    campus_List.append(sCampus)
-                    period_List.append(sPeriod)
+                subj_Data = [subj[i].get() for i in list_subj]
+                timetableList_List = [sTimetableList for _, _, _, _, _, _, _, sTimetableList in subj_Data]
+                quadri_List = [sQuadri for _, _, _, sQuadri, _, _, _, _ in subj_Data]
+                campus_List = [sCampus for _, _, _, _, _, sCampus, _, _ in subj_Data]
+                period_List = [sPeriod for _, _, _, _, sPeriod, _, _, _ in subj_Data]
                 
                 # Comparing the data of one Subject (i) with all next subjects listed, and do the same with next ones
                 i = 0
                 for timeTable in timetableList_List:
                     # all [day/hour/frequency] of the Timetable of the Subject (i) in 'timetableList_List'
-                    i_day, i_hour, i_frequency = [], [], []
+                    i_day = [j[0] for j in timeTable]
+                    i_hour = [j[1] for j in timeTable]
+                    i_frequency = [j[2] for j in timeTable]
 
-                    for j in timeTable:
-                        i_day.append(j[0])
-                        i_hour.append(j[1])
-                        i_frequency.append(j[2])
-                    
                     # Now, comparing current (i) subject data with next ones (k), one at a time
                     k = i + 1
                     rest = timetableList_List[k:]
@@ -214,12 +208,9 @@ class UCTP:
                             # Variables that flags if a conflict was already detected (do not count 2 or more times same 2 subjects in conflict)
                             verified_i2, verified_i3 = False, False
                             # all [day/hour/frequency] of the Timetable of the Subject (k) in 'timetableList_List'
-                            inext_day, inext_hour, inext_frequency = [], [], []
-
-                            for j in nextK:
-                                inext_day.append(j[0])
-                                inext_hour.append(j[1])
-                                inext_frequency.append(j[2])
+                            inext_day = [j[0] for j in nextK]
+                            inext_hour = [j[1] for j in nextK]
+                            inext_frequency = [j[2] for j in nextK]
                             
                             # Finally comparing one-to-one timetables - between i and k subjects
                             for a in i_day:
@@ -260,7 +251,8 @@ class UCTP:
                     i = i + 1
         
         # Removing from 'conflicts_i2' and 'conflicts_i3' duplicates
-        final_i2, final_i3 = [[] for _ in range(len(prof_relations))], [[] for _ in range(len(prof_relations))]
+        final_i2 = [[] for _ in range(len(prof_relations))]
+        final_i3 = [[] for _ in range(len(prof_relations))]
         for i in range(len(prof_relations)):
             for j in conflicts_i2[i]:
                 if(final_i2[i].count(j) == 0): final_i2[i].append(j)
@@ -307,18 +299,15 @@ class UCTP:
         # List of all 'Effective Charges', that is, the sum of the charges of all the subjects related to the professor
         charges_eachProfRelations = [0 for _ in range(len(prof))]
         # List of requested charges of each professor
-        charges_EachProf = []
-        
-        # Counting the occurrences, filling the vectors
         prof_data = [prof[i].get() for i in range(len(prof))]
         charges_EachProf = [float(pCharge) for _, _, pCharge, _, _, _, _, _, _ in prof_data]
-        for relations in prof_relations:
-            # Setting Index of current Prof
-            pIndex = prof_relations.index(relations)
+
+        # Counting the occurrences, filling the vectors
+        for i in range(len(prof_relations)):
             # Getting data of current Subj related to this pIndex Prof
-            subj_data = [subj[sIndex].get() for sIndex in relations]
+            subj_data = [subj[sIndex].get() for sIndex in prof_relations[i]]
             # Summing all chagers of all relations of this Prof
-            charges_eachProfRelations[pIndex] = sum([float(str(sCharge).replace(",",".")) for _, _, _, _, _, _, sCharge, _ in subj_data])
+            charges_eachProfRelations[i] = sum([float(str(sCharge).replace(",",".")) for _, _, _, _, _, _, sCharge, _ in subj_data])
         
         # Difference of Prof Charge and the sum of all of its Subj-Relations
         difCharge = [charges_EachProf[i] - charges_eachProfRelations[i] for i in range(len(prof))]
@@ -440,19 +429,16 @@ class UCTP:
         quadSabbNotPref = [0 for _ in range(len(prof))]
 
         # Counting the occurrences, filling the vector
-        for relations in prof_relations:
-            # Setting Index of current Prof
-            pIndex = prof_relations.index(relations)
+        for i in range(len(prof_relations)):
             # Getting data of current Prof
-            _, _, _, pQuadriSabbath, _, _, _, _, _ = prof[pIndex].get()
+            _, _, _, pQuadriSabbath, _, _, _, _, _ = prof[i].get()
             
             # All Relations of one Prof
-            for sIndex in relations:
+            for sIndex in prof_relations[i]:
                 # Getting data of current Subj
                 _, _, _, sQuadri, _, _, _, _ = subj[sIndex].get()
                 # Adding to count if the Subj is not in the same 'pQuadriSabbath' (if Prof choose 'nenhum' he does not have a 'pQuadriSabbath')
-                if(sQuadri != pQuadriSabbath or 'NENHUM' in pQuadriSabbath):
-                    quadSabbNotPref[pIndex] = quadSabbNotPref[pIndex] + 1
+                if('NENHUM' in pQuadriSabbath or sQuadri != pQuadriSabbath): quadSabbNotPref[i] = quadSabbNotPref[i] + 1
             
         # Calculating intermediate variable
         sum_quadSabbNotPref = sum([value for value in quadSabbNotPref])
@@ -466,19 +452,16 @@ class UCTP:
         periodPref = [0 for _ in range(len(prof))]
 
         # Counting the occurrences, filling the vector
-        for relations in prof_relations:
-            # Setting Index of current Prof
-            pIndex = prof_relations.index(relations)
+        for i in range(len(prof_relations)):
             # Getting data of current Prof
-            _, pPeriod, _, _, _, _, _, _, _ = prof[pIndex].get()
+            _, pPeriod, _, _, _, _, _, _, _ = prof[i].get()
             
             # All Relations of one Prof
-            for sIndex in relations:
+            for sIndex in prof_relations[i]:
                 # Getting data of current Subj
                 _, _, _, _, sPeriod, _, _, _ = subj[sIndex].get()
                 # Adding to count if the Subj is in the same 'pPeriod' or if Prof do not care about 'pPeriod' equal to 'NEGOCIAVEL'
-                if(sPeriod == pPeriod or 'NEGOCI' in pPeriod):
-                    periodPref[pIndex] = periodPref[pIndex] + 1
+                if('NEGOCI' in pPeriod or sPeriod == pPeriod): periodPref[i] = periodPref[i] + 1
             
         # Calculating intermediate variable
         sum_periodPref = sum([value for value in periodPref])
@@ -492,19 +475,16 @@ class UCTP:
         campusPref = [0 for _ in range(len(prof))]
 
         # Counting the occurrences, filling the vector
-        for relations in prof_relations:
-            # Setting Index of current Prof
-            pIndex = prof_relations.index(relations)
+        for i in range(len(prof_relations)):
             # Getting data of current Prof
-            _, _, _, _, pPrefCampus, _, _, _, _ = prof[pIndex].get()
+            _, _, _, _, pPrefCampus, _, _, _, _ = prof[i].get()
             
             # All Relations of one Prof
-            for sIndex in relations:
+            for sIndex in prof_relations[i]:
                 # Getting data of current Subj
                 _, _, _, _, _, sCampus, _, _ = subj[sIndex].get()
                 # Adding to count if the Subj is in the same 'pPrefCampus'
-                if(sCampus == pPrefCampus):
-                    campusPref[pIndex] = campusPref[pIndex] + 1
+                if(sCampus == pPrefCampus): campusPref[i] = campusPref[i] + 1
         
         # Calculating intermediate variable
         sum_campusPref = sum([value for value in campusPref])
@@ -551,11 +531,11 @@ class UCTP:
                 
                 # Choosing new Prof to be in the relation with the Subj selected
                 subj, oldProf = relations[relation_will_change_index]
-                change = random.randrange(len(prof))
-                newProf = prof[change]
 
                 # Granting that the new Prof is different of the old one
+                newProf = oldProf
                 while(oldProf == newProf):
+                    # Finding randomly a new Prof
                     change = random.randrange(len(prof))
                     newProf = prof[change]
                 
@@ -613,11 +593,11 @@ class UCTP:
                     
                     # Choosing new Prof to be in the relation with the Subj selected
                     subj, oldProf = relations[relation_will_change_index]
-                    change = random.randrange(len(prof))
-                    newProf = prof[change]
 
                     # Granting that the new Prof is different of the old one
+                    newProf = oldProf
                     while(oldProf == newProf):
+                        # Finding randomly a new Prof
                         change = random.randrange(len(prof))
                         newProf = prof[change]
                     
@@ -642,11 +622,11 @@ class UCTP:
 
                     # Choosing new Prof to be in the relation with the Subj selected
                     subj, oldProf = relations[relation_will_change_index]
-                    change = random.randrange(len(prof))
-                    newProf = prof[change]
 
                     # Granting that the new Prof is different of the old one
+                    newProf = oldProf
                     while(oldProf == newProf):
+                        # Finding randomly a new Prof
                         change = random.randrange(len(prof))
                         newProf = prof[change]
                     
@@ -671,22 +651,18 @@ class UCTP:
             
             # Turning 'objectiveNum' to Even if it is Odd -> summing +1 to it only if the new 'objectiveNum' is not bigger then len(solutionsF)
             if(objectiveNum % 2 != 0):
-                if((objectiveNum + 1) <= len(solutionsF.getList())):
-                    objectiveNum = objectiveNum + 1
+                if((objectiveNum + 1) <= len(solutionsF.getList())): objectiveNum = objectiveNum + 1
                 else: objectiveNum = objectiveNum - 1
             
             # Granting that are solutions enough to became fathers (more than or equal 2)
             if(objectiveNum < 2):
-                # If have at most 2 solutions - all solutions will generate a child through random mutation
-                for cand in solutionsF.getList():
-                    newCand = self.mutationRand(cand, prof)
-                    solutionsNoPop.addCand(newCand)
-                
-            # If we have at least 2 solutions, will have a Roulette Wheel with Reposition where the 'objectiveNum' of solutions will become Parents
+                # If have at most 2 solutions - each solution will generate a child through random mutation
+                for cand in solutionsF.getList(): solutionsNoPop.addCand(self.mutationRand(cand, prof))   
+            # If we have at least 2 solutions
             else:
-                # Roulette Wheel
+                # Roulette Wheel with Reposition to choose solutions to become Parents
                 fitnessList = [cand.getFitness() for cand in solutionsF.getList()]
-                parentsSolFeas, _, _ = self.rouletteWheel(solutionsF.getList(), fitnessList, objectiveNum, repos=True, negative=False)
+                parentsSolFeas, notParents_objectsList, _ = self.rouletteWheel(solutionsF.getList(), fitnessList, objectiveNum, repos=True, negative=False)
                 
                 # Solutions 'children' created by crossover
                 childSolFeas = []
@@ -694,15 +670,12 @@ class UCTP:
                 # Granting the number of children is equal of parents
                 while(len(childSolFeas) != objectiveNum):
                     # If there are only 2 parents, make a crossover between them
-                    if(len(parentsSolFeas) <= 2):
-                        parent1, parent2 = 0, 1
-                    
+                    if(len(parentsSolFeas) <= 2): parent1, parent2 = 0, 1
                     # If there are more then 2, choosing the parents Randomly
                     else:
                         parent1, parent2 = random.randrange(len(parentsSolFeas)), random.randrange(len(parentsSolFeas))
                         # Granting the second parent is not the same of first one
-                        while(parent1 == parent2):
-                            parent2 = random.randrange(len(parentsSolFeas))
+                        while(parent1 == parent2): parent2 = random.randrange(len(parentsSolFeas))
                     
                     # Making the Crossover with the selected parents
                     newCand1, newCand2 = self.crossover(parentsSolFeas[parent1], parentsSolFeas[parent2])
@@ -718,16 +691,19 @@ class UCTP:
                 
                 # Make Mutations with 'pctMut' (mutation prob.) with all the children generated by Crossover right before
                 for cand in childSolFeas:
-                    # Generating a random value to validate the execution of a Mutation
-                    r = float(random.randrange(100) / 100.0)
-                    if(r <= (pctMut / 100.0)):
-                        # Making a rand mutation in the child
-                        newCand = self.mutationRand(cand, prof)
-                        # Adding the generated by crossover and modified by mutation Candidate to 'solutionsNoPop'
-                        solutionsNoPop.addCand(newCand)
-                    else:
-                        # Adding the generated by crossover Candidate to 'solutionsNoPop'
-                        solutionsNoPop.addCand(cand)
+                    # Will pass through random mutation process
+                    if((float(pctMut / 100.0)) >= float(random.randrange(100) / 100.0)):
+                        # Modifying the child making a rand mutation
+                        cand = self.mutationRand(cand, prof)
+                    # Adding the child generated by crossover to 'solutionsNoPop'
+                    solutionsNoPop.addCand(cand)
+
+                # Make Mutation with all the candidates that were not choosen to be Parents right before
+                for cand in notParents_objectsList:
+                    # Making a rand mutation
+                    cand = self.mutationRand(cand, prof)
+                    # Adding the child generated by crossover to 'solutionsNoPop'
+                    solutionsNoPop.addCand(cand)
 
             if(prt == 1): print("Feas. Offspring/", end='')
 
@@ -737,23 +713,17 @@ class UCTP:
     def selectionI(self, infPool, solutionsI, numCand):
         # Check if the Infeasible pop. is empty
         if(len(solutionsI.getList()) != 0 or len(infPool.getList()) != 0):
-            # New list with both lists (infPool and solutionsI)
+            # Gathering both lists (infPool and solutionsI)
             infeasibles_List = solutionsI.getList() + infPool.getList()
             
-            # Check if there are more or less Candidates then it is possible to have into a generation
-            if(len(infeasibles_List) <= numCand):
-                # Is not needed to make the whole process
-                # Setting the new 'solutionsI' list to go to the next generation
-                solutionsI.setList(infeasibles_List)
-            
-            # Is needed to make the selection process with Roulette Wheel without Reposition
-            else:
-                # Roulette Wheel
-                fitnessList = [cand.getFitness() for cand in infeasibles_List]
-                newSolInf, _, _ = self.rouletteWheel(infeasibles_List, fitnessList, numCand, repos=False, negative=False)
+            # Check if is needed to make a selection process
+            if(len(infeasibles_List) > numCand):
+                # Roulette Wheel Selection
+                fitnessList = [cand.getFitness() for cand in infeasibles_List] # Negative values
+                infeasibles_List, _, _ = self.rouletteWheel(infeasibles_List, fitnessList, numCand, repos=False, negative=True)
                 
-                # Setting the new 'solutionsI' list to go to the next generation
-                solutionsI.setList(newSolInf)
+            # Updating the (new) 'solutionsI' list to the next generation
+            solutionsI.setList(infeasibles_List)
                 
             if(prt == 1): print("Inf. Selection/", end='')
             
@@ -763,27 +733,26 @@ class UCTP:
     def selectionF(self, feaPool, solutionsF, numCand, pctElitism=100):
         # Check if the Feasible pop. is empty
         if(len(solutionsF.getList()) != 0 or len(feaPool.getList()) != 0):
-            # New list with both lists (feaPool and solutions)
+            # Gathering both lists (feaPool and solutions)
             feasibles_List = solutionsF.getList() + feaPool.getList()
             
-            # Check if there are more or less Candidates then it is possible to have into a generation
-            if(len(feasibles_List) <= numCand):
-                # Is not needed to make the whole process
-                # Setting the new 'solutionsF' list to go to the next generation
-                solutionsF.setList(feasibles_List)
-            
-            # Is needed to make the selection process with only the best ones
-            else:
+            # Check if is needed to make a selection process
+            if(len(feasibles_List) > numCand):
                 # Gathering all Fitness
                 listFit = [cand.getFitness() for cand in feasibles_List]
                 
-                # Elitism and Roulette Selection
+                # Defining the division of number of candidates between selections process
                 elitismNum = int(numCand * pctElitism / 100.0)
                 if(elitismNum == 0): elitismNum = 1
                 roulNum = numCand - elitismNum
+
+                # Elitism and Roulette Selection
                 maxFeasibles_List, rest_objectsList, rest_valuesList = self.elitismSelection(feasibles_List, listFit, elitismNum)
                 selectedObj, _, _ = self.rouletteWheel(rest_objectsList, rest_valuesList, roulNum, repos=False, negative=False)
-                solutionsF.setList(maxFeasibles_List + selectedObj)
+                feasibles_List = maxFeasibles_List + selectedObj
+            
+            # Updating the (new) 'solutionsF' list to the next generation
+            solutionsF.setList(feasibles_List)
             
             if(prt == 1): print("Feas. Selection/", end='')
 
@@ -799,12 +768,10 @@ class UCTP:
         # Recording the Original Relation
         subj, oldProf = relations[original]
         
-        # Finding randomly a new Prof
-        change = random.randrange(len(prof))
-        newProf = prof[change]
-        
         # Granting that the 'newProf' is different from the 'oldProf'
+        newProf = oldProf
         while(oldProf == newProf):
+            # Finding randomly a new Prof
             change = random.randrange(len(prof))
             newProf = prof[change]
         
@@ -835,34 +802,34 @@ class UCTP:
         
         # OnePoint type:
         if(twoPoints == False):
+            # Priorizing change of relations on first half of the candidates
             if(firstHalf == True):
                 point1 = 0 # Default point in 'firstHalf' mode
-                point2 = random.randrange(len(relations1)) # Randomly choosing one point
+                point2 = random.randrange(len(relations1)) # Randomly choosing other point that can be equal to 'point1'
                 # Granting that not occur only a copy of parents - the chosen point is not the last relation
                 if(notEqualParent == True):
                     while(point2 == len(relations1)-1): point2 = random.randrange(len(relations1))
+            
+            # Priorizing change of relations on second half of the candidates
             else:
                 point2 = len(relations1)-1 # Default point in 'secondHalf' mode
-                point1 = random.randrange(len(relations1)) # Randomly choosing one point
+                point1 = random.randrange(len(relations1)) # Randomly choosing other point that can be equal to 'point2'
                 # Granting that not occur only a copy of parents - the chosen point is not the last relation
                 if(notEqualParent == True):
                     while(point1 == 0): point1 = random.randrange(len(relations1))
         
         # TwoPoints Type
         else:
+            # Generating, randomly two numbers to create a patch - can be a single modification (when p1==p2)
+            point1, point2 = random.randrange(len(relations1)), random.randrange(len(relations1))
+            # Granting that 'point2' is bigger than 'point1'
+            if(point2 < point1):
+                p = point1
+                point1 = point2
+                point2 = p
+
             # Granting that the crossover do not only copy all relations of one Cand to the another
-            if(notEqualParent == True):
-                point1, point2 = 0, len(relations1) - 1
-                while(point2 - point1 == len(relations1) - 1):
-                    # Generating, randomly two numbers to create a patch - can be a single modification (when p1==p2)
-                    point1, point2 = random.randrange(len(relations1)), random.randrange(len(relations1))
-                    # Granting that 'point2' is bigger than 'point1'
-                    if(point2 < point1):
-                        p = point1
-                        point1 = point2
-                        point2 = p
-            
-            else:
+            while(notEqualParent == True and point2 - point1 == len(relations1) - 1):
                 # Generating, randomly two numbers to create a patch - can be a single modification (when p1==p2)
                 point1, point2 = random.randrange(len(relations1)), random.randrange(len(relations1))
                 # Granting that 'point2' is bigger than 'point1'
@@ -870,7 +837,7 @@ class UCTP:
                     p = point1
                     point1 = point2
                     point2 = p
-        
+
         # Passing through the relations between Parents making all changes
         while (point1 <= point2):
             # Recording the original relations
@@ -904,8 +871,10 @@ class UCTP:
             maxValue = max(valuesList)
             maxIndex = valuesList.index(maxValue)
 
-            # Getting and Removing maximal Value/Object to next selection
+            # Adding selected object to list
             selectedObj.append(objectsList[maxIndex])
+
+            # Removing maximal Value/Object to next selection
             valuesList.pop(maxIndex)
             objectsList.pop(maxIndex)
         
@@ -923,7 +892,7 @@ class UCTP:
 
         # List with the selected Objects
         selectedObj = []
-        # Flag tha allows to make all important calcs at least one time when the Roulette is with Reposition
+        # Flag tha allows to make all important calcs at least one time when the Roulette is donfig to have Reposition
         reCalc = True
 
         while(len(selectedObj) < objectiveNum):
@@ -933,10 +902,10 @@ class UCTP:
                 if(repos == True): reCalc = False
                 
                 # Find the total Value of the Objects
-                totalValue = sum([((1.0 if negative == True else 0.0) + value) for value in valuesList])
+                totalValue = sum([value if negative == False else 1.0 + value for value in valuesList])
                 
                 # Calculate the prob. of a selection for each object
-                probObj = [float(((1.0 if negative == True else 0.0) + value) / totalValue) for value in valuesList]
+                probObj = [float(value / totalValue) if negative == False else float((1.0 + value) / totalValue) for value in valuesList]
                 
                 # Calculate a cumulative prob. for each object
                 cumulative = 0.0
@@ -948,19 +917,17 @@ class UCTP:
             
             # MAIN Roulette Wheel Selection process (one round)
             probPrev = 0.0
-            index = 0
             r = float(random.randrange(100) / 100.0)
-            for q in cumulativeProbObj:
-                if(probPrev < r and r <= q):
+            for i in range(len(cumulativeProbObj)):
+                if(probPrev < r and r <= cumulativeProbObj[i]):
                     # Adding the selected Object to 'selectedObj'
-                    selectedObj.append(objectsList[index])
+                    selectedObj.append(objectsList[i])
                     if(repos == False):
-                        # Removing the selected object/value from 'valuesList'
-                        valuesList.pop(index)
-                        objectsList.pop(index)
+                        # Removing the selected object/value from 'valuesList' to do next roulette process
+                        valuesList.pop(i)
+                        objectsList.pop(i)
                     break
-                probPrev = q
-                index = index + 1
+                probPrev = cumulativeProbObj[i]
 
         return  selectedObj, objectsList, valuesList
 
@@ -982,10 +949,9 @@ class UCTP:
             notPosNumber = False
             while(not notPosNumber): 
                 ask2 = input("How much? (positive number): ")
-                try:
+                try: 
                     if(int(ask2) >= 0): notPosNumber = True
-                except ValueError:
-                    notPosNumber = False
+                except ValueError: notPosNumber = False
             return True # Continue with more iterations
         return False # Stop
 

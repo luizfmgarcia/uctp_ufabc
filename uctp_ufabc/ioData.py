@@ -12,15 +12,16 @@ import io
 # Set '1' to allow, during the run, the print on terminal of some steps
 prt = 0
 
-# Output directory name
+# Output directories' names
 mainOutName = 'results'
-currOutName = 'run_'
+currOutName = 'run'
 inputName = 'workdata'
-# Output directories path
+# Output directories' path
 originaltDir = os.getcwd()
 inputDir = originaltDir + os.sep + inputName + os.sep
 mainFilePath = originaltDir + os.sep + mainOutName + os.sep
 currFilePath = ''
+currDirNum = '_'
 
 #==============================================================================================================
 
@@ -31,20 +32,22 @@ def startOutFolders():
     else:
         # Ask to user if wants delete past runs folders/files
         ask = 'a'
-        while(ask != "y" and ask != ""): ask = input("Do you wish to erase old results? Yes('y')/No('Enter'): ")
+        while(ask != "y" and ask != ""): 
+            ask = input("Do you want to erase old results? Yes('y')/No('Enter'): ")
         if(ask == "y"):
             shutil.rmtree(mainFilePath)
             os.makedirs(mainFilePath)
     
     # Creating a new folder for this run
+    global currFilePath, currDirNum
     i = 0
-    while(os.path.exists(mainFilePath + currOutName + str(i))): i = i + 1
-    global currFilePath 
-    currFilePath = mainFilePath + currOutName + str(i) + os.sep
+    while(os.path.exists(mainFilePath + currOutName + currDirNum + str(i))): i = i + 1
+    currDirNum = currDirNum + str(i)
+    currFilePath = mainFilePath + currOutName + currDirNum + os.sep
     os.makedirs(currFilePath)
 
     # Starting the MAIN OUT CSV with the titles (MinMaxAvg)
-    outName = currFilePath + 'totalMinMaxAvg.csv'
+    outName = currFilePath + 'totalMinMaxAvg' + currDirNum + '.csv'
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(['Pop', 'Iter', 'Min', 'Max', 'Avg'])
@@ -53,16 +56,24 @@ def startOutFolders():
 
 #==============================================================================================================
     
-# Get all data to work
+# Get all data to work with
 def getData(subj, prof):
-    # Read the data of Professors and create the respective objects
+    getDataProf(prof)
+    getDataSubj(subj)
+    if(prt == 1): print("Data Obtained!")
+    
+#==============================================================================================================
+
+# Read the data of Professors and create the respective objects
+def getDataProf(prof):
     if(prt == 1): print("Getting data of Professors...", end='')
     with open(inputDir + 'professors.csv', encoding='unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         if(prt == 1): print("Setting Professors...")
         for row in spamreader:
             # Transform every letter to upper case to impose a pattern
-            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
+            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), 
+                     row[6].upper(), row[7].upper(), row[8].upper()]
             # Verify if exist some important blank data (data 0 to 4)
             if((not datas[0] == '') and (not datas[1] == '') and (not datas[2] == '') and (not datas[3] == '') and (not datas[4] == '')):
                 # Separating the Subjects Pref., transforming into lists (data 5 to 8)
@@ -78,21 +89,29 @@ def getData(subj, prof):
                     print("This professor register has some missing data! It will not be used.")
                     print(datas)
     csvfile.close()
-    
-    # Read the data of Subjects and create the respective objects
+
+#==============================================================================================================
+
+# Read the data of Subjects and create the respective objects
+def getDataSubj(subj):
     if(prt == 1): print("\nGetting datas of Subjects...", end='')
     with open(inputDir + 'subjects.csv', encoding='unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         if(prt == 1): print("Setting Subjects...")
+        
         for row in spamreader:
             # Transform every letter to upper case to impose a pattern
-            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), row[6].upper(), row[7].upper(), row[8].upper()]
+            datas = [row[0].upper(), row[1].upper(), row[2].upper(), row[3].upper(), row[4].upper(), row[5].upper(), 
+                     row[6].upper(), row[7].upper(), row[8].upper()]
+            
             # Verify if exist some important blank data (rows 0 to 8)
-            if((not datas[0] == '') and (not datas[1] == '') and (not datas[2] == '') and (not datas[3] == '') and (not datas[4] == '') and (not datas[5] == '') and (not datas[6] == '') and (not datas[7] == '#N/D') and (not datas[8] == '#N/D')):
+            if((not datas[0] == '') and (not datas[1] == '') and (not datas[2] == '') and (not datas[3] == '') and (not datas[4] == '') and 
+               (not datas[5] == '') and (not datas[6] == '') and (not datas[7] == '#N/D') and (not datas[8] == '#N/D')):
                 # Choose some specifics subjects
                 if(datas[0] == 'G' and ('MCTA' in datas[1] or 'MCZA' in datas[1])):
                     # Separating the Timetables of Subj. and transforming into lists of lists: [...,[day/hour/frequency],...] - (data 7 and 8)
                     t0 = []
+                    
                     # Theory classes
                     if(not datas[7] == '0'):
                         t1 = datas[7].split('/')
@@ -100,22 +119,19 @@ def getData(subj, prof):
                             day_rest = r.split(' DAS ')
                             hour_room_freq = day_rest[1].split(', ')
                             # Take only: day, hour and freq.
-                            if(' E ' in hour_room_freq[2]):
-                                final = [day_rest[0], hour_room_freq[0], 'SEMANAL']
-                            else:
-                                final = [day_rest[0], hour_room_freq[0], hour_room_freq[2]]
+                            if(' E ' in hour_room_freq[2]): final = [day_rest[0], hour_room_freq[0], 'SEMANAL']
+                            else: final = [day_rest[0], hour_room_freq[0], hour_room_freq[2]]
                             t0.append(final)
-                    # Practice classes
+                    
+                    # Pratice classes
                     if(not datas[8] == '0'):
                         t2 = datas[8].split('/')
                         for r in t2:
                             day_rest = r.split(' DAS ')
                             hour_room_freq = day_rest[1].split(', ')
                             # Take only: day, hour and freq.
-                            if(' E ' in hour_room_freq[2]):
-                                final = [day_rest[0], hour_room_freq[0], 'SEMANAL']
-                            else:
-                                final = [day_rest[0], hour_room_freq[0], hour_room_freq[2]]
+                            if(' E ' in hour_room_freq[2]): final = [day_rest[0], hour_room_freq[0], 'SEMANAL']
+                            else: final = [day_rest[0], hour_room_freq[0], hour_room_freq[2]]
                             t0.append(final)
                     
                     # Putting t0 (list of lists of timetables back into 'datas'
@@ -129,8 +145,6 @@ def getData(subj, prof):
                 if(prt == 1): print("This subject register has some missing data! It will not be used.")
                 if(prt == 1): print(datas)
     csvfile.close()
-    
-    if(prt == 1): print("Data Obtained!")
 
 #==============================================================================================================
 
@@ -140,7 +154,7 @@ def outRunData(pr):
     s = io.StringIO()
     ps = pstats.Stats(pr, stream=s).sort_stats('tottime')
     ps.print_stats()
-    outName = currFilePath + 'runInfo_cProfile.txt'
+    outName = currFilePath + 'runInfo_cProfile' + currDirNum + '.txt'
     with open(outName, 'w+') as f:
         f.write(s.getvalue())
 
@@ -210,8 +224,8 @@ def outDataMMA(solutionsI, solutionsF, iter):
             minFea = cand.getFitness()
     if(len(solutionsF.getList()) != 0): avgFea = avgFea / len(solutionsF.getList())
     
-    # Get current directory, currFilePath dir., and CSV file to be modified with current generation Min/Max Fitness
-    outName = currFilePath + 'totalMinMaxAvg.csv'
+    # Get currFilePath dir., and CSV file to be modified with current generation Min/Max Fitness
+    outName = currFilePath + 'totalMinMaxAvg' + currDirNum + '.csv'
     with open(outName, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         if(minInf != 0): spamwriter.writerow(['Inf', iter, minInf, maxInf, avgInf])
@@ -234,39 +248,37 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
     if not os.path.exists(newDir): os.makedirs(newDir)
     
     # Main titles used when output datas
-    titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
+    titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 
+               'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
     titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
-    # Each population info will be iterate
+    # Each population, that will be iterate, info
     pop, typePop = [solutionsI.getList(), solutionsF.getList()], ['Inf', 'Fea']
 
-    # All Candidates of a Generation - doing for each population
+    # Each population
     for j in range(len(pop)):
-        i = 0
-        for cand in pop[j]:
+        # All Candidates
+        for i in range(len(pop[j])):
             # Start output info of the solution
             outName = newDir + 'Gen' + str(num) + '_cand' + typePop[j] + str(i) + '.csv'
             with open(outName, 'w', newline='') as csvfile:
                 spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-                spamwriter.writerow(titles1)
-                
+
                 # All relations in a Candidate of a Generation
-                for s, p in cand.getList():
+                spamwriter.writerow(titles1)
+                for s, p in pop[j][i].getList():
                     row = s.get() + p.get()
                     spamwriter.writerow(row)
                 spamwriter.writerow(" ")
                 
                 # Fitness information
-                spamwriter.writerow([typePop[j], cand.getFitness()])
+                spamwriter.writerow([typePop[j], pop[j][i].getFitness()])
                 spamwriter.writerow(" ")
                 
                 # Extracting all important info to analyse the quality of the solution
-                info = extractInfo(cand, prof, subj)
-
+                info = extractInfo(pop[j][i], prof, subj)
                 # Output extra information for analisys
                 spamwriter.writerow(titles2)
                 for row in info: spamwriter.writerow(row)
-            
-            # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
             csvfile.close()
             i = i + 1
     
@@ -274,17 +286,10 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
     outName = newDir + 'gen' +  str(num) + '.csv'
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(['Candidate', 'Population', 'Fitness'])
-        i = 0
-        for cand in solutionsI.getList():
-            spamwriter.writerow([i,'Infeasible', cand.getFitness()])
-            i = i + 1
         
-        i = 0
-        for cand in solutionsF.getList():
-            spamwriter.writerow([i,'Feasible', cand.getFitness()])
-            i = i + 1
-    # if(prt == 1): print("Created: " + outName + "in" + newDir + "...")
+        spamwriter.writerow(['Candidate', 'Population', 'Fitness'])
+        for j in range(len(pop)):
+            for i in range(len(pop[j])): spamwriter.writerow([i, typePop[j], pop[j][i].getFitness()])
     csvfile.close()
 
     if(prt == 1): print("All Generation (Solutions) data Exported!")
@@ -303,13 +308,12 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
                'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
     
     # Output Run-Config and Final best results (different of each other)
-    outName = currFilePath + 'runConfigResult.csv'
+    outName = currFilePath + 'runConfigResult' + currDirNum + '.csv'
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         
         # All Config info
-        spamwriter.writerow(titles3)
-        spamwriter.writerow(config)
+        for i in range(len(titles3)): spamwriter.writerow([titles3[i], config[i]])
         spamwriter.writerow('')
 
         # Some variables that maybe will be used
@@ -338,24 +342,20 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
                     if(m == 0): spamwriter.writerow(["Best solutions found:", maxFeaIndex])
                     spamwriter.writerow(["Index/Fit:", maxFeaIndex[m], fitMaxData[m]])
                     spamwriter.writerow('')
+                    
                     # sName + pName
                     spamwriter.writerow(['index', titles1[2], titles1[8]])
-                    i = 1
-                    for row in resumeMaxData[-1]:
-                        spamwriter.writerow([i] + row)
-                        i = i + 1
+                    for i in range(len(resumeMaxData[-1])): spamwriter.writerow([i+1] + resumeMaxData[-1][i])
+                    
                     # Extracted Info of one of the best Solutions found
                     spamwriter.writerow('')
                     spamwriter.writerow(titles2)
-                    i = 1
-                    for row in maxInfo[m]:
-                        spamwriter.writerow([i] + row)
-                        i = i + 1
+                    for i in range(len(maxInfo[m])): spamwriter.writerow([i+1] + maxInfo[m][i])
+                    
                     # All Details of same solution
                     spamwriter.writerow('')
                     spamwriter.writerow(titles1)
-                    for row in maxData[m]:
-                        spamwriter.writerow(row)
+                    for row in maxData[m]: spamwriter.writerow(row)
                     spamwriter.writerow('')    
 
         else: spamwriter.writerow("Do not found feasible solutions.")
@@ -372,7 +372,7 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
 def printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter):
     if(curIter == 0): print("\nStarting hard work...\n")
     print('Iteration:', curIter, 'of', maxIter, '/ Working with (Prof/Subj):', len(prof), '/', len(subj))
-    if(firstFeasSol != -1): 
+    if(firstFeasSol != -1):
         print('First Feas Sol at (iter): ', firstFeasSol, '/ Cur Max Feas Sol at (iter): ', lastMaxIter, '/ Num Iter since last Max:', curIter - lastMaxIter)
 
 #==============================================================================================================
@@ -472,10 +472,7 @@ def printMMAFit(solutionsI=None, solutionsF=None):
 def printAllPopFit(solutions, text=''):
     if(len(solutions.getList()) != 0):
         print(text)
-        n = 0
-        for cand in solutions.getList():
-            print(str(n), ': ', str(cand.getFitness()), ',',)
-            n = n + 1
+        for n in range(len(solutions.getList())): print(str(n), ': ', str(solutions.getList()[n].getFitness()), '/ ', end='')
     else: print('No Solutions in:' + text)
 
 #==============================================================================================================
