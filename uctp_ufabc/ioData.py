@@ -31,8 +31,8 @@ def startOutFolders():
     else:
         # Ask to user if wants delete past runs folders/files
         ask = 'a'
-        while(ask != "s" and ask != ""): ask = input("Deseja apagar antigos resultados? Sim('s')/Não('enter'): ")
-        if(ask == "s"):
+        while(ask != "y" and ask != ""): ask = input("Do you wish to erase old results? Yes('y')/No('Enter'): ")
+        if(ask == "y"):
             shutil.rmtree(mainFilePath)
             os.makedirs(mainFilePath)
     
@@ -296,11 +296,11 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
     
     # Main titles to output datas
     titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
-                'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
-                'pPrefSubjQ3List', 'pPrefSubjLimList']
+               'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
+               'pPrefSubjQ3List', 'pPrefSubjLimList']
     titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
     titles3 = ['maxIter', 'numCand', 'numCandInit', 'randNewSol', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
-            'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
+               'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
     
     # Output Run-Config and Final best results (different of each other)
     outName = currFilePath + 'runConfigResult.csv'
@@ -312,10 +312,12 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
         spamwriter.writerow(config)
         spamwriter.writerow('')
 
+        # Some variables that maybe will be used
+        maxCand, fitMaxData, maxData, resumeMaxData, maxInfo, info_alreadyShow = [], [], [], [], [], []
+        
         # If feasible solutions were found
         if(len(maxFeaIndex)!=0):
             # Lists of data of all different solutions with same max fit found
-            maxCand, fitMaxData, maxData, resumeMaxData, maxInfo, info_alreadyShow = [], [], [], [], [], []
             # Every feasible solution with same max fit
             for m in range(len(maxFeaIndex)):
                 # Getting the solution and its fitness
@@ -403,7 +405,7 @@ def printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo, t
 
 #==============================================================================================================
 
-# Print all Obj data
+# Print all Obj data in a list
 def printObjDataList(objList):
     for i in objList: print(i.get())
 

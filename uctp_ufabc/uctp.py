@@ -968,25 +968,25 @@ class UCTP:
     
     # Detect the stop condition
     def stop(self, curIter, maxIter, lastMaxIter, convergDetect, maxFea, stopFitValue):
-        if(curIter >= maxIter): return self.ask(maxIter) # Reached max num of iterations
-        if(stopFitValue != -1 and maxFea >= stopFitValue): return False # Reached max fit value
-        if(convergDetect != -1 and curIter - lastMaxIter >= convergDetect): return False # Reached convergence num of iterations
-        return True # Continues the run
+        #import pdb; pdb.set_trace()
+        if(curIter > maxIter): return False # Reached max num of iterations
+        if(stopFitValue != 0 and maxFea >= stopFitValue): return False # Reached max fit value
+        if(convergDetect != 0 and curIter - lastMaxIter > convergDetect): return False # Reached convergence num of iterations
+        return True # Continues the run with same num of iterations
     
-    def ask(self, maxIter):
-        # Ask to user if wants delete past runs folders/files
+    # Ask to user if wants to continue the run with more iterations
+    def ask(self, value):
         ask1 = 'a'
-        while(ask1 != "s" and ask1 != ""): ask1 = input("Mais iteracoes? Sim('s')/Não('enter'): ")
-        if(ask1 == "s"):
+        while(ask1 != "y" and ask1 != ""): ask1 = input("Need more iterations? Yes('y')/No('Enter'): ")
+        if(ask1 == "y"):
             notPosNumber = False
             while(not notPosNumber): 
-                ask2 = input("Quanto? (Numero positivo): ")
+                ask2 = input("How much? (positive number): ")
                 try:
                     if(int(ask2) >= 0): notPosNumber = True
                 except ValueError:
                     notPosNumber = False
-            maxIter = maxIter + int(ask2)
-            return True
-        return False
+            return True # Continue with more iterations
+        return False # Stop
 
 #==============================================================================================================

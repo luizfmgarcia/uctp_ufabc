@@ -42,17 +42,17 @@ class main:
     # Set '1' to allow, during the run, the print on terminal of some steps
     prt = 1
     # Max Number of iterations to get a solution
-    maxIter = 20
+    maxIter = 20000
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
-    numCand = 50
+    numCand = 100
     # Initial number of solutions generated randomly
-    numCandInit = 1000
+    numCandInit = 100
     # Number of new solutions (created generated randomly) every round
-    randNewSol = 100
+    randNewSol = 10
     # Convergence Detector: num of iterations passed since last MaxFit found
-    convergDetect = 500 # -1 do not consider this condition
+    convergDetect = 500 # equal '0' to not consider this condition
     # Max Fitness value that must find to stop the run before reach 'maxIter'
-    stopFitValue = 0.9 # -1 do not consider this condition
+    stopFitValue = 0.9 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
@@ -67,7 +67,7 @@ class main:
     w_beta = 3.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 2.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
     w_delta = 3.0   # f1 - Balance of distribution of Subjs between Profs
-    w_omega = 2.0   # f2 - Profs preference Subjects
+    w_omega = 2.7   # f2 - Profs preference Subjects
     w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
     w_rho = 1.3     # f5 - Profs with Subjs in Campus
@@ -75,7 +75,7 @@ class main:
 
     # Gathering all variables
     config = [maxIter, numCand, numCandInit, randNewSol, convergDetect, stopFitValue, pctParentsCross, 
-            pctMut, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
+              pctMut, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
     
     #----------------------------------------------------------------------------------------------------------
     # MAIN VARIABLES
@@ -108,11 +108,11 @@ class main:
     # Getting data to work with
     ioData.getData(subj, prof)
 
-    # Creating the first 'numCand' candidates (First Generation)
-    uctp.start(solutionsNoPop, subj, prof, numCandInit)
-    
     # Extracting basic info about Prof's Subj Preferences
     subjIsPref = uctp.extractSubjIsPref(subj, prof)
+    
+    # Creating the first 'numCand' candidates (First Generation)
+    uctp.start(solutionsNoPop, subj, prof, numCandInit)
 
     # Classification and Fitness calc of the first candidates
     uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights)
@@ -123,10 +123,11 @@ class main:
     maxFeaIndex, _, _, _, _, maxFea, _ = ioData.outDataMMA(solutionsI, solutionsF, curIter)
     curIter = curIter + 1
     if(len(maxFeaIndex) != 0): lastMax = maxFea
-
+    
     #----------------------------------------------------------------------------------------------------------
     # MAIN WORK - iterations of GA-Algorithm to find a solution
     
+    # Verify the stop conditions occurence
     while(uctp.stop(curIter, maxIter, lastMaxIter, convergDetect, maxFea, stopFitValue)):
         # First print of each run
         if(prt == 1): ioData.printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter)
@@ -170,7 +171,7 @@ class main:
     # Export last generation of candidates and Config-Run Info
     #ioData.outDataGeneration(solutionsI, solutionsF, curIter, prof, subj)
     fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3 = ioData.finalOutData(solutionsI, solutionsF, curIter, prof, subj, maxFeaIndex, config)
-    ioData.printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3)
+    if(prt == 1): ioData.printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3)
     # Record Run Info End
     ioData.outRunData(pr)
     if(prt == 1): print("End of works")
