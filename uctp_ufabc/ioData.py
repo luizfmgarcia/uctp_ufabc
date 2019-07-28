@@ -22,6 +22,13 @@ inputDir = originaltDir + os.sep + inputName + os.sep
 mainFilePath = originaltDir + os.sep + mainOutName + os.sep
 currFilePath = ''
 currDirNum = '_'
+# Main titles to output datas
+titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
+            'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
+            'pPrefSubjQ3List', 'pPrefSubjLimList']
+titles2 = ['pName', 'numSubj', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
+titles3 = ['maxIter', 'numCand', 'numCandInit', 'randNewSol', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
+            'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
 
 #==============================================================================================================
 
@@ -105,8 +112,8 @@ def getDataSubj(subj):
                      row[6].upper(), row[7].upper(), row[8].upper()]
             
             # Verify if exist some important blank data (rows 0 to 8)
-            if((not datas[0] == '') and (not datas[1] == '') and (not datas[2] == '') and (not datas[3] == '') and (not datas[4] == '') and 
-               (not datas[5] == '') and (not datas[6] == '') and (not datas[7] == '#N/D') and (not datas[8] == '#N/D')):
+            if((not datas[0] == '') and (not datas[1] == '') and (not datas[2] == '') and (not datas[3] == '') and (not datas[4] == '') 
+                and (not datas[5] == '') and (not datas[6] == '') and (not datas[7] == '#N/D') and (not datas[8] == '#N/D')):
                 # Choose some specifics subjects
                 if(datas[0] == 'G' and ('MCTA' in datas[1] or 'MCZA' in datas[1])):
                     # Separating the Timetables of Subj. and transforming into lists of lists: [...,[day/hour/frequency],...] - (data 7 and 8)
@@ -155,8 +162,7 @@ def outRunData(pr):
     ps = pstats.Stats(pr, stream=s).sort_stats('tottime')
     ps.print_stats()
     outName = currFilePath + 'runInfo_cProfile' + currDirNum + '.txt'
-    with open(outName, 'w+') as f:
-        f.write(s.getvalue())
+    with open(outName, 'w+') as f: f.write(s.getvalue())
 
 #==============================================================================================================
 
@@ -247,10 +253,6 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
     newDir = currFilePath + 'Gen' + str(num) + os.sep
     if not os.path.exists(newDir): os.makedirs(newDir)
     
-    # Main titles used when output datas
-    titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 'pPeriod', 
-               'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 'pPrefSubjQ3List', 'pPrefSubjLimList']
-    titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
     # Each population, that will be iterate, info
     pop, typePop = [solutionsI.getList(), solutionsF.getList()], ['Inf', 'Fea']
 
@@ -298,15 +300,7 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
 
 def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config=[]):
     print("Exporting final data....", end='')
-    
-    # Main titles to output datas
-    titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
-               'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
-               'pPrefSubjQ3List', 'pPrefSubjLimList']
-    titles2 = ['pName', 'numSubjects', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
-    titles3 = ['maxIter', 'numCand', 'numCandInit', 'randNewSol', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
-               'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
-    
+        
     # Output Run-Config and Final best results (different of each other)
     outName = currFilePath + 'runConfigResult' + currDirNum + '.csv'
     with open(outName, 'w', newline='') as csvfile:
@@ -364,7 +358,7 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
     # Showing important Info on terminal for user
     print("Final Data Exported!", '\n')
     
-    return fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3
+    return fitMaxData, resumeMaxData, maxInfo
         
 #==============================================================================================================
 
@@ -388,7 +382,7 @@ def printTail(solutionsI, solutionsF, minInf, maxInf, avgInf, minFea, maxFea, av
 #==============================================================================================================
 
 # Print (Config + First best solution found) Info
-def printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3):
+def printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo):
     import pandas
     # Printing the Run-Config
     print("Run-Config values of the algorithm:")

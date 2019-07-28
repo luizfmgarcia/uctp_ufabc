@@ -18,7 +18,6 @@ class UCTP:
         if(prt == 1): print("Creating first generation...", end='')
         for _ in range(init): solutionsNoPop.addCand(self.newCandRand(subj, prof))
         if(prt == 1): print("Created first generation!")
-        #printAllCand(solutions)
 
 #==============================================================================================================
 
@@ -69,14 +68,14 @@ class UCTP:
 #==============================================================================================================
     
     # Separation of solutions into 2 populations
-    def twoPop(self, solutionsNoPop, solI, solF, prof, subj, weights):
+    def twoPop(self, solutionsNoPop, solI, solF, prof, subj, weights, numInfWeights):
         # Granting that the Lists will be empty to receive new Solutions
         solI.resetList()
         solF.resetList()
         
         for cand in solutionsNoPop.getList():
             # Classification by checking feasibility
-            pop = self.checkFeasibility(cand, prof, subj, weights)
+            pop = self.checkFeasibility(cand, prof, subj, weights, numInfWeights)
             if(pop == "feasible"): solF.addCand(cand)
             elif(pop == "infeasible"): solI.addCand(cand)
         
@@ -88,12 +87,12 @@ class UCTP:
 #==============================================================================================================
     
     # Detect the violation of a Restriction into a candidate
-    def checkFeasibility(self, candidate, prof, subj, weights):
+    def checkFeasibility(self, candidate, prof, subj, weights, numInfWeights):
         # As part of the Candidate's Prof-Subj relations (with both Feasible and the Infeasible) will be traversed to check they Feasibility here,
         # instead of repass an entire Infeasible Candidate again in the 'calc_fitInfeas', the calculation of its Fitness will already be done
         # only one time here. Only the Feasible ones will have to pass through 'calc_fitFeas' later.
         fit = -1
-        fit = self.calc_fitInfeas(candidate, prof, subj, weights[0], weights[1], weights[2])
+        fit = self.calc_fitInfeas(candidate, prof, subj, weights[:numInfWeights])
         if(fit < 0):
             candidate.setFitness(fit)
             return "infeasible"
@@ -102,7 +101,7 @@ class UCTP:
 #==============================================================================================================
    
     # Calculate the Fitness of the candidate
-    def calcFit(self, infeasibles, feasibles, prof, subj, weights):
+    def calcFit(self, infeasibles, feasibles, prof, subj, weights, numInfWeights):
         # All Infeasible Candidates - is here this code only for the representation of the default/original algorithm`s work
         # The Inf. Fitness calc was already done in 'checkFeasibility()' method
         # Check if the Infeasible pop. is empty
@@ -110,7 +109,7 @@ class UCTP:
             for cand in infeasibles.getList():
                 if(cand.getFitness() == 0.0):
                     # Setting the Fitness with the return of calc_fitInfeas() method
-                    cand.setFitness(self.calc_fitInfeas(cand, prof, subj, weights[0], weights[1], weights[2]))
+                    cand.setFitness(self.calc_fitInfeas(cand, prof, subj, weights[:numInfWeights]))
             if(prt == 1): print("Fitness of all Inf./", end='')
         
         # All Feasible Candidates
@@ -119,13 +118,13 @@ class UCTP:
             for cand in feasibles.getList():
                 if(cand.getFitness() == 0.0):
                     # Setting the Fitness with the return of calc_fitFeas() method
-                    cand.setFitness(self.calc_fitFeas(cand, prof, subj, weights[3], weights[4], weights[5], weights[6], weights[7]))
+                    cand.setFitness(self.calc_fitFeas(cand, prof, subj, weights[numInfWeights:]))
             if(prt == 1): print("Fitness of all Feas./", end='')
         
 #==============================================================================================================
     
     # Calculate Fitness of Infeasible Candidates
-    def calc_fitInfeas(self, candidate, prof, subj, w_alpha, w_beta, w_gamma):
+    def calc_fitInfeas(self, candidate, prof, subj, weights):
         # Getting information about the Candidate
         prof_relations = self.i1(candidate, prof, subj)
         conflicts_i2, conflicts_i3 = self.i2_i3(prof_relations, subj)
@@ -141,9 +140,10 @@ class UCTP:
             i1 = float(prof_relations.count([])) / (float(len(prof)) - 1.0)
             i2 = float(sum([len(i) for i in conflicts_i2])) / float(len(subj))
             i3 = float(sum([len(i) for i in conflicts_i3])) / float(len(subj))
-            
+            i = [i1, i2, i3]
+
             # Final Infeasible Function Fitness Calc
-            Fi = (-1.0) * (((w_alpha * i1) + (w_beta * i2) + (w_gamma * i3)) / (w_alpha + w_beta + w_gamma))
+            Fi = -1.0 * sum([i[j] * weights[j] for j in range(len(i))]) / sum([w for w in weights])
             
             # Returning the calculated result
             return Fi
@@ -264,7 +264,7 @@ class UCTP:
 #==============================================================================================================
 
     # Calculate Fitness of Feasible Candidates
-    def calc_fitFeas(self, candidate, prof, subj, w_delta, w_omega, w_sigma, w_pi, w_rho):
+    def calc_fitFeas(self, candidate, prof, subj, weights):
         
         prof_relations, _, _, _, _, _ = candidate.getFeaVariables()
         
@@ -285,9 +285,10 @@ class UCTP:
         f3 = float(sum_quadSabbNotPref) / float(len(subj))
         f4 = float(sum_periodPref) / float(len(subj))
         f5 = float(sum_campusPref) / float(len(subj))
-        
+        f = [f1, f2, f3, f4, f5]
+
         # Final Feasible Function Fitness Calc
-        Ff = ((w_delta * f1) + (w_omega * f2) + (w_sigma * f3) + (w_pi * f4) + (w_rho * f5)) / (w_delta + w_omega + w_sigma + w_pi + w_rho)
+        Ff = sum([f[j] * weights[j] for j in range(len(f))]) / sum([w for w in weights])
         
         # Returning the result calculated
         return Ff

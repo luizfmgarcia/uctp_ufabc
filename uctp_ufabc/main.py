@@ -8,7 +8,7 @@ import cProfile
 """
 - Sempre procurar por:
     -Verificar se há variaveis/List importantes sendo modificadas quando n deveriam !
-    -Erros nos comments - verificar com notepad++ !
+    -Erros nos comments - verificar com notepad++ ! melhorar comments
     -Nomes de variaveis ruins !
     -Rever uso de float()
     -Corrigir [1 for s in a if sName in s] ver se existe string em list of strings
@@ -18,14 +18,12 @@ import cProfile
     -rever roulettes (quais com reposicao ou nao, negative)
 
 -melhorar:
-    - uso dos weights e o calculo das funcoes Fi e Ff,
     - f2 - rever a forma de obtencao das variaveis,
     - mutationI - refatorar e modificar(?)
-    - offspring (100% mutation para quem nao é Parent)
     - gerar automaticamente os graficos que serão utilizados no trab
 
 - Problemas e adiçoes:
-    -SelectionF com uma parte elitista e outra com roleta?
+    -SelectionF com uma parte elitista e outra com roleta? offspringF (100% mutation para quem nao é Parent)?
     -Reformular f2 para apenas contagem de materias de preferencia(sem levar em conta posicao no vetor)?
         -Ou adicionar mais um f6 com essa contagem....
 
@@ -51,23 +49,23 @@ class main:
     # Set '1' to allow, during the run, the print on terminal of some steps
     prt = 1
     # Max Number of iterations to get a solution
-    maxIter = 20000
+    maxIter = 7000
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
-    numCand = 30
+    numCand = 130
     # Initial number of solutions generated randomly
     numCandInit = 100
     # Number of new solutions (created generated randomly) every round
     randNewSol = 10
     # Convergence Detector: num of iterations passed since last MaxFit found
-    convergDetect = 500 # equal '0' to not consider this condition
+    convergDetect = 0 # equal '0' to not consider this condition
     # Max Fitness value that must find to stop the run before reach 'maxIter'
     stopFitValue = 0.9 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 60 # The rest (to complete 100%) will pass through Mutation
+    pctParentsCross = 0 # The rest (to complete 100%) will pass through Mutation
     # Percentage of mutation that maybe each child generated through 'Crossover' process will suffer 
-    pctMut = 10
+    pctMut = 30
     # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
     pctElitism = 100
 
@@ -75,16 +73,18 @@ class main:
     w_alpha = 1.0   # i1 - Prof without Subj
     w_beta = 3.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 2.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
-    w_delta = 3.0   # f1 - Balance of distribution of Subjs between Profs
-    w_omega = 3.7   # f2 - Profs preference Subjects
+    w_delta = 10.0   # f1 - Balance of distribution of Subjs between Profs
+    w_omega = 7.7   # f2 - Profs preference Subjects
     w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
     w_rho = 1.3     # f5 - Profs with Subjs in Campus
+
+    numInfWeights = 3 # Number of infeasible waights to divide properly 'weights' vector into some functions
     weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
 
     # Gathering all variables
     config = [maxIter, numCand, numCandInit, randNewSol, convergDetect, stopFitValue, pctParentsCross, 
-              pctMut, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
+              pctMut, pctElitism] + weights
     
     #----------------------------------------------------------------------------------------------------------
     # MAIN VARIABLES
@@ -124,14 +124,15 @@ class main:
     uctp.start(solutionsNoPop, subj, prof, numCandInit)
 
     # Classification and Fitness calc of the first candidates
-    uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights)
-    uctp.calcFit(solutionsI, solutionsF, prof, subj, weights)
+    uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights, numInfWeights)
+    uctp.calcFit(solutionsI, solutionsF, prof, subj, weights, numInfWeights)
 
     # Print and export generated data
     if(prt == 1): ioData.printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter)
     maxFeaIndex, _, _, _, _, maxFea, _ = ioData.outDataMMA(solutionsI, solutionsF, curIter)
-    curIter = curIter + 1
     if(len(maxFeaIndex) != 0): lastMax = maxFea
+    # Next iteration
+    curIter = curIter + 1
     
     #----------------------------------------------------------------------------------------------------------
     # MAIN WORK - iterations of GA-Algorithm to find a solution
@@ -149,8 +150,8 @@ class main:
         uctp.offspringF(solutionsNoPop, solutionsF, prof, subj, pctMut, pctParentsCross, numCand)
         
         # Classification and Fitness calculation of all new candidates
-        uctp.twoPop(solutionsNoPop, infPool, feaPool, prof, subj, weights)
-        uctp.calcFit(infPool, feaPool, prof, subj, weights)
+        uctp.twoPop(solutionsNoPop, infPool, feaPool, prof, subj, weights, numInfWeights)
+        uctp.calcFit(infPool, feaPool, prof, subj, weights, numInfWeights)
         
         # Selecting between parents (old generation) and children (new candidates) to create the next generation
         uctp.selectionI(infPool, solutionsI, numCand)
@@ -179,8 +180,8 @@ class main:
     
     # Export last generation of candidates and Config-Run Info
     #ioData.outDataGeneration(solutionsI, solutionsF, curIter, prof, subj)
-    fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3 = ioData.finalOutData(solutionsI, solutionsF, curIter, prof, subj, maxFeaIndex, config)
-    if(prt == 1): ioData.printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo, titles1, titles2, titles3)
+    fitMaxData, resumeMaxData, maxInfo = ioData.finalOutData(solutionsI, solutionsF, curIter, prof, subj, maxFeaIndex, config)
+    if(prt == 1): ioData.printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo)
     # Record Run Info End
     ioData.outRunData(pr)
     if(prt == 1): print("End of works")
