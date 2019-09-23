@@ -937,10 +937,10 @@ class UCTP:
     # Detect the stop condition
     def stop(self, curIter, maxIter, lastMaxIter, convergDetect, maxFea, stopFitValue):
         #import pdb; pdb.set_trace()
-        if(curIter > maxIter): return False # Reached max num of iterations
-        if(stopFitValue != 0 and maxFea >= stopFitValue): return False # Reached max fit value
-        if(convergDetect != 0 and curIter - lastMaxIter > convergDetect): return False # Reached convergence num of iterations
-        return True # Continues the run with same num of iterations
+        if(curIter > maxIter): return True # Reached max num of iterations
+        if(stopFitValue != 0 and maxFea >= stopFitValue): return True # Reached max fit value
+        if(convergDetect != 0 and curIter - lastMaxIter > convergDetect): return True # Reached convergence num of iterations
+        return False # Continues the run with same num of iterations
     
     # Ask to user if wants to continue the run with more iterations
     def ask(self, value):

@@ -3,7 +3,6 @@
 import objects
 import uctp
 import ioData
-import cProfile
 
 """
 - Sempre procurar por:
@@ -38,9 +37,8 @@ import cProfile
 
 # main
 class main:
-    # Record Run Info Start
-    pr = cProfile.Profile()
-    pr.enable()
+    # Start Record Run Info with cProfile 
+    pr = ioData.startRunData()
 
     #----------------------------------------------------------------------------------------------------------
     # CONFIGURATION
@@ -49,13 +47,11 @@ class main:
     # Set '1' to allow, during the run, the print on terminal of some steps
     prt = 1
     # Max Number of iterations to get a solution
-    maxIter = 7000
+    maxIter = 100
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
-    numCand = 130
+    numCand = 30
     # Initial number of solutions generated randomly
     numCandInit = 100
-    # Number of new solutions (created generated randomly) every round
-    randNewSol = 10
     # Convergence Detector: num of iterations passed since last MaxFit found
     convergDetect = 0 # equal '0' to not consider this condition
     # Max Fitness value that must find to stop the run before reach 'maxIter'
@@ -83,7 +79,7 @@ class main:
     weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
 
     # Gathering all variables
-    config = [maxIter, numCand, numCandInit, randNewSol, convergDetect, stopFitValue, pctParentsCross, 
+    config = [maxIter, numCand, numCandInit, convergDetect, stopFitValue, pctParentsCross, 
               pctMut, pctElitism] + weights
     
     #----------------------------------------------------------------------------------------------------------
@@ -138,12 +134,9 @@ class main:
     # MAIN WORK - iterations of GA-Algorithm to find a solution
     
     # Verify the stop conditions occurence
-    while(uctp.stop(curIter, maxIter, lastMaxIter, convergDetect, maxFea, stopFitValue)):
+    while(not uctp.stop(curIter, maxIter, lastMaxIter, convergDetect, maxFea, stopFitValue)):
         # First print of each run
         if(prt == 1): ioData.printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter)
-        
-        # Creating new Random Solutions
-        for _ in range(randNewSol): solutionsNoPop.addCand(uctp.newCandRand(subj, prof))
         
         # Choosing Parents to generate children (put all new into 'solutionsNoPop')
         uctp.offspringI(solutionsNoPop, solutionsI, prof, subj)

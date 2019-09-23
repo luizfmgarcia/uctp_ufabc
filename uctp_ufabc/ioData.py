@@ -27,7 +27,7 @@ titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge
             'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
             'pPrefSubjQ3List', 'pPrefSubjLimList']
 titles2 = ['pName', 'numSubj', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
-titles3 = ['maxIter', 'numCand', 'numCandInit', 'randNewSol', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
+titles3 = ['maxIter', 'numCand', 'numCandInit', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
             'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
 
 #==============================================================================================================
@@ -154,6 +154,12 @@ def getDataSubj(subj):
     csvfile.close()
 
 #==============================================================================================================
+
+# Start Record Run Info with cProfile 
+def startRunData():
+    pr = cProfile.Profile()
+    pr.enable()
+    return pr
 
 # Output run data obtained by cProfile
 def outRunData(pr):
