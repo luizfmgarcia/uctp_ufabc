@@ -19,6 +19,18 @@ class Prof:
     def get(self):
         return self.name, self.period, self.charge, self.quadriSabbath, self.prefCampus, self.prefSubjQ1List, self.prefSubjQ2List, self.prefSubjQ3List, self.prefSubjLimList
     
+    def getPrefSubjLists(self): return self.prefSubjQ1List, self.prefSubjQ2List, self.prefSubjQ3List, self.prefSubjLimList
+
+    def getName(self): return self.name
+
+    def getPeriod(self): return self.period
+
+    def getCharge(self): return self.charge
+
+    def getQuadriSabbath(self): return self.quadriSabbath
+
+    def getPrefCampus(self): return self.prefCampus
+
 #==============================================================================================================
 
 # Keep the data of a subject
@@ -32,10 +44,26 @@ class Subject:
         self.campus = campus
         self.charge = charge
         self.timetableList = timetableList
-    
+
     def get(self):
         return self.level, self.code, self.name, self.quadri, self.period, self.campus, self.charge, self.timetableList
-    
+
+    def getLevel(self): return self.level
+
+    def getCode(self): return self.code
+
+    def getName(self): return self.name
+
+    def getQuadri(self): return self.quadri
+
+    def getPeriod(self): return self.period
+
+    def getCampus(self): return self.campus
+
+    def getCharge(self): return self.charge
+
+    def getTimeTableList(self): return self.timetableList
+
 #==============================================================================================================
 
 # Keep the data of a Candidate
@@ -60,17 +88,13 @@ class Candidate:
         relation = [Subject, Prof]
         self.listRelations.append(relation)
     
-    def setList(self, List):
-        self.listRelations = List
+    def setList(self, List): self.listRelations = List
     
-    def getList(self):
-        return self.listRelations
-        
-    def setFitness(self, fit):
-        self.fitness = fit
-    
-    def getFitness(self):
-        return self.fitness
+    def getList(self): return self.listRelations
+
+    def setFitness(self, fit): self.fitness = fit
+
+    def getFitness(self): return self.fitness
     
     def setInfVariables(self, prof_relations, conflicts_i2, conflicts_i3):
         self.prof_relations = prof_relations
@@ -87,27 +111,22 @@ class Candidate:
         self.quadSabbNotPref = quadSabbNotPref
         self.campusPref = campusPref
         self.difCharge = difCharge
-    
+
     def getFeaVariables(self):
         return self.prof_relations, self.subjPref, self.periodPref, self.quadSabbNotPref, self.campusPref, self.difCharge
-    
+
 #==============================================================================================================
 
 # Keep all Candidates obtained during a run of the algorithm
 class Solutions:
-    def __init__(self):
-        self.listCandidates = []
-    
-    def addCand(self, candidate):
-        self.listCandidates.append(candidate)
-    
-    def setList(self, List):
-        self.listCandidates = List
-    
-    def getList(self):
-        return self.listCandidates
-    
-    def resetList(self):
-        self.listCandidates = []
-    
+    def __init__(self): self.listCandidates = []
+
+    def addCand(self, candidate): self.listCandidates.append(candidate)
+
+    def setList(self, List): self.listCandidates = List
+
+    def getList(self): return self.listCandidates
+
+    def resetList(self): self.listCandidates = []
+
 #==============================================================================================================

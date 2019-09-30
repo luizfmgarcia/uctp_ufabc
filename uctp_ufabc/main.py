@@ -4,33 +4,6 @@ import objects
 import uctp
 import ioData
 
-"""
-- Sempre procurar por:
-    -Verificar se há variaveis/List importantes sendo modificadas quando n deveriam !
-    -Erros nos comments - verificar com notepad++ ! melhorar comments
-    -Nomes de variaveis ruins !
-    -Rever uso de float()
-    -Corrigir [1 for s in a if sName in s] ver se existe string em list of strings
-    -   prof_data = [prof[i].get() for i in range(len(prof))]
-        charges_EachProf = [int(pCharge) for _, _, pCharge, _, _, _, _, _, _ in prof_data]
-    -uso de _, remover espa;os em branco....
-    -rever roulettes (quais com reposicao ou nao, negative)
-
--melhorar:
-    - f2 - rever a forma de obtencao das variaveis,
-    - mutationI - refatorar e modificar(?)
-    - gerar automaticamente os graficos que serão utilizados no trab
-
-- Problemas e adiçoes:
-    -SelectionF com uma parte elitista e outra com roleta? offspringF (100% mutation para quem nao é Parent)?
-    -Reformular f2 para apenas contagem de materias de preferencia(sem levar em conta posicao no vetor)?
-        -Ou adicionar mais um f6 com essa contagem....
-
-    -havendo acumulo de disciplinas em poucos prof
-    -rever mutationI erros 1,2,3 - escolher troca de disciplinas com aqueles prof com mais disciplinas, e/ou tirar materia de um
-    que nao tem pref e dar pra qm tem pref
-"""
-
 #==============================================================================================================
 # Run with <python -m cProfile -s cumtime main.py> to see the main time spent of the algorithm
 # Debug <import pdb; pdb.set_trace()>
@@ -47,46 +20,46 @@ class main:
     # Set '1' to allow, during the run, the print on terminal of some steps
     prt = 1
     # Max Number of iterations to get a solution
-    maxIter = 100
+    maxIter = 10000
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
     numCand = 30
     # Initial number of solutions generated randomly
     numCandInit = 100
     # Convergence Detector: num of iterations passed since last MaxFit found
-    convergDetect = 0 # equal '0' to not consider this condition
+    convergDetect = 1000 # equal '0' to not consider this condition
     # Max Fitness value that must find to stop the run before reach 'maxIter'
     stopFitValue = 0.9 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 0 # The rest (to complete 100%) will pass through Mutation
+    pctParentsCross = 50 # The rest (to complete 100%) will pass through Mutation
     # Percentage of mutation that maybe each child generated through 'Crossover' process will suffer 
-    pctMut = 30
+    pctMut = 70
     # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
-    pctElitism = 100
+    pctElitism = 5
 
     # WEIGHTS CONFIG (must be Float)
     w_alpha = 1.0   # i1 - Prof without Subj
     w_beta = 3.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 2.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
-    w_delta = 10.0   # f1 - Balance of distribution of Subjs between Profs
-    w_omega = 7.7   # f2 - Profs preference Subjects
+    w_delta = 1.0   # f1 - Balance of distribution of Subjs between Profs with each pCharge
+    w_omega = 3.0   # f2 - Profs preference Subjects
     w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
     w_rho = 1.3     # f5 - Profs with Subjs in Campus
+    w_lambda = 5.0  # f6 - Balance of distribution of Subjs between Profs with an average
+    w_theta = 10.0  # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
 
     numInfWeights = 3 # Number of infeasible waights to divide properly 'weights' vector into some functions
-    weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho]
 
     # Gathering all variables
+    weights = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta]
     config = [maxIter, numCand, numCandInit, convergDetect, stopFitValue, pctParentsCross, 
               pctMut, pctElitism] + weights
     
     #----------------------------------------------------------------------------------------------------------
     # MAIN VARIABLES
 
-    # to access UCTP Main methods and creating Solutions (List of Candidates)
-    uctp = uctp.UCTP()
     # Main candidates of a generation
     solutionsI, solutionsF = objects.Solutions(), objects.Solutions()
     # Candidates without classification
@@ -121,7 +94,7 @@ class main:
 
     # Classification and Fitness calc of the first candidates
     uctp.twoPop(solutionsNoPop, solutionsI, solutionsF, prof, subj, weights, numInfWeights)
-    uctp.calcFit(solutionsI, solutionsF, prof, subj, weights, numInfWeights)
+    uctp.calcFit(solutionsI, solutionsF, prof, subj, weights, numInfWeights, subjIsPref)
 
     # Print and export generated data
     if(prt == 1): ioData.printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter)
@@ -139,12 +112,12 @@ class main:
         if(prt == 1): ioData.printHead(prof, subj, curIter, maxIter, firstFeasSol, lastMaxIter)
         
         # Choosing Parents to generate children (put all new into 'solutionsNoPop')
-        uctp.offspringI(solutionsNoPop, solutionsI, prof, subj)
-        uctp.offspringF(solutionsNoPop, solutionsF, prof, subj, pctMut, pctParentsCross, numCand)
+        uctp.offspringI(solutionsNoPop, solutionsI, prof, subj, subjIsPref)
+        uctp.offspringF(solutionsNoPop, solutionsF, prof, subj, pctMut, pctParentsCross, numCand, subjIsPref)
         
         # Classification and Fitness calculation of all new candidates
         uctp.twoPop(solutionsNoPop, infPool, feaPool, prof, subj, weights, numInfWeights)
-        uctp.calcFit(infPool, feaPool, prof, subj, weights, numInfWeights)
+        uctp.calcFit(infPool, feaPool, prof, subj, weights, numInfWeights, subjIsPref)
         
         # Selecting between parents (old generation) and children (new candidates) to create the next generation
         uctp.selectionI(infPool, solutionsI, numCand)
@@ -172,8 +145,8 @@ class main:
     # FINAL processing of the data
     
     # Export last generation of candidates and Config-Run Info
-    #ioData.outDataGeneration(solutionsI, solutionsF, curIter, prof, subj)
-    fitMaxData, resumeMaxData, maxInfo = ioData.finalOutData(solutionsI, solutionsF, curIter, prof, subj, maxFeaIndex, config)
+    #ioData.outDataGeneration(solutionsI, solutionsF, curIter, prof, subj, subjIsPref)
+    fitMaxData, resumeMaxData, maxInfo = ioData.finalOutData(solutionsI, solutionsF, curIter, prof, subj, subjIsPref, maxFeaIndex, config)
     if(prt == 1): ioData.printFinalResults(config, maxFeaIndex, fitMaxData, resumeMaxData, maxInfo)
     # Record Run Info End
     ioData.outRunData(pr)

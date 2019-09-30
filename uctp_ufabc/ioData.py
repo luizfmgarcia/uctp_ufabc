@@ -12,23 +12,29 @@ import io
 # Set '1' to allow, during the run, the print on terminal of some steps
 prt = 0
 
+#==============================================================================================================
+# GLOBAL VARIABLES - Patterns
+
 # Output directories' names
 mainOutName = 'results'
 currOutName = 'run'
 inputName = 'workdata'
+
 # Output directories' path
 originaltDir = os.getcwd()
 inputDir = originaltDir + os.sep + inputName + os.sep
 mainFilePath = originaltDir + os.sep + mainOutName + os.sep
 currFilePath = ''
 currDirNum = '_'
+
 # Main titles to output datas
 titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
             'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
             'pPrefSubjQ3List', 'pPrefSubjLimList']
 titles2 = ['pName', 'numSubj', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
-titles3 = ['maxIter', 'numCand', 'numCandInit', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
-            'pctMut', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho']
+titles3 = ['maxIter', 'numCand', 'numCandInit', 'convergDetect', 'stopFitValue', 'pctParentsCross', 'pctMut', 
+            'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho', 
+            'w_lambda', 'w_theta']
 
 #==============================================================================================================
 
@@ -39,9 +45,9 @@ def startOutFolders():
     else:
         # Ask to user if wants delete past runs folders/files
         ask = 'a'
-        while(ask != "y" and ask != ""): 
+        while(ask != "y" and ask != "Y" and ask != ""): 
             ask = input("Do you want to erase old results? Yes('y')/No('Enter'): ")
-        if(ask == "y"):
+        if(ask == "y" or ask == "Y"):
             shutil.rmtree(mainFilePath)
             os.makedirs(mainFilePath)
     
@@ -173,7 +179,7 @@ def outRunData(pr):
 #==============================================================================================================
 
 # Extract information - auxiliary function to gathering all important info of a solution
-def extractInfo(cand, prof, subj):
+def extractInfo(cand, prof, subj, subjIsPref):
     # Collecting Profs names in 'prof'
     profData = [p.get() for p in prof]
     profName = [pName for pName, _, _, _, _, _, _, _, _ in profData]
@@ -183,22 +189,22 @@ def extractInfo(cand, prof, subj):
     prof_relations, subjPref, periodPref, quadSabbNotPref, campusPref, difCharge = cand.getFeaVariables()
     
     # If does not have some of the FeaVariables - probably the Cand is Infeasible
-    if(len(difCharge) == 0): _, difCharge = uctp.UCTP().f1(subj, prof, prof_relations)
-    if(len(subjPref) == 0): _, subjPref = uctp.UCTP().f2(subj, prof, prof_relations)
-    if(len(quadSabbNotPref) == 0): _, quadSabbNotPref = uctp.UCTP().f3(subj, prof, prof_relations)
-    if(len(periodPref) == 0): _, periodPref = uctp.UCTP().f4(subj, prof, prof_relations)
-    if(len(campusPref) == 0): _, campusPref = uctp.UCTP().f5(subj, prof, prof_relations)
+    if(len(difCharge) == 0): _, difCharge = uctp.calc_f1(subj, prof, prof_relations)
+    if(len(subjPref) == 0): _, subjPref = uctp.calc_f2(subj, prof, prof_relations, subjIsPref)
+    if(len(quadSabbNotPref) == 0): _, quadSabbNotPref = uctp.calc_f3(subj, prof, prof_relations)
+    if(len(periodPref) == 0): _, periodPref = uctp.calc_f4(subj, prof, prof_relations)
+    if(len(campusPref) == 0): _, campusPref = uctp.calc_f5(subj, prof, prof_relations)
 
     # Extracting the number of each occurence for each professor and its relations
     # [profName, numSubjs, numSubjNotPrefered, numPeriodNotPref, numQuadriSabbathPref, numCampusNotPref, numI2, numI3, difCharge]
     info = [[profName[i],
             len(prof_relations[i]), 
             len(prof_relations[i]) - subjPref[i], 
-            len(prof_relations[i]) - periodPref[i], 
-            len(prof_relations[i]) - quadSabbNotPref[i], 
-            len(prof_relations[i]) - campusPref[i],
-            len(conflicts_i2[i]),
-            len(conflicts_i3[i]),
+            len(prof_relations[i]) - len(periodPref[i]), 
+            len(prof_relations[i]) - len(quadSabbNotPref[i]), 
+            len(prof_relations[i]) - len(campusPref[i]),
+            len(conflicts_i2[i]), 
+            len(conflicts_i3[i]), 
             difCharge[i]] for i in range(len(prof))]
         
     # Last line sums all professors data
@@ -252,7 +258,7 @@ def outDataMMA(solutionsI, solutionsF, iter):
 
 # Export all Candidates in a generation into CSV files
 # Create a CSV File for each Candidate and one CSV to gather the Fitness of all Candidates:
-def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
+def outDataGeneration(solutionsI, solutionsF, num, prof, subj, subjIsPref):
     if(prt == 1): print("Exporting all Generation (Solutions) data....", end='')
     
     # In currFilePath dir, create new 'gen' dir
@@ -283,7 +289,7 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
                 spamwriter.writerow(" ")
                 
                 # Extracting all important info to analyse the quality of the solution
-                info = extractInfo(pop[j][i], prof, subj)
+                info = extractInfo(pop[j][i], prof, subj, subjIsPref)
                 # Output extra information for analisys
                 spamwriter.writerow(titles2)
                 for row in info: spamwriter.writerow(row)
@@ -304,7 +310,7 @@ def outDataGeneration(solutionsI, solutionsF, num, prof, subj):
     
 #==============================================================================================================
 
-def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config=[]):
+def finalOutData(solutionsI, solutionsF, num, prof, subj, subjIsPref, maxFeaIndex=[], config=[]):
     print("Exporting final data....", end='')
         
     # Output Run-Config and Final best results (different of each other)
@@ -329,7 +335,7 @@ def finalOutData(solutionsI, solutionsF, num, prof, subj, maxFeaIndex=[], config
                 # Getting and recording its data
                 fitMaxData.append(maxCand[m].getFitness())
                 maxData.append([s.get() + p.get() for s, p in maxCand[m].getList()])
-                maxInfo.append(extractInfo(maxCand[m], prof, subj))
+                maxInfo.append(extractInfo(maxCand[m], prof, subj, subjIsPref))
 
                 # Checks if is different from something that was already output
                 if(info_alreadyShow.count(maxInfo[m]) == 0): 
