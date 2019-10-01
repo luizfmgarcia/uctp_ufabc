@@ -634,7 +634,6 @@ def errorTypeI23(prof, prof_relations, relations, conflicts_iX, subjIsPref):
         # Roulette Wheel - less preference -> more weight
         lessPrefValue = [2 - subjIsPref[profLost_Index][subjIndex] for subjIndex in conflicts_iX[profLost_Index]]
         will_change_index, _, _ = rouletteWheel(selected_iX[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
-        #will_change_index = random.randrange(len(selected_iX[0]))
         relation_will_change_index = will_change_index[0]
 
         # Recording original relation that will be modified
@@ -646,9 +645,21 @@ def errorTypeI23(prof, prof_relations, relations, conflicts_iX, subjIsPref):
         while(oldProf == newProf):
             # Roulette Wheel - more preference AND less relations -> more weight
             SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPref]
-            morePrefValueList = [float(SubjPrefValuesList[i] / len(prof_relations[i])) if len(prof_relations[i]) !=0 else float(SubjPrefValuesList[i] / 0.7) for i in range(len(prof))]
-            newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-            newProf = newProf[0]
+            # Removing possible Zeros to make the division
+            prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relations]
+            # Getting the values
+            morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(prof))]
+            # If there is only one Prof with value != 0.0
+            if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
+                indexNotZero = [i for i in range(len(prof)) if morePrefValueList != 0.0]
+                # If is the same of the old one
+                if(oldProf == prof[indexNotZero[0]]): newProf = prof[random.randrange(len(prof))]
+                # If not
+                else: newProf = prof[indexNotZero[0]]
+            # If there are more then 1 Prof to chose
+            else: 
+                newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
+                newProf = newProf[0]
         
         # Setting the new relation, creating new Candidate and returning it
         relations[relation_will_change_index]=[subj,newProf]
@@ -794,9 +805,21 @@ def errorTypeF1(prof, prof_relations, relations, subjIsPref):
     while(oldProf == newProf):
         # Roulette Wheel - more preference AND less relations -> more weight
         SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPref]
-        morePrefValueList = [float(SubjPrefValuesList[i] / len(prof_relations[i])) for i in range(len(prof))]
-        newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-        newProf = newProf[0]
+        # Removing possible Zeros to make the division
+        prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relations]
+        # Getting the values
+        morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(prof))]
+        # If there is only one Prof with value != 0.0
+        if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
+            indexNotZero = [i for i in range(len(prof)) if morePrefValueList != 0.0]
+            # If is the same of the old one
+            if(oldProf == prof[indexNotZero[0]]): newProf = prof[random.randrange(len(prof))]
+            # If not
+            else: newProf = prof[indexNotZero[0]]
+        # If there are more then 1 Prof to chose
+        else: 
+            newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
+            newProf = newProf[0]
 
     # Setting the new relation, creating new Candidate and returning it
     relations[relation_will_change_index]=[subj,newProf]
@@ -815,7 +838,10 @@ def errorTypeF2(prof, prof_relations, relations, subjIsPref):
     # Choosing the professor to lose a relation
     # Roulette Wheel - less Preferences -> more weight 
     prefValuesList = [sum([subjIsPref[i][subjIndex] for subjIndex in prof_relations[i]]) for i in range(len(prof_relations))]
-    prefValuesList_Final = [float(1.0 / value) if value != 0 else 1.0 for value in prefValuesList] # Resolving the Sums = Zero
+    # Resolving the values = Zero
+    prefValuesList_Partial = [float(1.0 / value) if value != 0 else 1.0 for value in prefValuesList]
+    # Resolving the Prof whitout relations (can not be selected)
+    prefValuesList_Final = [prefValuesList_Partial[i] if len(prof_relations[i]) != 0 else 0.0 for i in range(len(prefValuesList_Partial))]
     profRelList_Selected, _, _ = rouletteWheel(prof_relations, prefValuesList_Final, objectiveNum=1, repos=True, negative=False)
     profLost_Index = prof_relations.index(profRelList_Selected[0])
     
@@ -834,9 +860,21 @@ def errorTypeF2(prof, prof_relations, relations, subjIsPref):
     while(oldProf == newProf):
         # Roulette Wheel - more preference AND less relations -> more weight
         SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPref]
-        morePrefValueList = [float(SubjPrefValuesList[i] / len(prof_relations[i])) for i in range(len(prof))]
-        newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-        newProf = newProf[0]
+        # Removing possible Zeros to make the division
+        prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relations]
+        # Getting the values
+        morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(prof))]
+        # If there is only one Prof with value != 0.0
+        if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
+            indexNotZero = [i for i in range(len(prof)) if morePrefValueList != 0.0]
+            # If is the same of the old one
+            if(oldProf == prof[indexNotZero[0]]): newProf = prof[random.randrange(len(prof))]
+            # If not
+            else: newProf = prof[indexNotZero[0]]
+        # If there are more then 1 Prof to chose
+        else: 
+            newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
+            newProf = newProf[0]
 
     # Setting the new relation, creating new Candidate and returning it
     relations[relation_will_change_index]=[subj,newProf]
@@ -854,47 +892,66 @@ def errorTypeF2(prof, prof_relations, relations, subjIsPref):
 # (4) Fixing number of QuadSabb
 # (5) Fixing number of Campus
 def errorTypeF345(prof, prof_relations, relations, XPref, subjIsPref):
-    # Granting that the 'errorType' do not change good relations without Problems to repair
-    notGoodList = [1 if len(prof_relations[i]) != len(XPref[i]) else 0 for i in range(len(prof_relations))]
-    if(notGoodList.count(1) == 0):
+    # Checking if there are problems to fix
+    if(len(XPref) == 0):
         newCand = objects.Candidate()
         newCand.setList(relations)
         # Setting the flag to NOT finish the while
         flag_repair_done = False
     else:
-        # Choosing the professor to lose a relation
-        # Roulette Wheel - less XPref -> more weight
-        conflictsList = [[subjIndex for subjIndex in prof_relations[i] if XPref[i].count(subjIndex) == 0] for i in range(len(prof_relations))] 
-        prefValuesList = [len(i) for i in conflictsList]
-        profRelList_Selected, _, _ = rouletteWheel(conflictsList, prefValuesList, objectiveNum=1, repos=True, negative=False)
-        profLost_Index = conflictsList.index(profRelList_Selected[0])
-        
-        # Choosing the relation to be modified
-        # Roulette Wheel - less preference -> more weight
-        lessPrefValue = [2 - subjIsPref[profLost_Index][subjIndex] for subjIndex in conflictsList[profLost_Index]]
-        will_change_index, _, _ = rouletteWheel(profRelList_Selected[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
-        relation_will_change_index = will_change_index[0]
-        
-        # Recording original relation that will be modified
-        subj, oldProf = relations[relation_will_change_index]
+        # Granting that the 'errorType' do not change good relations without Problems to repair
+        notGoodList = [1 if len(prof_relations[i]) != len(XPref[i]) else 0 for i in range(len(prof_relations))]
+        if(notGoodList.count(1) == 0):
+            newCand = objects.Candidate()
+            newCand.setList(relations)
+            # Setting the flag to NOT finish the while
+            flag_repair_done = False
+        else:
+            # Choosing the professor to lose a relation
+            # Roulette Wheel - less XPref -> more weight
+            conflictsList = [[subjIndex for subjIndex in prof_relations[i] if XPref[i].count(subjIndex) == 0] for i in range(len(prof_relations))] 
+            prefValuesList = [len(i) for i in conflictsList]
+            profRelList_Selected, _, _ = rouletteWheel(conflictsList, prefValuesList, objectiveNum=1, repos=True, negative=False)
+            profLost_Index = conflictsList.index(profRelList_Selected[0])
+            
+            # Choosing the relation to be modified
+            # Roulette Wheel - less preference -> more weight
+            lessPrefValue = [2 - subjIsPref[profLost_Index][subjIndex] for subjIndex in conflictsList[profLost_Index]]
+            will_change_index, _, _ = rouletteWheel(profRelList_Selected[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
+            relation_will_change_index = will_change_index[0]
+            
+            # Recording original relation that will be modified
+            subj, oldProf = relations[relation_will_change_index]
 
-        # Choosing new Prof to be in the relation with the Subj selected
-        # Granting that the new Prof is different of the old one
-        newProf = oldProf
-        while(oldProf == newProf):
-            # Roulette Wheel - more preference AND less relations -> more weight
-            SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPref]
-            morePrefValueList = [float(SubjPrefValuesList[i] / len(prof_relations[i])) for i in range(len(prof))]
-            newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-            newProf = newProf[0]
+            # Choosing new Prof to be in the relation with the Subj selected
+            # Granting that the new Prof is different of the old one
+            newProf = oldProf
+            while(oldProf == newProf):
+                # Roulette Wheel - more preference AND less relations -> more weight
+                SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPref]
+                # Removing possible Zeros to make the division
+                prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relations]
+                # Getting the values
+                morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(prof))]
+                # If there is only one Prof with value != 0.0
+                if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
+                    indexNotZero = [i for i in range(len(prof)) if morePrefValueList != 0.0]
+                    # If is the same of the old one
+                    if(oldProf == prof[indexNotZero[0]]): newProf = prof[random.randrange(len(prof))]
+                    # If not
+                    else: newProf = prof[indexNotZero[0]]
+                # If there are more then 1 Prof to chose
+                else: 
+                    newProf, _, _ = rouletteWheel(prof, morePrefValueList, objectiveNum=1, repos=True, negative=False)
+                    newProf = newProf[0]
 
-        # Setting the new relation, creating new Candidate and returning it
-        relations[relation_will_change_index]=[subj,newProf]
-        newCand = objects.Candidate()
-        newCand.setList(relations)
+            # Setting the new relation, creating new Candidate and returning it
+            relations[relation_will_change_index]=[subj,newProf]
+            newCand = objects.Candidate()
+            newCand.setList(relations)
 
-        # Setting the flag to finish the while
-        flag_repair_done = True
+            # Setting the flag to finish the while
+            flag_repair_done = True
 
     return flag_repair_done, newCand
 
@@ -1114,6 +1171,7 @@ def rouletteWheel(objectsList, valuesList, objectiveNum, repos=True, negative=Fa
         # MAIN Roulette Wheel Selection process (one round)
         probPrev = 0.0
         r = float(random.randrange(100) / 100.0)
+        #r = float(random.randrange(0, 1, 0.001))
         for i in range(len(cumulativeProbObj)):
             if(probPrev < r and r <= cumulativeProbObj[i]):
                 # Adding the selected Object to 'selectedObj'

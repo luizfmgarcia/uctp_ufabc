@@ -20,13 +20,13 @@ class main:
     # Set '1' to allow, during the run, the print on terminal of some steps
     prt = 1
     # Max Number of iterations to get a solution
-    maxIter = 10000
+    maxIter = 100
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
     numCand = 30
     # Initial number of solutions generated randomly
     numCandInit = 100
     # Convergence Detector: num of iterations passed since last MaxFit found
-    convergDetect = 1000 # equal '0' to not consider this condition
+    convergDetect = 500 # equal '0' to not consider this condition
     # Max Fitness value that must find to stop the run before reach 'maxIter'
     stopFitValue = 0.9 # equal '0' to not consider this condition
  
@@ -42,13 +42,13 @@ class main:
     w_alpha = 1.0   # i1 - Prof without Subj
     w_beta = 3.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 2.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
-    w_delta = 1.0   # f1 - Balance of distribution of Subjs between Profs with each pCharge
-    w_omega = 3.0   # f2 - Profs preference Subjects
+    w_delta = 2.0   # f1 - Balance of distribution of Subjs between Profs with each pCharge
+    w_omega = 2.0   # f2 - Profs preference Subjects
     w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
     w_rho = 1.3     # f5 - Profs with Subjs in Campus
-    w_lambda = 5.0  # f6 - Balance of distribution of Subjs between Profs with an average
-    w_theta = 10.0  # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
+    w_lambda = 3.0  # f6 - Balance of distribution of Subjs between Profs with an average
+    w_theta = 5.0  # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
 
     numInfWeights = 3 # Number of infeasible waights to divide properly 'weights' vector into some functions
 

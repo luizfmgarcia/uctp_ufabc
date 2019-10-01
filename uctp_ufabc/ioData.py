@@ -31,7 +31,7 @@ currDirNum = '_'
 titles1 = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
             'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
             'pPrefSubjQ3List', 'pPrefSubjLimList']
-titles2 = ['pName', 'numSubj', 'notPref', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
+titles2 = ['pName', 'numSubj', 'notPrefRestr', '/Relax', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 'numI3', 'difCharge']
 titles3 = ['maxIter', 'numCand', 'numCandInit', 'convergDetect', 'stopFitValue', 'pctParentsCross', 'pctMut', 
             'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho', 
             'w_lambda', 'w_theta']
@@ -194,12 +194,15 @@ def extractInfo(cand, prof, subj, subjIsPref):
     if(len(quadSabbNotPref) == 0): _, quadSabbNotPref = uctp.calc_f3(subj, prof, prof_relations)
     if(len(periodPref) == 0): _, periodPref = uctp.calc_f4(subj, prof, prof_relations)
     if(len(campusPref) == 0): _, campusPref = uctp.calc_f5(subj, prof, prof_relations)
-
+    # Counting the relaxed number of subjPref for each Prof (Considering subj of preference but not same Quadri)
+    relaxedList = [sum([1 for j in prof_relations[i] if subjIsPref[i][j] != 0]) for i in range(len(prof_relations))] 
+    
     # Extracting the number of each occurence for each professor and its relations
     # [profName, numSubjs, numSubjNotPrefered, numPeriodNotPref, numQuadriSabbathPref, numCampusNotPref, numI2, numI3, difCharge]
     info = [[profName[i],
             len(prof_relations[i]), 
             len(prof_relations[i]) - subjPref[i], 
+            len(prof_relations[i]) - relaxedList[i], 
             len(prof_relations[i]) - len(periodPref[i]), 
             len(prof_relations[i]) - len(quadSabbNotPref[i]), 
             len(prof_relations[i]) - len(campusPref[i]),
@@ -208,8 +211,8 @@ def extractInfo(cand, prof, subj, subjIsPref):
             difCharge[i]] for i in range(len(prof))]
         
     # Last line sums all professors data
-    total = ['Total', 0, 0, 0, 0, 0, 0, 0, 0]
-    for j in range(1,9): total[j] = sum([i[j] for i in info])
+    total = ['Total'] + [0 for _ in range(len(info) - 1)]
+    for j in range(1, len(total) - 2): total[j] = sum([i[j] for i in info])
     info.append(total)
 
     return  info
