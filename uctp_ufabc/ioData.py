@@ -211,8 +211,8 @@ def extractInfo(cand, prof, subj, subjIsPref):
             difCharge[i]] for i in range(len(prof))]
         
     # Last line sums all professors data
-    total = ['Total'] + [0 for _ in range(len(info) - 1)]
-    for j in range(1, len(total) - 2): total[j] = sum([i[j] for i in info])
+    total = ['Total'] + [0 for _ in range(len(info[0]) - 1)]
+    for j in range(1, len(total)): total[j] = sum([i[j] for i in info])
     info.append(total)
 
     return  info

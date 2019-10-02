@@ -990,8 +990,9 @@ def selectionF(feaPool, solutionsF, numCand, pctElitism=100):
             listFit = [cand.getFitness() for cand in feasibles_List]
             
             # Defining the division of number of candidates between selections process
-            elitismNum = int(numCand * pctElitism / 100.0)
-            if(elitismNum == 0): elitismNum = 1
+            elitismNum = numCand * pctElitism / 100.0
+            if(elitismNum > 0.0 and elitismNum < 1.0): elitismNum = 1
+            elitismNum = int(elitismNum)
             roulNum = numCand - elitismNum
 
             # Elitism and Roulette Selection

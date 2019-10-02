@@ -20,19 +20,19 @@ class main:
     # Set '1' to allow, during the run, the print on terminal of some steps
     prt = 1
     # Max Number of iterations to get a solution
-    maxIter = 100
+    maxIter = 10000
     # Number of candidates in a generation (same for each Pop Feas/Inf.)
-    numCand = 30
+    numCand = 100
     # Initial number of solutions generated randomly
     numCandInit = 100
     # Convergence Detector: num of iterations passed since last MaxFit found
-    convergDetect = 500 # equal '0' to not consider this condition
+    convergDetect = 1000 # equal '0' to not consider this condition
     # Max Fitness value that must find to stop the run before reach 'maxIter'
     stopFitValue = 0.9 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 50 # The rest (to complete 100%) will pass through Mutation
+    pctParentsCross = 70 # The rest (to complete 100%) will pass through Mutation
     # Percentage of mutation that maybe each child generated through 'Crossover' process will suffer 
     pctMut = 70
     # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
@@ -47,7 +47,7 @@ class main:
     w_sigma = 1.5   # f3 - Profs with Subjs in quadriSabbath
     w_pi = 1.0      # f4 - Profs with Subjs in Period
     w_rho = 1.3     # f5 - Profs with Subjs in Campus
-    w_lambda = 3.0  # f6 - Balance of distribution of Subjs between Profs with an average
+    w_lambda = 5.0  # f6 - Balance of distribution of Subjs between Profs with an average
     w_theta = 5.0  # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
 
     numInfWeights = 3 # Number of infeasible waights to divide properly 'weights' vector into some functions
