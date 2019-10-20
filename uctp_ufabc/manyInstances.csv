@@ -1,0 +1,2 @@
+printSteps;asks;maxNum_Iter;maxNumCand_perPop;numCandInit;convergDetect;stopFitValue;pctParentsCross;pctMut_childCross;pctElitism;w_alpha;w_beta;w_gamma;w_delta;w_omega;w_sigma;w_pi;w_rho;w_lambda;w_theta
+1;0;10;30;200;1000;0.9;70;30;100;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0

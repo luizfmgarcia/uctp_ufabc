@@ -15,7 +15,7 @@ def start(solutionsNoPop, subjList, profList, init):
     for _ in range(init): solutionsNoPop.addCand(newCandRand(subjList, profList))
     if(printSteps == 1): print("Created first generation!")
 
-#==============================================================================================================
+#-------------------------------------------------------
 
 # Create new Candidate Full-Random
 def newCandRand(subjList, profList):
@@ -1092,19 +1092,19 @@ def crossover(cand1, cand2, twoPoints=None, firstHalf=None, notEqualParent=None)
         # Recording the original relations
         s1, p1 = relations1[point1]
         s2, p2 = relations2[point1]
-        
+
         # Making the exchange of relations (changing only professors)
         relations1[point1] = s1, p2
         relations2[point1] = s2, p1
         
         # Next relation
         point1 = point1 + 1
-    
+
     # Creating and setting the two new Candidates
     newCand1, newCand2 = objects.Candidate(), objects.Candidate()
     newCand1.setRelationsList(relations1)
     newCand2.setRelationsList(relations2)
-    
+
     # Returning the new Candidates
     return newCand1, newCand2
 
@@ -1189,25 +1189,22 @@ def rouletteWheel(objectsList, valuesList, objectiveNum, repos=True, negative=Fa
 #==============================================================================================================
 
 # Detect the stop condition
-def stop(curr_Iter, maxNum_Iter, lastMaxFitFea_Iter, convergDetect, maxFitFea, stopFitValue):
-    #import pdb; pdb.set_trace()
-    if(curr_Iter > maxNum_Iter): return True # Reached max num of iterations
+def stop(asks, curr_Iter, maxNum_Iter, lastMaxFit_Iter, convergDetect, maxFitFea, stopFitValue):
+    if(curr_Iter > maxNum_Iter): return True if asks == 0 else ask() # Reached max num of iterations
     if(stopFitValue != 0 and maxFitFea >= stopFitValue): return True # Reached max fit value
-    if(convergDetect != 0 and curr_Iter - lastMaxFitFea_Iter > convergDetect): return True # Reached convergence num of iterations
+    if(convergDetect != 0 and curr_Iter - lastMaxFit_Iter > convergDetect): return True # Reached convergence num of iterations
     return False # Continues the run with same num of iterations
 
 # Ask to user if wants to continue the run with more iterations
-def ask(value):
-    ask1 = 'a'
-    while(ask1 != "y" and ask1 != ""): ask1 = input("Need more iterations? Yes('y')/No('Enter'): ")
-    if(ask1 == "y"):
-        notPosNumber = False
-        while(not notPosNumber): 
-            ask2 = input("How much? (positive number): ")
-            try: 
-                if(int(ask2) >= 0): notPosNumber = True
-            except ValueError: notPosNumber = False
-        return True # Continue with more iterations
-    return False # Stop
+def ask():
+    ask = 'a'
+    while(True): 
+        ask = input("How many more iterations? Yes(Positive Number) / No('Enter' or '0'): ")
+        if(ask == ""): return True
+        try:
+            if(int(ask) >= 0):
+                if(int(ask) == 0): return True
+                else: return int(ask)
+        except ValueError: None
 
 #==============================================================================================================
