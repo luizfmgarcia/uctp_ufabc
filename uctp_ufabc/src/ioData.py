@@ -89,17 +89,17 @@ def getConfig():
     printSteps = 1 # Set '1' to allow, during the run, the print on terminal of some steps
     asks = 1 # Set '1' to allow, during the run, some asks
     maxNum_Iter = 10000 # Max Number of iterations to get a solution
-    maxNumCand_perPop = 200 # Number of candidates in a generation (same for each Pop Feas./Inf.)
-    numCandInit = 200 # Initial number of solutions generated randomly
-    # Convergence Detector: num of iterations passed since last MaxFit found
+    maxNumCand_perPop = 20 # Number of candidates in a generation (same for each Pop Feas./Inf.)
+    numCandInit = 50 # Initial number of solutions generated randomly
+    # Convergence Detector: number of iterations passed since last MaxFit found
     convergDetect = 1000 # equal '0' to not consider this condition
     # Max Fitness value that must find to stop the run before reach 'maxNum_Iter'
-    stopFitValue = 0.9 # equal '0' to not consider this condition
+    stopFitValue = 0 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 70 # The rest (to complete 100%) will pass through Mutation
-    pctMut_childCross = 50 # Percentage of mutation that maybe each child generated through 'Crossover' process will suffer
+    pctParentsCross = 90 # The rest (to complete 100%) will pass through Mutation
+    pctMut_childCross = 15 # Percentage of mutation that maybe each child generated through 'Crossover' process will suffer
     pctElitism = 5 # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
 
     # WEIGHTS CONFIG (must be Float)
@@ -107,31 +107,31 @@ def getConfig():
     w_beta = 1.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
     w_gamma = 1.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
     
-    w_delta = 1.0   # f1 - Balance of distribution of Subjs between Profs with each pCharge
-    w_omega = 1.0   # f2 - Profs preference Subjects
-    w_sigma = 1.0   # f3 - Profs with Subjs in quadriSabbath
-    w_pi = 1.0      # f4 - Profs with Subjs in Period
-    w_rho = 1.0     # f5 - Profs with Subjs in Campus
-    w_lambda = 1.0  # f6 - Balance of distribution of Subjs between Profs with an average
-    w_theta = 1.0   # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
+    w_delta = 0.25   # f1 - Balance of distribution of Subjs between Profs with each pCharge
+    w_omega = 0.25   # f2 - Profs preference Subjects
+    w_sigma = 0.25   # f3 - Profs with Subjs in quadriSabbath
+    w_pi = 0.25      # f4 - Profs with Subjs in Period
+    w_rho = 0.25     # f5 - Profs with Subjs in Campus
+    w_lambda = 0.75  # f6 - Balance of distribution of Subjs between Profs with an average
+    w_theta = 0.75   # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
 
     #----------------------------------------------------------------------------------------------------------
-    # Command Line CONFIGURATION
+    # CONFIGURATION by Command Line
     if(len(sys.argv) == 21):
         printSteps, asks, maxNum_Iter, maxNumCand_perPop, numCandInit, convergDetect, stopFitValue, pctParentsCross, pctMut_childCross, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = (value for value in sys.argv[1:])
-
     #----------------------------------------------------------------------------------------------------------
+
     return int(printSteps), int(asks), int(maxNum_Iter), int(maxNumCand_perPop), int(numCandInit), int(convergDetect), float(stopFitValue), int(pctParentsCross), int(pctMut_childCross), int(pctElitism), float(w_alpha), float(w_beta), float(w_gamma), float(w_delta), float(w_omega), float(w_sigma), float(w_pi), float(w_rho), float(w_lambda), float(w_theta)
 
 #==============================================================================================================
-    
+
 # Get all data to work with
 def getData():
     profList = getDataProf()
     subjList = getDataSubj()
     if(printSteps == 1): print("Data Obtained!")
     return subjList, profList
-    
+
 #-------------------------------------------------------
 
 # Read the data of Professors and create the respective objects
@@ -432,6 +432,7 @@ def printFinalResults(configVarList, maxFitIndexes, bestSol_FitList, bestSol_Res
 #==============================================================================================================
 
 # Next there is some auxiliary functions that maybe be useful to see/output more detailed info
+# But, for a while, its not used
 
 #==============================================================================================================
 

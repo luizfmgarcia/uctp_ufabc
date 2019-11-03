@@ -26,9 +26,10 @@ def newCandRand(subjList, profList):
 
 #==============================================================================================================
 
-# Extracts info about what Subj appears in which Prof (PrefList)
+# Extracts info about what Subj appears in which Prof PrefList
 def extractSubjIsPref(subjList, profList):
-    # Lists for each Prof, where it is '1' if Subj in respective index is on Prof List of Pref
+    # Lists for each Prof, where it is '1' if Subj in respective index is on Prof List of Pref but not same Quadri
+    # '2' if same quadri
     subjIsPrefList = [[0 for _ in range(len(subjList))] for _ in range(len(profList))]
 
     # Counting the occurrences, filling the vectors
@@ -66,16 +67,16 @@ def extractSubjIsPref(subjList, profList):
 #==============================================================================================================
 
 # Separation of solutions into 2 populations
-def twoPop(solutionsNoPop, solI, solF, profList, subjList, weightsList, numInfWeights):
+def twoPop(solutionsNoPop, infPool, feaPool, profList, subjList, weightsList, numInfWeights):
     # Granting that the Lists will be empty to receive new Solutions
-    solI.resetCandList()
-    solF.resetCandList()
+    infPool.resetCandList()
+    feaPool.resetCandList()
     
     for cand in solutionsNoPop.getCandList():
         # Classification by checking feasibility
         pop = checkFeasibility(cand, profList, subjList, weightsList, numInfWeights)
-        if(pop == "feasible"): solF.addCand(cand)
-        elif(pop == "infeasible"): solI.addCand(cand)
+        if(pop == "feasible"): feaPool.addCand(cand)
+        elif(pop == "infeasible"): infPool.addCand(cand)
     
     # Granting that the List will be empty to next operations
     solutionsNoPop.resetCandList()
@@ -87,7 +88,7 @@ def twoPop(solutionsNoPop, solI, solF, profList, subjList, weightsList, numInfWe
 # Detect the violation of a Restriction into a candidate
 def checkFeasibility(candidate, profList, subjList, weightsList, numInfWeights):
     # As part of the Candidate's Prof-Subj relations (with both Feasible and the Infeasible) will be traversed to check they Feasibility here,
-    # instead of repass an entire Infeasible Candidate again in the 'calc_fitInfeas', the calculation of its Fitness will already be done
+    # instead of re-pass an entire Infeasible Candidate again in the 'calc_fitInfeas', the calculation of its Fitness will already be done
     # only one time here. Only the Feasible ones will have to pass through 'calc_fitFeas' later.
     fit = -1
     fit = calc_fitInfeas(candidate, profList, subjList, weightsList[:numInfWeights])
@@ -135,9 +136,9 @@ def calc_fitInfeas(candidate, profList, subjList, weightsList):
     # if not, is Feasible, will return 1.0 as Fitness
     if(prof_relationsList.count([]) != 0 or i2_conflictsList.count([]) != len(i2_conflictsList) or i3_conflictsList.count([]) != len(i3_conflictsList)):
         # Calculating main variables
-        i1 = float(prof_relationsList.count([])) / (float(len(profList)) - 1.0)
-        i2 = float(sum([len(i) for i in i2_conflictsList])) / float(len(subjList))
-        i3 = float(sum([len(i) for i in i3_conflictsList])) / float(len(subjList))
+        i1 = float(prof_relationsList.count([]) / (len(profList) - 1.0))
+        i2 = float(sum([len(i) for i in i2_conflictsList]) / len(subjList))
+        i3 = float(sum([len(i) for i in i3_conflictsList]) / len(subjList))
         i = [i1, i2, i3]
 
         # Final Infeasible Function Fitness Calc
@@ -279,12 +280,12 @@ def calc_fitFeas(candidate, profList, subjList, weightsList, subjIsPrefList):
     candidate.setFeaVariables(prof_relationsList, numSubjPrefList, periodPrefList, quadSabbNotPrefList, campPrefList, difChargeList)
     
     # Calculating main variables
-    f1 = 1.0 - (float(sum_chargesRelative / len(profList)))
+    f1 = 1.0 - float(sum_chargesRelative / len(profList))
     f2 = float(sum_Satisfaction / len(profList))
     f3 = float(sum_quadSabbNotPref / len(subjList))
     f4 = float(sum_periodPref / len(subjList))
     f5 = float(sum_campusPref / len(subjList))
-    f6 = 1.0 - (float(sum_relationsRelative / len(profList)))
+    f6 = 1.0 - float(sum_relationsRelative / len(profList))
     f7 = float(sum_qualityRelative / len(profList))
     f = [f1, f2, f3, f4, f5, f6, f7]
 
@@ -301,19 +302,19 @@ def calc_f1(subjList, profList, prof_relationsList):
     # List of all 'Effective Charges', that is, the sum of the charges of all the subjects related to the professor
     charges_eachProfRelations = [0 for _ in range(len(profList))]
     # List of requested charges of each professor
-    charges_EachProf = [float(profList[i].getCharge()) for i in range(len(profList))]
+    charges_EachProf = [profList[i].getCharge() for i in range(len(profList))]
 
     # Counting the occurrences, filling the vectors
     for i in range(len(prof_relationsList)):
         # Summing all chargers of all relations of this Prof
-        charges_eachProfRelations[i] = sum([float(str(subjList[sIndex].getCharge()).replace(",",".")) for sIndex in prof_relationsList[i]])
+        charges_eachProfRelations[i] = sum([subjList[sIndex].getCharge() for sIndex in prof_relationsList[i]])
     
     # Difference of Prof Charge and the sum of all of its Subj-Relations
     difChargeList = [charges_EachProf[i] - charges_eachProfRelations[i] for i in range(len(profList))]
 
     # Relative weigh of excess or missing charge for each Prof - based on the absolute credit difference
     # between the credits requested by the Prof and the sum off all Subj related to it
-    charges_relative = [float(abs(difChargeList[i])) / charges_EachProf[i] for i in range(len(profList))]
+    charges_relative = [float(abs(difChargeList[i]) / charges_EachProf[i]) for i in range(len(profList))]
     
     # Making a simple adjust on the value
     charges_relativeFinal = [charge if charge < 1.0 else 1.0 for charge in charges_relative]
@@ -403,7 +404,7 @@ def calc_f2(subjList, profList, prof_relationsList, subjIsPrefList):
                         finalQX[i][prof_index] = finalQX[i][prof_index] + (len_current_list - pref_index + 1)
                 
                 # Calculate the final value of "Satisfaction" normalized, after obtained and summed all weights from Subjects related to current professor
-                finalQX[i][prof_index] = float(finalQX[i][prof_index]) / float(total_weight)
+                finalQX[i][prof_index] = float(finalQX[i][prof_index] / total_weight)
     
     # Calculate the final value of a Prof "satisfaction" summing all 3 values (from finalQ1, finalQ2 and finalQ3 lists) and normalizing it
     final_Satisf = [float((finalQX[0][i] + finalQX[1][i] + finalQX[2][i]) / 3.0) for i in range(len(finalQX[0]))]
@@ -506,7 +507,7 @@ def calc_f6(subjList, profList, prof_relationsList):
     # The sum of relations discrepancies of all professors
     sum_relationsRelative = sum([charge for charge in relations_relativeFinal])
     
-    return sum_relationsRelative, difNumRel 
+    return sum_relationsRelative, difNumRel
 
 #-------------------------------------------------------
 
@@ -515,7 +516,7 @@ def calc_f7(subjList, profList, prof_relationsList, subjIsPrefList):
     # Summing, for each professor, its relations qualities
     sumRelationsQuality = [sum([subjIsPrefList[i][pos] for pos in prof_relationsList[i]]) for i in range(len(prof_relationsList))]
 
-    # Relative value of quality of all relations for each Prof (2 is the max value of quality)
+    # Relative value of quality of all relations for each Prof (2 is the max value of quality - same quadri of pref list)
     qualityRelative = [float(sumRelationsQuality[i] / (2 * len(prof_relationsList[i]))) for i in range(len(prof_relationsList))]
 
     # The sum of relative qualities of all professors
@@ -539,140 +540,6 @@ def offspringI(solutionsNoPop, solutionsI, profList, subjList, subjIsPrefList):
 
 #==============================================================================================================
 
-# Make a mutation into a infeasible candidate
-def mutationI(candidate, profList, subjList, subjIsPrefList):
-    # Getting data to work with
-    relations = candidate.getRelationsList()
-    prof_relationsList, i2_conflictsList, i3_conflictsList = candidate.getInfVariables()
-    
-    # This While ensures that 'errorType' will choose Randomly one 'restriction repair'
-    flag_repair_done = False
-    while(flag_repair_done == False):
-        # Choosing one type of restriction to repair
-        errorType = random.randrange(0,4)
-        
-        # (0) No repair -> Random Change
-        if(errorType == 0):
-            # Getting a new candidate (modified) 
-            newCand = mutationRand(candidate, profList)
-            # Setting the flag to finish the while
-            flag_repair_done = True
-        # (1) Prof without relations with Subjects in 'prof_relationsList'
-        if(errorType == 1):
-            flag_repair_done, newCand = errorTypeI1(profList, prof_relationsList, relations, subjIsPrefList)
-        # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'i2_conflictsList'
-        if(errorType == 2):
-            flag_repair_done, newCand = errorTypeI23(profList, prof_relationsList, relations, i2_conflictsList, subjIsPrefList)
-        # (3) 2 or more Subjects (related to the same Prof) with same 'day' and 'quadri' but different 'campus' in 'i3_conflictsList'
-        if(errorType == 3):
-            flag_repair_done, newCand = errorTypeI23(profList, prof_relationsList, relations, i3_conflictsList, subjIsPrefList)
-
-    return newCand
-
-#-------------------------------------------------------
-
-# (1) Prof without relations (with no Subjects) in 'prof_relationsList'
-def errorTypeI1(profList, prof_relationsList, relations, subjIsPrefList):
-    # Granting that the 'errorType' do not change good relations without restrictions to repair
-    if(prof_relationsList.count([]) == 0):
-        newCand = objects.Candidate()
-        newCand.setRelationsList(relations)
-        # Setting the flag to NOT finish the while
-        flag_repair_done = False
-    else:
-        # Choosing a professor to lose a relation
-        # Roulette Wheel - more relations -> more weight 
-        numRelationsList = [len(i) for i in prof_relationsList]
-        profRelList_Selected, _, _ = rouletteWheel(prof_relationsList, numRelationsList, objectiveNum=1, repos=True, negative=False)
-        
-        # Choosing the relation to be modified
-        # Roulette Wheel - less preference -> more weight
-        profLost_Index = prof_relationsList.index(profRelList_Selected[0])
-        lessPrefValue = [2 - subjIsPrefList[profLost_Index][subjIndex] for subjIndex in prof_relationsList[profLost_Index]]
-        will_change_index, _, _ = rouletteWheel(profRelList_Selected[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
-        relation_will_change_index = will_change_index[0]
-        
-        # Recording original relation that will be modified
-        subjList, _ = relations[relation_will_change_index]
-        
-        # Choosing one Prof with Zero relations to get the relation
-        profZeroRelIndex = [i for i in range(len(prof_relationsList)) if len(prof_relationsList[i]) == 0]
-        # Roulette Wheel - more preference -> more weight
-        morePrefValue = [subjIsPrefList[profIndex][relation_will_change_index] for profIndex in profZeroRelIndex]
-        newProfIndex, _, _ = rouletteWheel(profZeroRelIndex, morePrefValue, objectiveNum=1, repos=True, negative=False)
-        newProf = profList[newProfIndex[0]]
-
-        # Setting the new relation, creating new Candidate and returning it
-        relations[relation_will_change_index]=[subjList,newProf]
-        newCand = objects.Candidate()
-        newCand.setRelationsList(relations)
-
-        # Setting the flag to finish the while
-        flag_repair_done = True
-
-    return flag_repair_done, newCand
-
-#-------------------------------------------------------
-
-# (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'i2_conflictsList'
-# (3) 2 or more Subjects (related to the same Prof) with same 'day' and 'quadri' but different 'campus' in 'i3_conflictsList'
-def errorTypeI23(profList, prof_relationsList, relations, conflicts_iX, subjIsPrefList):
-    # Granting that the 'errorType' do not change good relations without restrictions to repair
-    if(conflicts_iX.count([]) == len(conflicts_iX)):
-        newCand = objects.Candidate()
-        newCand.setRelationsList(relations)
-        # Setting the flag to NOT finish the while
-        flag_repair_done = False
-    else:
-        # Choosing a professor with 'iX' conflicts to lose a relation
-        # Roulette Wheel - more conflicts -> more weight
-        weightList = [len(conflicts_iX[i]) for i in range(len(prof_relationsList))]
-        selected_iX, _, _ = rouletteWheel(conflicts_iX, weightList, objectiveNum=1, repos=True, negative=False)
-        profLost_Index = conflicts_iX.index(selected_iX[0])
-        
-        # Choosing the relation to be modified
-        # Roulette Wheel - less preference -> more weight
-        lessPrefValue = [2 - subjIsPrefList[profLost_Index][subjIndex] for subjIndex in conflicts_iX[profLost_Index]]
-        will_change_index, _, _ = rouletteWheel(selected_iX[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
-        relation_will_change_index = will_change_index[0]
-
-        # Recording original relation that will be modified
-        subjList, oldProf = relations[relation_will_change_index]
-
-        # Choosing new Prof to be in the relation with the Subj selected
-        # Granting that the new Prof is different of the old one
-        newProf = oldProf
-        while(oldProf == newProf):
-            # Roulette Wheel - more preference AND less relations -> more weight
-            SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPrefList]
-            # Removing possible Zeros to make the division
-            prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relationsList]
-            # Getting the values
-            morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(profList))]
-            # If there is only one Prof with value != 0.0
-            if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
-                indexNotZero = [i for i in range(len(profList)) if morePrefValueList != 0.0]
-                # If is the same of the old one
-                if(oldProf == profList[indexNotZero[0]]): newProf = profList[random.randrange(len(profList))]
-                # If not
-                else: newProf = profList[indexNotZero[0]]
-            # If there are more then 1 Prof to chose
-            else: 
-                newProf, _, _ = rouletteWheel(profList, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-                newProf = newProf[0]
-        
-        # Setting the new relation, creating new Candidate and returning it
-        relations[relation_will_change_index]=[subjList,newProf]
-        newCand = objects.Candidate()
-        newCand.setRelationsList(relations)
-
-        # Setting the flag to finish the while
-        flag_repair_done = True
-
-    return flag_repair_done, newCand
-
-#==============================================================================================================
-
 # Generate new solutions from the current Feasible population
 def offspringF(solutionsNoPop, solutionsF, profList, subjList, pctMut_childCross, pctParentsCross, maxNumCand_perPop, subjIsPrefList):
     # Check if the Feasible pop. is empty
@@ -687,13 +554,13 @@ def offspringF(solutionsNoPop, solutionsF, profList, subjList, pctMut_childCross
         
         # Granting that are solutions enough to became fathers (more than or equal 2)
         if(objectiveNum < 2):
-            # If have at most 2 solutions - each solution will generate a child through a mutation
+            # If have at most 1 solution (insufficient to make any crossover) - then all solutions will generate a child through a mutation
             for cand in solutionsF.getCandList(): solutionsNoPop.addCand(mutationF(cand, profList, subjList, subjIsPrefList))
         # If we have at least 2 solutions
         else:
             # Roulette Wheel with Reposition to choose solutions to become Parents
             fitnessList = [cand.getFitness() for cand in solutionsF.getCandList()]
-            parentsSolFeas, notParents_objectsList, _ = rouletteWheel(solutionsF.getCandList(), fitnessList, objectiveNum, repos=True, negative=False)
+            parentsSolFeas, notParents_objectsList, _ = rouletteWheel(solutionsF.getCandList(), fitnessList, objectiveNum, repos=True)
             
             # Solutions 'children' created by crossover
             childSolFeas = []
@@ -725,12 +592,12 @@ def offspringF(solutionsNoPop, solutionsF, profList, subjList, pctMut_childCross
                 # Will pass through a mutation process
                 if((float(pctMut_childCross / 100.0)) >= float(random.randrange(101) / 100.0)):
                     # Getting information about the Candidate to be able to make some of the repairs on "mutationF"
-                    prof_relationsList = calc_i1(cand, profList, subjList)
+                    #prof_relationsList = calc_i1(cand, profList, subjList)
                     # Setting found variables
-                    cand.setInfVariables(prof_relationsList, [], [])
-                    
+                    #cand.setInfVariables(prof_relationsList, [], [])
                     # Modifying the child making a mutation
-                    cand = mutationF(cand, profList, subjList, subjIsPrefList)
+                    #cand = mutationF(cand, profList, subjList, subjIsPrefList)
+                    _, cand = mutationRand(cand, profList)
                 # Adding the child generated by crossover to 'solutionsNoPop'
                 solutionsNoPop.addCand(cand)
 
@@ -742,218 +609,78 @@ def offspringF(solutionsNoPop, solutionsF, profList, subjList, pctMut_childCross
                 solutionsNoPop.addCand(cand)
 
         if(printSteps == 1): print("Feas. Offspring/", end='')
+        
+#==============================================================================================================
+
+# Make a mutation into a infeasible candidate
+def mutationI(candidate, profList, subjList, subjIsPrefList):
+    # Getting data to work with
+    relations = candidate.getRelationsList()[:]
+    prof_relationsList, i2_conflictsList, i3_conflictsList = candidate.getInfVariables()
+
+    # This While ensures that 'problemType' will choose Randomly one 'restriction repair'
+    flag_work_done = False
+    while(flag_work_done == False):
+        # Choosing one type of restriction to repair
+        problemType = random.randrange(0,4)
+        
+        # (0) No repair -> Random Change
+        if(problemType == 0): flag_work_done, newCand = mutationRand(candidate, profList)
+        # (1) Prof without relations (with no Subjects) in 'prof_relationsList'
+        elif(problemType == 1):
+            # Granting that the 'problemType' do not change good relations without restrictions to repair
+            if(prof_relationsList.count([]) != 0):
+                flag_work_done, newCand = mutationDeterm(profList, prof_relationsList, relations, subjIsPrefList, prof_relationsList)
+        else:
+            # (2) 2 or more Subjects (related to the same Prof) with same 'quadri', 'day' and 'hour' in 'i2_conflictsList'
+            if(problemType == 2): iX_conflictsList = i2_conflictsList
+            # (3) 2 or more Subjects (related to the same Prof) with same 'day' and 'quadri' but different 'campus' in 'i3_conflictsList'
+            if(problemType == 3): iX_conflictsList = i3_conflictsList
+            # Granting that the 'problemType' do not change good relations without restrictions to repair
+            if(len(iX_conflictsList) != 0 and iX_conflictsList.count([]) != len(iX_conflictsList)):
+                flag_work_done, newCand = mutationDeterm(profList, prof_relationsList, relations, subjIsPrefList, iX_conflictsList)
+    return newCand
+
 #==============================================================================================================
 
 # Make a mutation into a feasible candidate
 def mutationF(candidate, profList, subjList, subjIsPrefList):
     # Getting data to work with
-    relations = candidate.getRelationsList()
+    relations = candidate.getRelationsList()[:]
     prof_relationsList, _, periodPrefList, quadSabbNotPrefList, campPrefList, _ = candidate.getFeaVariables()
     
-    # This While ensures that 'errorType' will choose Randomly one 'restriction repair'
-    flag_repair_done = False
-    while(flag_repair_done == False):
-        # Choosing one type of restriction to repair
-        errorType = random.randrange(0,6)
+    # This While ensures that 'adjustType' will choose Randomly one 'Improvement work'
+    flag_work_done = False
+    while(flag_work_done == False):
+        # Choosing one type of 'Improvement work'
+        adjustType = random.randrange(0,6)
         
-        # (0) No repair -> Random Change
-        if(errorType == 0):
-            # Getting a new candidate (modified) 
-            newCand = mutationRand(candidate, profList)
-            # Setting the flag to finish the while
-            flag_repair_done = True
-        # (1) Fixing number of Relations
-        if(errorType == 1):
-            flag_repair_done, newCand = errorTypeF1(profList, prof_relationsList, relations, subjIsPrefList)
-        # (2) Fixing number of Subj Preferences
-        if(errorType == 2): 
-            flag_repair_done, newCand = errorTypeF2(profList, prof_relationsList, relations, subjIsPrefList)
-        # (3) Fixing number of Periods
-        if(errorType == 3):
-            flag_repair_done, newCand = errorTypeF345(profList, prof_relationsList, relations, periodPrefList, subjIsPrefList)
-        # (4) Fixing number of QuadSabb
-        if(errorType == 4):
-            flag_repair_done, newCand = errorTypeF345(profList, prof_relationsList, relations, quadSabbNotPrefList, subjIsPrefList)
-        # (5) Fixing number of Campus
-        if(errorType == 5):
-            flag_repair_done, newCand = errorTypeF345(profList, prof_relationsList, relations, campPrefList, subjIsPrefList)
-
-    return newCand
-
-#-------------------------------------------------------
-
-# (1) Fixing number of Relations
-def errorTypeF1(profList, prof_relationsList, relations, subjIsPrefList):
-    # Choosing a professor to lose a relation
-    # Roulette Wheel - more relations -> more weight
-    numRelationsList = [len(i) for i in prof_relationsList]
-    profRelList_Selected, _, _ = rouletteWheel(prof_relationsList, numRelationsList, objectiveNum=1, repos=True, negative=False)
-    profLost_Index = prof_relationsList.index(profRelList_Selected[0])
-    
-    # Choosing a relation to be modified
-    # Roulette Wheel - less preference -> more weight
-    lessPrefValue = [2 - subjIsPrefList[profLost_Index][subjIndex] for subjIndex in prof_relationsList[profLost_Index]]
-    will_change_index, _, _ = rouletteWheel(profRelList_Selected[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
-    relation_will_change_index = will_change_index[0]
-    
-    # Recording original relation that will be modified
-    subjList, oldProf = relations[relation_will_change_index]
-
-    # Choosing new Prof to be in the relation with the Subj selected
-    # Granting that the new Prof is different of the old one
-    newProf = oldProf
-    while(oldProf == newProf):
-        # Roulette Wheel - more preference AND less relations -> more weight
-        SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPrefList]
-        # Removing possible Zeros to make the division
-        prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relationsList]
-        # Getting the values
-        morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(profList))]
-        # If there is only one Prof with value != 0.0
-        if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
-            indexNotZero = [i for i in range(len(profList)) if morePrefValueList != 0.0]
-            # If is the same of the old one
-            if(oldProf == profList[indexNotZero[0]]): newProf = profList[random.randrange(len(profList))]
-            # If not
-            else: newProf = profList[indexNotZero[0]]
-        # If there are more then 1 Prof to chose
-        else: 
-            newProf, _, _ = rouletteWheel(profList, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-            newProf = newProf[0]
-
-    # Setting the new relation, creating new Candidate and returning it
-    relations[relation_will_change_index]=[subjList,newProf]
-    newCand = objects.Candidate()
-    newCand.setRelationsList(relations)
-
-    # Setting the flag to finish the while
-    flag_repair_done = True
-
-    return flag_repair_done, newCand
-
-#-------------------------------------------------------
-
-# Fixing number of Subj Preferences
-def errorTypeF2(profList, prof_relationsList, relations, subjIsPrefList):
-    # Choosing the professor to lose a relation
-    # Roulette Wheel - less Preferences -> more weight 
-    prefValuesList = [sum([subjIsPrefList[i][subjIndex] for subjIndex in prof_relationsList[i]]) for i in range(len(prof_relationsList))]
-    # Resolving the values = Zero
-    prefValuesList_Partial = [float(1.0 / value) if value != 0 else 1.0 for value in prefValuesList]
-    # Resolving the Prof without relations (can not be selected)
-    prefValuesList_Final = [prefValuesList_Partial[i] if len(prof_relationsList[i]) != 0 else 0.0 for i in range(len(prefValuesList_Partial))]
-    profRelList_Selected, _, _ = rouletteWheel(prof_relationsList, prefValuesList_Final, objectiveNum=1, repos=True, negative=False)
-    profLost_Index = prof_relationsList.index(profRelList_Selected[0])
-    
-    # Choosing a relation to be modified
-    # Roulette Wheel - less preference -> more weight
-    lessPrefValue = [2 - subjIsPrefList[profLost_Index][subjIndex] for subjIndex in prof_relationsList[profLost_Index]]
-    will_change_index, _, _ = rouletteWheel(profRelList_Selected[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
-    relation_will_change_index = will_change_index[0]
-    
-    # Recording original relation that will be modified
-    subjList, oldProf = relations[relation_will_change_index]
-
-    # Choosing new Prof to be in the relation with the Subj selected
-    # Granting that the new Prof is different of the old one
-    newProf = oldProf
-    while(oldProf == newProf):
-        # Roulette Wheel - more preference AND less relations -> more weight
-        SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPrefList]
-        # Removing possible Zeros to make the division
-        prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relationsList]
-        # Getting the values
-        morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(profList))]
-        # If there is only one Prof with value != 0.0
-        if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
-            indexNotZero = [i for i in range(len(profList)) if morePrefValueList != 0.0]
-            # If is the same of the old one
-            if(oldProf == profList[indexNotZero[0]]): newProf = profList[random.randrange(len(profList))]
-            # If not
-            else: newProf = profList[indexNotZero[0]]
-        # If there are more then 1 Prof to chose
-        else: 
-            newProf, _, _ = rouletteWheel(profList, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-            newProf = newProf[0]
-
-    # Setting the new relation, creating new Candidate and returning it
-    relations[relation_will_change_index]=[subjList,newProf]
-    newCand = objects.Candidate()
-    newCand.setRelationsList(relations)
-
-    # Setting the flag to finish the while
-    flag_repair_done = True
-
-    return flag_repair_done, newCand
-
-#-------------------------------------------------------
-
-# (3) Fixing number of Periods
-# (4) Fixing number of QuadSabb
-# (5) Fixing number of Campus
-def errorTypeF345(profList, prof_relationsList, relations, XPref, subjIsPrefList):
-    # Checking if there are problems to fix
-    if(len(XPref) == 0):
-        newCand = objects.Candidate()
-        newCand.setRelationsList(relations)
-        # Setting the flag to NOT finish the while
-        flag_repair_done = False
-    else:
-        # Granting that the 'errorType' do not change good relations without Problems to repair
-        notGoodList = [1 if len(prof_relationsList[i]) != len(XPref[i]) else 0 for i in range(len(prof_relationsList))]
-        if(notGoodList.count(1) == 0):
-            newCand = objects.Candidate()
-            newCand.setRelationsList(relations)
-            # Setting the flag to NOT finish the while
-            flag_repair_done = False
+        # (0) No 'Improvement work' -> Random Change
+        if(adjustType == 0): flag_work_done, newCand = mutationRand(candidate, profList)
+        # (1) Improving number of Relations
+        elif(adjustType == 1): flag_work_done, newCand = mutationDeterm(profList, prof_relationsList, relations, subjIsPrefList, prof_relationsList)
+        # (2) Improving number of Subj Preferences
+        elif(adjustType == 2): 
+            # Building a list with relations that is NOT Pref
+            notPrefList = [[subjIndex for subjIndex in prof_relationsList[i] if subjIsPrefList[i][subjIndex] == 0] for i in range(len(prof_relationsList))]
+            # Granting that the 'adjustType' do not change good relations without Problems to improve
+            if(notPrefList.count([]) != len(notPrefList)):
+                flag_work_done, newCand = mutationDeterm(profList, prof_relationsList, relations, subjIsPrefList, prof_relationsList)
         else:
-            # Choosing the professor to lose a relation
-            # Roulette Wheel - less XPref -> more weight
-            conflictsList = [[subjIndex for subjIndex in prof_relationsList[i] if XPref[i].count(subjIndex) == 0] for i in range(len(prof_relationsList))] 
-            prefValuesList = [len(i) for i in conflictsList]
-            profRelList_Selected, _, _ = rouletteWheel(conflictsList, prefValuesList, objectiveNum=1, repos=True, negative=False)
-            profLost_Index = conflictsList.index(profRelList_Selected[0])
+            # (3) Improving number of Periods
+            if(adjustType == 3): XPref = periodPrefList
+            # (4) Improving number of QuadSabb
+            if(adjustType == 4): XPref = quadSabbNotPrefList
+            # (5) Improving number of Campus
+            if(adjustType == 5): XPref = campPrefList
             
-            # Choosing the relation to be modified
-            # Roulette Wheel - less preference -> more weight
-            lessPrefValue = [2 - subjIsPrefList[profLost_Index][subjIndex] for subjIndex in conflictsList[profLost_Index]]
-            will_change_index, _, _ = rouletteWheel(profRelList_Selected[0], lessPrefValue, objectiveNum=1, repos=True, negative=False)
-            relation_will_change_index = will_change_index[0]
-            
-            # Recording original relation that will be modified
-            subjList, oldProf = relations[relation_will_change_index]
-
-            # Choosing new Prof to be in the relation with the Subj selected
-            # Granting that the new Prof is different of the old one
-            newProf = oldProf
-            while(oldProf == newProf):
-                # Roulette Wheel - more preference AND less relations -> more weight
-                SubjPrefValuesList = [subjIsPrefList[relation_will_change_index] for subjIsPrefList in subjIsPrefList]
-                # Removing possible Zeros to make the division
-                prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relationsList]
-                # Getting the values
-                morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(profList))]
-                # If there is only one Prof with value != 0.0
-                if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
-                    indexNotZero = [i for i in range(len(profList)) if morePrefValueList != 0.0]
-                    # If is the same of the old one
-                    if(oldProf == profList[indexNotZero[0]]): newProf = profList[random.randrange(len(profList))]
-                    # If not
-                    else: newProf = profList[indexNotZero[0]]
-                # If there are more then 1 Prof to chose
-                else: 
-                    newProf, _, _ = rouletteWheel(profList, morePrefValueList, objectiveNum=1, repos=True, negative=False)
-                    newProf = newProf[0]
-
-            # Setting the new relation, creating new Candidate and returning it
-            relations[relation_will_change_index]=[subjList,newProf]
-            newCand = objects.Candidate()
-            newCand.setRelationsList(relations)
-
-            # Setting the flag to finish the while
-            flag_repair_done = True
-
-    return flag_repair_done, newCand
+            if(len(XPref) != 0):
+                # Building a list with relations that is NOT Pref
+                notPrefList = [[subjIndex for subjIndex in prof_relationsList[i] if [i].count(subjIndex) == 0] for i in range(len(prof_relationsList))]
+                # Granting that the 'adjustType' do not change good relations without Problems to improve
+                if(notPrefList.count([]) != len(notPrefList)):
+                    flag_work_done, newCand = mutationDeterm(profList, prof_relationsList, relations, subjIsPrefList, notPrefList)
+    return newCand
 
 #==============================================================================================================
 
@@ -967,8 +694,9 @@ def selectionI(infPool, solutionsI, maxNumCand_perPop):
         # Check if is needed to make a selection process
         if(len(infeasibles_List) > maxNumCand_perPop):
             # Roulette Wheel Selection
-            fitnessList = [cand.getFitness() for cand in infeasibles_List] # Negative values
-            infeasibles_List, _, _ = rouletteWheel(infeasibles_List, fitnessList, maxNumCand_perPop, repos=False, negative=True)
+            # Since the value of Fitness is in the range of '-1' and '0' it is needed to be modified to a range of '0' and '1'
+            fitnessList = [1.0 + cand.getFitness() for cand in infeasibles_List]
+            infeasibles_List, _, _ = rouletteWheel(infeasibles_List, fitnessList, maxNumCand_perPop, repos=False)
             
         # Updating the (new) 'solutionsI' list to the next generation
         solutionsI.setCandList(infeasibles_List)
@@ -992,12 +720,12 @@ def selectionF(feaPool, solutionsF, maxNumCand_perPop, pctElitism=100):
             # Defining the division of number of candidates between selections process
             elitismNum = maxNumCand_perPop * pctElitism / 100.0
             if(elitismNum > 0.0 and elitismNum < 1.0): elitismNum = 1
-            elitismNum = int(elitismNum)
+            else: elitismNum = int(elitismNum)
             roulNum = maxNumCand_perPop - elitismNum
 
             # Elitism and Roulette Selection
             maxFeasibles_List, rest_objectsList, rest_valuesList = elitismSelection(feasibles_List, listFit, elitismNum)
-            selectedObj, _, _ = rouletteWheel(rest_objectsList, rest_valuesList, roulNum, repos=False, negative=False)
+            selectedObj, _, _ = rouletteWheel(rest_objectsList, rest_valuesList, roulNum, repos=False)
             feasibles_List = maxFeasibles_List + selectedObj
         
         # Updating the (new) 'solutionsF' list to the next generation
@@ -1010,12 +738,12 @@ def selectionF(feaPool, solutionsF, maxNumCand_perPop, pctElitism=100):
 # Make a rand mutation into a solution
 def mutationRand(candidate, profList):
     # Getting all relations from Candidate
-    relations = candidate.getRelationsList().copy()
+    relations = candidate.getRelationsList()[:]
     
     # Choosing randomly a relation to be modified
     original = random.randrange(len(relations))
     # Recording the Original Relation
-    subjList, oldProf = relations[original]
+    subj, oldProf = relations[original]
     
     # Granting that the 'newProf' is different from the 'oldProf'
     newProf = oldProf
@@ -1025,13 +753,69 @@ def mutationRand(candidate, profList):
         newProf = profList[change]
     
     # Setting the new Relation modified, creating and setting a new Candidate
-    relations[original]=[subjList,newProf]
+    relations[original]=[subj,newProf]
     newCand = objects.Candidate()
     newCand.setRelationsList(relations)
     
+    # Setting the flag to finish the while
+    flag_work_done = True
+
     # Returning the new Candidate generated
-    return newCand
-    
+    return flag_work_done, newCand
+
+#==============================================================================================================
+
+# Make some deterministic type of adjustment changing some 'bad' relation
+def mutationDeterm(profList, prof_relationsList, relations, subjIsPrefList, problemList):
+    # Choosing a professor to lose a relation
+    # Roulette Wheel - more problems -> more weight
+    weightList = [len(i) for i in problemList]
+    problemSubList_selected, _, _ = rouletteWheel(problemList, weightList, objectiveNum=1, repos=True)
+    profLost_Index = problemList.index(problemSubList_selected[0])
+
+    # Choosing the relation to be modified
+    # Roulette Wheel - less preference -> more weight
+    lessPrefValue = [2 - subjIsPrefList[profLost_Index][subjIndex] for subjIndex in problemList[profLost_Index]]
+    will_change_index, _, _ = rouletteWheel(problemSubList_selected[0], lessPrefValue, objectiveNum=1, repos=True)
+    relation_will_change_index = will_change_index[0]
+
+    # Recording original relation that will be modified
+    subjList, oldProf = relations[relation_will_change_index]
+
+    # Choosing new Prof to be in the relation selected
+    # Granting that the new Prof is different of the old one
+    newProf = oldProf
+    while(oldProf == newProf):
+        # Roulette Wheel - more preference AND less relations -> more weight
+        SubjPrefValuesList = [subjIsPref_subList[relation_will_change_index] for subjIsPref_subList in subjIsPrefList]
+        # Removing possible Zeros to make the division
+        prof_relations_final = [len(i) if len(i) != 0 else 0.5 for i in prof_relationsList]
+        # Getting the values
+        morePrefValueList = [float(SubjPrefValuesList[i] / prof_relations_final[i]) for i in range(len(profList))]
+        # If there is only one Prof with value != 0.0
+        if(morePrefValueList.count(0.0) == len(morePrefValueList) - 1):
+            indexNotZero = [i for i in range(len(profList)) if morePrefValueList[i] != 0.0]
+            # If is the same of the old one
+            if(oldProf == profList[indexNotZero[0]]): newProf = profList[random.randrange(len(profList))]
+            # If not
+            else: newProf = profList[indexNotZero[0]]
+        # If there are more then 1 Prof to chose
+        else: 
+            newProf, _, _ = rouletteWheel(profList, morePrefValueList, objectiveNum=1, repos=True)
+            newProf = newProf[0]
+
+    # Setting the new relation, creating new Candidate and returning it
+    relations[relation_will_change_index]=[subjList, newProf]
+
+    # Setting the flag to finish the while
+    flag_work_done = True
+
+    # Generating a new candidate
+    newCand = objects.Candidate()
+    newCand.setRelationsList(relations)
+
+    return flag_work_done, newCand
+
 #==============================================================================================================
 
 # Make a crossover between two solutions
@@ -1043,12 +827,13 @@ def crossover(cand1, cand2, twoPoints=None, firstHalf=None, notEqualParent=None)
     
     # What is equal 'None' will be a random choice
     if(twoPoints == None): twoPoints = random.choice([True, False])
-    if(firstHalf == None): twoPoints = random.choice([True, False])
+    if(firstHalf == None): firstHalf = random.choice([True, False])
     if(notEqualParent == None): notEqualParent = random.choice([True, False])
     
     # Getting all relations from Candidates to work with
-    relations1, relations2 = cand1.getRelationsList(), cand2.getRelationsList()
-    
+    relations1 = cand1.getRelationsList()[:]
+    relations2 = cand2.getRelationsList()[:]
+
     # OnePoint type:
     if(twoPoints == False):
         # Prioritizing change of relations on first half of the candidates
@@ -1069,7 +854,7 @@ def crossover(cand1, cand2, twoPoints=None, firstHalf=None, notEqualParent=None)
     
     # TwoPoints Type
     else:
-        # Generating, randomly two numbers to create a patch - can be a single modification (when p1==p2)
+        # Generating, randomly two numbers to create a patch - can be a single modification (when p1=p2)
         point1, point2 = random.randrange(len(relations1)), random.randrange(len(relations1))
         # Granting that 'point2' is bigger than 'point1'
         if(point2 < point1):
@@ -1113,6 +898,8 @@ def crossover(cand1, cand2, twoPoints=None, firstHalf=None, notEqualParent=None)
 # Selection by elitism
 def elitismSelection(objectsList, valuesList, objectiveNum):
     selectedObj = [] # List with the selected Objects
+    objectsList = objectsList[:]
+    valuesList = valuesList[:]
 
     # Getting the maximal Value Solutions
     while(len(selectedObj) < objectiveNum):
@@ -1132,12 +919,13 @@ def elitismSelection(objectsList, valuesList, objectiveNum):
 #==============================================================================================================
 
 # Make selection of objects by Roulette Wheel
-def rouletteWheel(objectsList, valuesList, objectiveNum, repos=True, negative=False):
+def rouletteWheel(objectsList, valuesList, objectiveNum, repos=True):
     # objectiveNum: Num of objects will be selected
     # repos: Type of wheel (with reposition)
-    # negative = True -> modify the range of values
-    #   Since the value of Fitness is in the range of '-1' and '0' it is needed to be modified
-    #   Modifying the values to put it into a range of '0' and '1'
+    
+    # Making a copy of the original lists to work with
+    objectsList = objectsList[:]
+    valuesList = valuesList[:]
 
     # List with the selected Objects
     selectedObj = []
@@ -1151,15 +939,15 @@ def rouletteWheel(objectsList, valuesList, objectiveNum, repos=True, negative=Fa
             if(repos == True): reCalc = False
             
             # Find the total Value of the Objects
-            totalValue = sum([float(value) if negative == False else 1.0 + float(value) for value in valuesList])
+            totalValue = sum([value for value in valuesList])
             
             # If all values are Zero
             if(totalValue == 0.0):
                 valuesList = [1.0 for _ in valuesList]
-                totalValue = float(len(valuesList))
+                totalValue = len(valuesList)
 
             # Calculate the prob. of a selection for each object
-            probObj = [float(value / totalValue) if negative == False else float((1.0 + value) / totalValue) for value in valuesList]
+            probObj = [float(value / totalValue) for value in valuesList]
             
             # Calculate a cumulative prob. for each object
             cumulative = 0.0
@@ -1190,7 +978,7 @@ def rouletteWheel(objectsList, valuesList, objectiveNum, repos=True, negative=Fa
 
 # Detect the stop condition
 def stop(asks, curr_Iter, maxNum_Iter, lastMaxFit_Iter, convergDetect, maxFitFea, stopFitValue):
-    if(curr_Iter > maxNum_Iter): return True if asks == 0 else ask() # Reached max num of iterations
+    if(curr_Iter > maxNum_Iter): return (True if asks == 0 else ask()) # Reached max num of iterations
     if(stopFitValue != 0 and maxFitFea >= stopFitValue): return True # Reached max fit value
     if(convergDetect != 0 and curr_Iter - lastMaxFit_Iter > convergDetect): return True # Reached convergence num of iterations
     return False # Continues the run with same num of iterations
@@ -1200,11 +988,12 @@ def ask():
     ask = 'a'
     while(True): 
         ask = input("How many more iterations? Yes(Positive Number) / No('Enter' or '0'): ")
-        if(ask == ""): return True
+        if(ask == ""): return True # If 'Enter'
         try:
-            if(int(ask) >= 0):
-                if(int(ask) == 0): return True
-                else: return int(ask)
+            ask = int(ask)
+            if(ask >= 0):
+                if(ask == 0): return True # If Zero
+                else: return ask # More iterations
         except ValueError: None
 
 #==============================================================================================================

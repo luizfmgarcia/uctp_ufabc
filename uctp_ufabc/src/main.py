@@ -5,8 +5,22 @@ import uctp
 import ioData
 
 #==============================================================================================================
-# Run with <python -m cProfile -s cumtime main.py> to see the main time spent of the algorithm
-# Debug <import pdb; pdb.set_trace()>
+# Install Pandas, Python 3 and PIP
+# To see the main time spent of the algorithm on cmd (on the end of the run), run with:
+#   python -m cProfile -s cumtime main.py
+# To not use the default configurations (in ioData.py file), run with (e.g.):
+#   python main.py 1 0 10000 20 50 1000 0 90 15 5 1.0 1.0 1.0 0.05 0.05 0.05 0.05 0.05 0.05 0.05
+# To Debug:
+#   import pdb
+#   pdb.set_trace()
+#==============================================================================================================
+# Rever funcionamento correto de todas as funcoes em uctp
+# Rever criacoes de listas repetitivas e colocar dentro dos objetos
+# Rever alteracao indevida de objetos
+# Rever roulletes (repos true or false)
+# Rever repairs (mutations I and F)
+# Calc fitness (I/F)
+# Mutation on children of Crossover
 
 # main
 class main:
@@ -14,7 +28,7 @@ class main:
     runProfile = ioData.startRunData()
     # Get CONFIG var values
     printSteps, asks, maxNum_Iter, maxNumCand_perPop, numCandInit, convergDetect, stopFitValue, pctParentsCross, pctMut_childCross, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = ioData.getConfig()
-    
+
     #----------------------------------------------------------------------------------------------------------
     # MAIN VARIABLES
 
@@ -23,7 +37,7 @@ class main:
     # Gathering all CONFIG variables
     weightsList = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta]
     configVarList = [maxNum_Iter, maxNumCand_perPop, numCandInit, convergDetect, stopFitValue, pctParentsCross, 
-              pctMut_childCross, pctElitism] + weightsList
+                    pctMut_childCross, pctElitism] + weightsList
 
     profList, subjList = [], [] # Base Lists of Professors and Subjects - never modified through the run
 
@@ -31,7 +45,7 @@ class main:
     solutionsNoPop = objects.Solutions() # Candidates without classification
     # 'Children' Candidates generated in a iteration (will be selected to be, or not, in the main List of Candidates)
     infPool, feaPool = objects.Solutions(), objects.Solutions()
-    
+
     maxFitIndexes, minFitInf, maxFitInf, avgFitInf, minFitFea, maxFitFea, avgFitFea = [], 0, 0, 0, 0, 0, 0 # Variables to inform important Fitness Values
     lastMaxFit_Iter, lastMaxFit = 0, -1 # Variables that records when current MaxFit Sol appears and its Fit value
     firstFeasSol_Iter = -1 # Flag to mark when appears the first Feasible Solution during a run
@@ -71,7 +85,7 @@ class main:
         # Get, print and export generated data of current iteration
         maxFitIndexes, minFitInf, maxFitInf, avgFitInf, minFitFea, maxFitFea, avgFitFea = ioData.getDataMMA(solutionsI, solutionsF)
         ioData.outDataMMA(minFitInf, maxFitInf, avgFitInf, minFitFea, maxFitFea, avgFitFea, curr_Iter)
-        
+
         # Register of the 'Iteration' that appeared the first Feas Sol
         if(firstFeasSol_Iter == -1 and len(solutionsF.getCandList()) != 0): firstFeasSol_Iter = curr_Iter
         # Register of the 'Iteration' that the Max Sol changed
@@ -82,19 +96,18 @@ class main:
             lastMaxFit_Iter = curr_Iter
 
         # Important print of each run
-        if(printSteps == 1): 
+        if(printSteps == 1):
             ioData.printHead(profList, subjList, curr_Iter, maxNum_Iter, firstFeasSol_Iter, lastMaxFit_Iter)
             ioData.printTail(solutionsI, solutionsF, minFitInf, maxFitInf, avgFitInf, minFitFea, maxFitFea, avgFitFea)
 
         # Next Iteration
         curr_Iter = curr_Iter + 1
     # End of While (Iterations) - Stop condition verified
-    
+
     #----------------------------------------------------------------------------------------------------------
     # FINAL process on the data
-    
+
     # Export last generation of candidates and Config-Run Info
-    #ioData.outDataGeneration(solutionsI, solutionsF, curr_Iter, profList, subjList, subjIsPrefList)
     bestSol_FitList, bestSol_ResumRelatList, bestSol_extractInfoList = ioData.finalOutData(solutionsI, solutionsF, profList, subjList, subjIsPrefList, maxFitIndexes, configVarList)
     if(printSteps == 1): ioData.printFinalResults(configVarList, maxFitIndexes, bestSol_FitList, bestSol_ResumRelatList, bestSol_extractInfoList)
     ioData.outRunData(runProfile) # Record Run Info End
