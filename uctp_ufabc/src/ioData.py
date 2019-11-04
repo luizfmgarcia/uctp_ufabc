@@ -246,11 +246,12 @@ def outRunData(runProfile):
 #==============================================================================================================
 
 # First print of a round
-def printHead(profList, subjList, curr_Iter, maxNum_Iter, firstFeasSol_Iter, lastMaxFit_Iter):
+def printHead(profList, subjList, curr_Iter, maxNum_Iter, firstFeasSol_Iter, lastMaxFit_Iter, recordNumIter):
     if(curr_Iter == 0): print("\nStarting hard work...\n")
-    print('Iteration:', curr_Iter, 'of', maxNum_Iter, '/ Working with (Prof/Subj):', len(profList), '/', len(subjList))
-    if(firstFeasSol_Iter != -1): print('First Feas Sol at (iter): ', firstFeasSol_Iter, '/ Cur Max Sol at (iter): ', lastMaxFit_Iter, '/ Num Iter since last Max:', curr_Iter - lastMaxFit_Iter)
-    else: print('Cur Max Sol at (iter): ', lastMaxFit_Iter, '/ Num Iter since last Max:', curr_Iter - lastMaxFit_Iter)
+    print('Iteration:', curr_Iter, 'of', maxNum_Iter, '/ Working with (Prof/Subj):', len(profList), '/', len(subjList),
+        '/ First Feas Sol at (iter): ' + str(firstFeasSol_Iter) if firstFeasSol_Iter != -1 else '')
+    print('Cur Max Sol at (iter): ', lastMaxFit_Iter, '/ Num Iter since last Max:', curr_Iter - lastMaxFit_Iter,
+        '/ Record Num Iter No New Max:', recordNumIter)
 
 #-------------------------------------------------------
 

@@ -49,6 +49,7 @@ class main:
     maxFitIndexes, minFitInf, maxFitInf, avgFitInf, minFitFea, maxFitFea, avgFitFea = [], 0, 0, 0, 0, 0, 0 # Variables to inform important Fitness Values
     lastMaxFit_Iter, lastMaxFit = 0, -1 # Variables that records when current MaxFit Sol appears and its Fit value
     firstFeasSol_Iter = -1 # Flag to mark when appears the first Feasible Solution during a run
+    recordNumIter = 0 # Record number of iterations occurred where MaxFit did not change
     curr_Iter = 0 # Initial Iteration value
 
     #----------------------------------------------------------------------------------------------------------
@@ -93,11 +94,13 @@ class main:
         else: maxFit_toCheck = maxFitInf # There is only Infeasible Solutions
         if(lastMaxFit != maxFit_toCheck):
             lastMaxFit = maxFit_toCheck
+            diff = curr_Iter - lastMaxFit_Iter
+            if(diff > recordNumIter): recordNumIter = diff
             lastMaxFit_Iter = curr_Iter
 
         # Important print of each run
         if(printSteps == 1):
-            ioData.printHead(profList, subjList, curr_Iter, maxNum_Iter, firstFeasSol_Iter, lastMaxFit_Iter)
+            ioData.printHead(profList, subjList, curr_Iter, maxNum_Iter, firstFeasSol_Iter, lastMaxFit_Iter, recordNumIter)
             ioData.printTail(solutionsI, solutionsF, minFitInf, maxFitInf, avgFitInf, minFitFea, maxFitFea, avgFitFea)
 
         # Next Iteration

@@ -68,7 +68,7 @@ else:
     maxNumCand_perPop = [20]
     numCandInit = [50]
     convergDetect = [1000]
-    stopFitValue = [0.9]
+    stopFitValue = [0]
     pctParentsCross = [90]
     pctMut_childCross = [15]
     pctElitism = [5]
