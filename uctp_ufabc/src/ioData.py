@@ -4,11 +4,12 @@ import objects
 import uctp
 import csv
 import os
+import io
 import sys
+import time
 import shutil
 import cProfile
 import pstats
-import io
 import pandas
 
 # Set '1' to allow, during the run, the print on terminal of some steps
@@ -42,9 +43,24 @@ titles1_objFeat = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 
                     'pPrefSubjQ3List', 'pPrefSubjLimList']
 titles2_bestSolFeat = ['pName', 'numSubj', 'notPrefRestr', '/Relax', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 
                     'numI3', 'difCharge']
-titles3_configVar = ['maxNum_Iter', 'maxNumCand_perPop', 'numCandInit', 'convergDetect', 'stopFitValue', 'pctParentsCross', 
-                    'pctMut_childCross', 'pctElitism', 'w_alpha', 'w_beta', 'w_gamma', 'w_delta', 'w_omega', 'w_sigma', 
-                    'w_pi', 'w_rho', 'w_lambda', 'w_theta']
+titles3_configVar = ['maxNum_Iter', 'maxNumCand_perPop', 'convergDetect', 'pctParentsCross', 'pctElitism', 'twoPointsCross',
+                    'reposCross', 'reposSelInf', 'reposSelFea', 'w_alpha', 'w_beta', 'w_gamma', 
+                    'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho', 'w_lambda', 'w_theta']
+
+#==============================================================================================================
+
+# Ask to user if wants to continue the run with more iterations
+def askStop():
+    ask = 'a'
+    while(True):
+        ask = input("How many more iterations? Yes(Positive Number) / No('Enter' or '0'): ")
+        if(ask == ""): return True # If 'Enter'
+        try:
+            ask = int(ask)
+            if(ask >= 0):
+                if(ask == 0): return True # If Zero
+                else: return ask # More iterations
+        except ValueError: None
 
 #==============================================================================================================
 
@@ -64,7 +80,7 @@ def startOutputDirs(asks):
     
     # Creating a new folder for this run
     global currOutputDirPath, currOutputDirNum
-    i = 0
+    i = 1
     while(os.path.exists(mainOutputDirPath + currOutputDirName + currOutputDirNum + str(i))): i = i + 1
     currOutputDirNum = currOutputDirNum + str(i)
     currOutputDirPath = mainOutputDirPath + currOutputDirName + currOutputDirNum + os.sep
@@ -86,21 +102,22 @@ def getConfig():
     # Default CONFIGURATION
 
     # RUN CONFIG
-    printSteps = 1 # Set '1' to allow, during the run, the print on terminal of some steps
+    printSteps = 1 # Set '1' to allow, during the run, the print on terminal of some important steps
     asks = 1 # Set '1' to allow, during the run, some asks
     maxNum_Iter = 10000 # Max Number of iterations to get a solution
     maxNumCand_perPop = 20 # Number of candidates in a generation (same for each Pop Feas./Inf.)
-    numCandInit = 50 # Initial number of solutions generated randomly
     # Convergence Detector: number of iterations passed since last MaxFit found
-    convergDetect = 1000 # equal '0' to not consider this condition
-    # Max Fitness value that must find to stop the run before reach 'maxNum_Iter'
-    stopFitValue = 0 # equal '0' to not consider this condition
+    convergDetect = 500 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 90 # The rest (to complete 100%) will pass through Mutation
-    pctMut_childCross = 15 # Percentage of mutation that maybe each child generated through 'Crossover' process will suffer
+    pctParentsCross = 80 # The rest (to complete 100%) will pass through Mutation
     pctElitism = 5 # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
+    twoPointsCross = 1 # Crossover using 2 cut points (1), 1 cut Point (0), Random (-1)
+    # Main Roulettes Reposition Config (1: True / 0: False)
+    reposCross = 1
+    reposSelInf = 0
+    reposSelFea = 0
 
     # WEIGHTS CONFIG (must be Float)
     w_alpha = 1.0   # i1 - Prof without Subj
@@ -117,11 +134,11 @@ def getConfig():
 
     #----------------------------------------------------------------------------------------------------------
     # CONFIGURATION by Command Line
-    if(len(sys.argv) == 21):
-        printSteps, asks, maxNum_Iter, maxNumCand_perPop, numCandInit, convergDetect, stopFitValue, pctParentsCross, pctMut_childCross, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = (value for value in sys.argv[1:])
+    if(len(sys.argv) > 3):
+        printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, reposCross, reposSelInf, reposSelFea, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = (value for value in sys.argv[1:])
     #----------------------------------------------------------------------------------------------------------
 
-    return int(printSteps), int(asks), int(maxNum_Iter), int(maxNumCand_perPop), int(numCandInit), int(convergDetect), float(stopFitValue), int(pctParentsCross), int(pctMut_childCross), int(pctElitism), float(w_alpha), float(w_beta), float(w_gamma), float(w_delta), float(w_omega), float(w_sigma), float(w_pi), float(w_rho), float(w_lambda), float(w_theta)
+    return int(printSteps), int(asks), int(maxNum_Iter), int(maxNumCand_perPop), int(convergDetect), int(pctParentsCross), int(pctElitism), int(twoPointsCross), int(reposCross), int(reposSelInf), int(reposSelFea), float(w_alpha), float(w_beta), float(w_gamma), float(w_delta), float(w_omega), float(w_sigma), float(w_pi), float(w_rho), float(w_lambda), float(w_theta)
 
 #==============================================================================================================
 
@@ -247,8 +264,8 @@ def outRunData(runProfile):
 
 # First print of a round
 def printHead(profList, subjList, curr_Iter, maxNum_Iter, firstFeasSol_Iter, lastMaxFit_Iter, recordNumIter):
-    if(curr_Iter == 0): print("\nStarting hard work...\n")
-    print('Iteration:', curr_Iter, 'of', maxNum_Iter, '/ Working with (Prof/Subj):', len(profList), '/', len(subjList),
+    if(curr_Iter == 1): print("\nStarting hard work...\n")
+    print('Run:', currOutputDirNum[1:], 'Iteration:', curr_Iter, 'of', maxNum_Iter, '/ Working with (Prof/Subj):', len(profList), '/', len(subjList),
         '/ First Feas Sol at (iter): ' + str(firstFeasSol_Iter) if firstFeasSol_Iter != -1 else '')
     print('Cur Max Sol at (iter): ', lastMaxFit_Iter, '/ Num Iter since last Max:', curr_Iter - lastMaxFit_Iter,
         '/ Record Num Iter No New Max:', recordNumIter)
@@ -366,7 +383,7 @@ def extractInfo(cand, profList, subjList, subjIsPrefList):
 #==============================================================================================================
 
 # Output Run-Config Values and All Final best results
-def finalOutData(solutionsI, solutionsF, profList, subjList, subjIsPrefList, maxFitIndexes=[], configVarList=[]):
+def finalOutData(solutionsI, solutionsF, profList, subjList, subjIsPrefList, curr_Iter, firstFeasSol_Iter, lastMaxFit_Iter, recordNumIter, final_time=0.0, maxFitIndexes=[], configVarList=[]):
     if(printSteps == 1): print("Exporting final data....", end='')
 
     # Output Info
@@ -376,10 +393,18 @@ def finalOutData(solutionsI, solutionsF, profList, subjList, subjIsPrefList, max
         
         # All Config info/values
         for i in range(len(titles3_configVar)): spamwriter.writerow([titles3_configVar[i], configVarList[i]])
+
         spamwriter.writerow('')
+        spamwriter.writerow(["Time (sec)", final_time]) # Time spent on run
+        spamwriter.writerow(['Last Iter:', curr_Iter]) # Last Iteration
+        if(firstFeasSol_Iter != -1): spamwriter.writerow(['First Feas Sol at (iter):', str(firstFeasSol_Iter)])
+        else: spamwriter.writerow(['No Feas Sol Found'])
+        spamwriter.writerow(['Last Max Sol Found at (iter):', lastMaxFit_Iter])
+        spamwriter.writerow(['Record Num Iter No New Max:', recordNumIter])
         # All indexes of best solutions found
         spamwriter.writerow(["Best solutions found:", maxFitIndexes])
-        
+        spamwriter.writerow('')
+
         # Some variables that will be used
         bestSol_FitList, bestSol_ResumRelatList, bestSol_extractInfoList = [], [], []
         
@@ -416,7 +441,10 @@ def finalOutData(solutionsI, solutionsF, profList, subjList, subjIsPrefList, max
 #==============================================================================================================
 
 # Print (Config + First best solution found) Info
-def printFinalResults(configVarList, maxFitIndexes, bestSol_FitList, bestSol_ResumRelatList, bestSol_extractInfoList):
+def printFinalResults(configVarList, maxFitIndexes, bestSol_FitList, bestSol_ResumRelatList, bestSol_extractInfoList, final_time=0.0):
+    # Time spent on run
+    print("Total duration (sec):", final_time)
+
     # Printing the Run-Config
     print("Run-Config values of the algorithm:")
     with pandas.option_context('display.max_rows', 999):

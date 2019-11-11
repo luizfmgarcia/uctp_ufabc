@@ -87,7 +87,7 @@ class Candidate:
         relation = [Subject, Prof]
         self.relationsList.append(relation)
 
-    def setRelationsList(self, List): self.relationsList = List
+    def setRelationsList(self, newList): self.relationsList = newList
 
     def getRelationsList(self): return self.relationsList
 
@@ -122,10 +122,10 @@ class Solutions:
 
     def addCand(self, candidate): self.candidatesList.append(candidate)
 
-    def setCandList(self, List): self.candidatesList = List
+    def setCandList(self, newList): self.candidatesList = newList
 
     def getCandList(self): return self.candidatesList
 
-    def resetCandList(self): self.candidatesList = []
+    def resetCandList(self): self.candidatesList.clear()
 
 #==============================================================================================================

@@ -9,80 +9,121 @@ import itertools
 
 #-------------------------------------------------------
 
-def getFit(instance):
-    folderName = 'results/run_' + str(instance)
-    fileName = folderName + '/runConfigResult_' + str(instance) + '.csv'
-    lineToSearch = 'Index/Fit:'
-
+def getFitTime(i):
+    folderName = 'results/run_' + str(i)
+    fileName = folderName + '/runConfigResult_' + str(i) + '.csv'
+    search_fit = 'Index/Fit:'
+    search_time = 'Time (sec)'
+    search_firstFea = 'First Feas Sol at (iter):'
     with open(fileName, encoding='unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         for row in spamreader:
-            if(len(row) > 0 and lineToSearch in str(row[0])):
-                instance = row[2]
-                break
-        csvfile.close()
-    return instance
+            if(len(row) > 0):
+                if(search_fit in str(row[0])): fit = row[2]
+                if(search_time in str(row[0])): time = row[1]
+                if(search_firstFea in str(row[0])): firstFea = row[1]
+    csvfile.close()
+    return fit, time, firstFea
 
 #-------------------------------------------------------
 
-def outFit(i, fit):
+def outFitTime(i, fit, final_time, firstFea):
     outFile = 'fitInstances.csv'
     # First instance - Verify and delete file if already exists
-    if(i == 0 and os.path.exists(outFile)): os.remove(outFile)
+    if(i == 1 and os.path.exists(outFile)): os.remove(outFile)
     
     with open(outFile, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        if(i == 0): spamwriter.writerow(['Inst', 'Fit'])
-        spamwriter.writerow([i, fit])
+        if(i == 1): spamwriter.writerow(['Inst', 'Fit', 'Time (sec)', 'First Feas (at Iter)'])
+        spamwriter.writerow([i, fit, final_time, firstFea])
     csvfile.close()
 
 #-------------------------------------------------------
 
 # Run sequentially different configurations
-if(1):
-    # Deleting old results
-    shutil.rmtree('results')
-    os.makedirs('results')
+def runSeq(initialNum=1, repeatRunNum=3):
+    # Repetitions of the run
+    for currRun in range(initialNum, repeatRunNum + 1):
+        # Deleting old results
+        if os.path.exists('results'):
+            shutil.rmtree('results')
+        # Creating a new folder
+        os.makedirs('results')
 
-    with open("manyInstances.csv", encoding='unicode_escape') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=';')
-        next(spamreader, None)  # Skip the headers
-        i = 0 # Each instance
-        
-        # Execute the algorithm for each instance
-        for row in spamreader:
-            print("Executing the alg. with config:" + str(i))
-            executeString = "src\main.py"
-            # Gathering config values to execute (cmd) the algorithm with params
-            for r in row: executeString = executeString + " " + str(r)
-            os.system(executeString) # Executing
-            fit = getFit(i) # Get fit obtained of curr instance
-            outFit(i, fit) # Output Fit
-            i = i + 1 # Next instance
+        with open("manyInstances.csv", encoding='unicode_escape') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=';')
+            next(spamreader, None)  # Skip the headers
+            i = 1 # Each instance
+            
+            # Execute the algorithm for each instance
+            for row in spamreader:
+                print("Executing the alg. with config:" + str(i))
+                executeString = "src" + os.sep + "main.py"
+                # Gathering config values to execute (cmd) the algorithm with params
+                for r in row: executeString = executeString + " " + str(r)
+                os.system(executeString) # Executing
+                fit, time, firstFea = getFitTime(i) # Get fitTime obtained of curr instance
+                outFitTime(i, fit, time, firstFea) # Output fitTime
+                i = i + 1 # Next instance
+        csvfile.close()
+
+        # Renaming folders to next run
+        os.rename('fitInstances.csv', 'fitInstances' + str(currRun) + '.csv')
+        os.rename('results', 'results' + str(currRun))
+
+#-------------------------------------------------------
 
 # Generate Cartesian Product of all different values for each config
-else:
+def genConfig():
+    # Num Cand: [1, 2, 5, 10, 15, 20, 30, 50, 70, 100]
+    # Elitism
+    #   Indv: 0, 1, 5, 10, 15, 20
+    #   %: [0, 5, 25, 50, 75, 100]
+    # Crossover
+    #   Indv: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20
+    #   %: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # twoPointsCross = [0, 1, -1]
+    # Reposition: [0, 1]
+    # Weights
+    #   Complete: [0.05, 0.25, 0.5, 0.75, 1.0]
+    #   Partial: [0.05, 0.5, 0.75]
     printSteps = [1]
     asks = [0]
     maxNum_Iter = [10000]
     maxNumCand_perPop = [20]
-    numCandInit = [50]
-    convergDetect = [1000]
-    stopFitValue = [0]
-    pctParentsCross = [90]
-    pctMut_childCross = [15]
-    pctElitism = [5]
-    w_alpha = [1.0]
-    w_beta = [1.0]
-    w_gamma = [1.0]
-    w_delta = [0.05, 0.25, 0.5, 0.75, 1.0]
-    w_omega = [0.05, 0.25, 0.5, 0.75, 1.0]
-    w_sigma = [0.05, 0.25, 0.5, 0.75, 1.0]
-    w_pi = [0.05, 0.25, 0.5, 0.75, 1.0]
-    w_rho = [0.05, 0.25, 0.5, 0.75, 1.0]
-    w_lambda = [0.05, 0.25, 0.5, 0.75, 1.0]
-    w_theta = [0.05, 0.25, 0.5, 0.75, 1.0]
+    convergDetect = [500]
+    pctParentsCross = [80]
+    pctElitism = [25]
+    twoPointsCross = [1]
+    reposCross = [0]
+    reposSelInf = [0, 1]
+    reposSelFea = [1]
+    w_alpha = [0.05, 0.5, 0.75]
+    w_beta = [0.05, 0.5, 0.75]
+    w_gamma = [0.05, 0.5, 0.75]
+    w_delta = [0.25]
+    w_omega = [0.25]
+    w_sigma = [0.25]
+    w_pi = [0.25]
+    w_rho = [0.25]
+    w_lambda = [0.75]
+    w_theta = [0.75]
 
-    result = itertools.product(printSteps, asks, maxNum_Iter, maxNumCand_perPop, numCandInit, convergDetect, stopFitValue, pctParentsCross, pctMut_childCross, pctElitism, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta)
+    # Getting the product of all possibilities
+    result = itertools.product(printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, 
+    reposCross, reposSelInf, reposSelFea, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta)
+    
+    # Transforming the Product to list of configs
+    result = str(list(result))[2:-2]
+    result = result.replace(', ',';')[:]
+    result = result.split(");(")[:]
+    
+    # Recording Configs
+    with open('manyInstances.csv', 'w') as f:
+        f.write("printSteps;asks;maxNum_Iter;maxNumCand_perPop;convergDetect;pctParentsCross;pctElitism;twoPointsCross;reposCross;reposSelInf;reposSelFea;w_alpha;w_beta;w_gamma;w_delta;w_omega;w_sigma;w_pi;w_rho;w_lambda;w_theta" + '\n')
+        for line in result: f.write(line + '\n')
 
-    with open('mxt.txt', 'w+') as f: f.write(str(list(result)))
+#-------------------------------------------------------
+
+genConfig()
+runSeq()
