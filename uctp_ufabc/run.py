@@ -14,28 +14,26 @@ def getFitTime(i):
     fileName = folderName + '/runConfigResult_' + str(i) + '.csv'
     search_fit = 'Index/Fit:'
     search_time = 'Time (sec)'
-    search_firstFea = 'First Feas Sol at (iter):'
     with open(fileName, encoding='unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         for row in spamreader:
             if(len(row) > 0):
                 if(search_fit in str(row[0])): fit = row[2]
                 if(search_time in str(row[0])): time = row[1]
-                if(search_firstFea in str(row[0])): firstFea = row[1]
     csvfile.close()
-    return fit, time, firstFea
+    return fit, time
 
 #-------------------------------------------------------
 
-def outFitTime(i, fit, final_time, firstFea):
+def outFitTime(i, fit, final_time):
     outFile = 'fitInstances.csv'
     # First instance - Verify and delete file if already exists
     if(i == 1 and os.path.exists(outFile)): os.remove(outFile)
     
     with open(outFile, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        if(i == 1): spamwriter.writerow(['Inst', 'Fit', 'Time (sec)', 'First Feas (at Iter)'])
-        spamwriter.writerow([i, fit, final_time, firstFea])
+        if(i == 1): spamwriter.writerow(['Inst', 'Fit', 'Time (sec)'])
+        spamwriter.writerow([i, fit, final_time])
     csvfile.close()
 
 #-------------------------------------------------------
@@ -62,8 +60,8 @@ def runSeq(initialNum=1, repeatRunNum=3):
                 # Gathering config values to execute (cmd) the algorithm with params
                 for r in row: executeString = executeString + " " + str(r)
                 os.system(executeString) # Executing
-                fit, time, firstFea = getFitTime(i) # Get fitTime obtained of curr instance
-                outFitTime(i, fit, time, firstFea) # Output fitTime
+                fit, time = getFitTime(i) # Get fitTime obtained of curr instance
+                outFitTime(i, fit, time) # Output fitTime
                 i = i + 1 # Next instance
         csvfile.close()
 
@@ -96,18 +94,18 @@ def genConfig():
     pctElitism = [25]
     twoPointsCross = [1]
     reposCross = [0]
-    reposSelInf = [0, 1]
+    reposSelInf = [0]
     reposSelFea = [1]
-    w_alpha = [0.05, 0.5, 0.75]
-    w_beta = [0.05, 0.5, 0.75]
-    w_gamma = [0.05, 0.5, 0.75]
-    w_delta = [0.25]
-    w_omega = [0.25]
-    w_sigma = [0.25]
-    w_pi = [0.25]
-    w_rho = [0.25]
-    w_lambda = [0.75]
-    w_theta = [0.75]
+    w_alpha = [0.75]
+    w_beta = [0.75]
+    w_gamma = [0.75]
+    w_delta = [0.05, 0.5, 0.75]
+    w_omega = [0.05, 0.5, 0.75]
+    w_sigma = [0.05, 0.5, 0.75]
+    w_pi = [0.05, 0.5, 0.75]
+    w_rho = [0.05, 0.5, 0.75]
+    w_lambda = [0.05, 0.5, 0.75]
+    w_theta = [0.05, 0.5, 0.75]
 
     # Getting the product of all possibilities
     result = itertools.product(printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, 
