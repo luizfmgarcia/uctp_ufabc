@@ -7,39 +7,45 @@ import csv
 import shutil
 import itertools
 
+search_fit = 'Fit' # All
+search_time = 'Time (sec)' # All
+search_first = 'First Feas Sol at (iter)' # Infeas.
+search_last = 'Last Iter' # NumCand
+search_record = 'Record Num Iter No New Max' # NumCand
 #-------------------------------------------------------
 
 def getFitTime(i):
     folderName = 'results/run_' + str(i)
     fileName = folderName + '/runConfigResult_' + str(i) + '.csv'
-    search_fit = 'Index/Fit:'
-    search_time = 'Time (sec)'
     with open(fileName, encoding='unicode_escape') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=';')
         for row in spamreader:
             if(len(row) > 0):
                 if(search_fit in str(row[0])): fit = row[2]
                 if(search_time in str(row[0])): time = row[1]
+                if(search_first in str(row[0])): first = row[1]
+                if(search_last in str(row[0])): last = row[1]
+                if(search_record in str(row[0])): record = row[1]
     csvfile.close()
-    return fit, time
+    return fit, time, first, last, record
 
 #-------------------------------------------------------
 
-def outFitTime(i, fit, final_time):
+def outFitTime(i, fit, time, first, last, record):
     outFile = 'fitInstances.csv'
     # First instance - Verify and delete file if already exists
     if(i == 1 and os.path.exists(outFile)): os.remove(outFile)
     
     with open(outFile, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        if(i == 1): spamwriter.writerow(['Inst', 'Fit', 'Time (sec)'])
-        spamwriter.writerow([i, fit, final_time])
+        if(i == 1): spamwriter.writerow(['Inst', search_fit, search_time, 'First Feas (at Iter)'])
+        spamwriter.writerow([i, fit, time, first])
     csvfile.close()
 
 #-------------------------------------------------------
 
 # Run sequentially different configurations
-def runSeq(initialNum=1, repeatRunNum=3):
+def runSeq(initialNum=4, repeatRunNum=10):
     # Repetitions of the run
     for currRun in range(initialNum, repeatRunNum + 1):
         # Deleting old results
@@ -60,8 +66,8 @@ def runSeq(initialNum=1, repeatRunNum=3):
                 # Gathering config values to execute (cmd) the algorithm with params
                 for r in row: executeString = executeString + " " + str(r)
                 os.system(executeString) # Executing
-                fit, time = getFitTime(i) # Get fitTime obtained of curr instance
-                outFitTime(i, fit, time) # Output fitTime
+                fit, time, first, last, record = getFitTime(i) # Get fitTime obtained of curr instance
+                outFitTime(i, fit, time, first, last, record) # Output fit, Time and others
                 i = i + 1 # Next instance
         csvfile.close()
 
@@ -123,5 +129,5 @@ def genConfig():
 
 #-------------------------------------------------------
 
-genConfig()
+#genConfig()
 runSeq()
