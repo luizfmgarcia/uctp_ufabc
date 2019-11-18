@@ -38,14 +38,14 @@ def outFitTime(i, fit, time, first, last, record):
     
     with open(outFile, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        if(i == 1): spamwriter.writerow(['Inst', search_fit, search_time, 'First Feas (at Iter)'])
-        spamwriter.writerow([i, fit, time, first])
+        if(i == 1): spamwriter.writerow(['Inst', search_fit, search_time, 'First Feas (at Iter)', search_last, search_record])
+        spamwriter.writerow([i, fit, time, first, last, record])
     csvfile.close()
 
 #-------------------------------------------------------
 
 # Run sequentially different configurations
-def runSeq(initialNum=4, repeatRunNum=10):
+def runSeq(initialNum=1, repeatRunNum=10):
     # Repetitions of the run
     for currRun in range(initialNum, repeatRunNum + 1):
         # Deleting old results
