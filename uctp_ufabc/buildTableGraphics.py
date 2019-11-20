@@ -39,19 +39,17 @@ def mma():
 #----------------------------------------------------------------------------        
 
 def instances():
-    num = 10
-    x_title = "pctParentsCross"
-    hue_title = "reposCross"
+    num = 6
+    x_title = "feaWeights"
+    hue_title = ""
     
     configs = pd.read_csv("manyInstances.csv", sep=";")
-    
     for i in range(1,num+1):
         table = pd.read_csv("fitInstances"+str(i)+".csv", sep=";")
         y_title = list(table)[1:]
-        # Final with only important colums
-        table1 = pd.DataFrame({"Inst": table["Inst"], x_title: configs[x_title], hue_title: configs[hue_title]})
+        table1 = pd.DataFrame(table[list(table)[0]]) 
         table2 = pd.DataFrame(table, columns=y_title)
-        table = pd.concat([table1, table2], axis=1, join='inner')
+        table = pd.concat([table1, configs, table2], axis=1, join='inner')
         
         if(i==1):
             finalSumAvg = table
@@ -61,19 +59,37 @@ def instances():
             finalAppend = finalAppend.append(table) 
     
     finalSumAvg = finalSumAvg/num
-    finalSumAvg.to_csv("finalSumAvg.csv", sep=";")
-    finalAppend.to_csv("finalAppend.csv", sep=";")
+    finalSumAvg.to_csv(x_title+"_finalSumAvg.csv", sep=";")
+    finalAppend.to_csv(x_title+"_finalAppend.csv", sep=";")
     
     # Other infos
     otherInfoT = finalSumAvg.describe()
     otherInfoA = finalAppend.describe()
-    otherInfoT.to_csv("otherInfoSumAvg.csv", sep=";")
-    otherInfoA.to_csv("otherInfoAppend.csv", sep=";")
+    otherInfoT.to_csv(x_title+"_otherInfoSumAvg.csv", sep=";")
+    otherInfoA.to_csv(x_title+"_otherInfoAppend.csv", sep=";")
     
     # Plotting
-    final = pd.read_csv("finalAppend.csv", sep=";")
+    final = pd.read_csv(x_title+"_finalAppend.csv", sep=";")
+    #These lines concat all the weights  - when needed
+    #final["infWeights"] = final['w_alpha'].astype(str)+","+final['w_beta'].astype(str)+","+final['w_gamma'].astype(str)
+    final["feaWeights"] = final['w_delta'].astype(str)+","+final['w_omega'].astype(str)+","+final['w_sigma'].astype(str)+","+final['w_pi'].astype(str)+","+final['w_rho'].astype(str)+","+final['w_lambda'].astype(str)+","+final['w_theta'].astype(str)
+    
     for i in y_title:
-        fig = sns.catplot(x=x_title, y=i, hue=hue_title, data=final, kind="box", aspect=2)
-        fig.savefig(x_title+"_"+hue_title+"_"+i+"_box.png", dpi=120)
-        fig = sns.relplot(x=x_title, y=i, hue=hue_title, data=final, marker="o", kind="line", aspect=2)
-        fig.savefig(x_title+"_"+hue_title+"_"+i+"_line.png", dpi=120)
+        if(hue_title != ''):
+            fig = sns.catplot(x=x_title, y=i, hue=hue_title, data=final, kind="box", aspect=2)
+            fig.set_xticklabels(rotation=80)
+            #plt.tight_layout()
+            fig.savefig(x_title+"_"+hue_title+"_"+i+"_box.png", dpi=120)
+            fig = sns.relplot(x=x_title, y=i, hue=hue_title, data=final, marker="o", kind="line", aspect=2)
+            fig.set_xticklabels(rotation=80)
+            #plt.tight_layout()
+            fig.savefig(x_title+"_"+hue_title+"_"+i+"_line.png", dpi=120)
+        else:
+            fig = sns.catplot(x=x_title, y=i, data=final, kind="box", aspect=2)
+            fig.set_xticklabels(rotation=80)
+            plt.tight_layout()
+            fig.savefig(x_title+"_"+i+"_box.png", dpi=120)
+            fig = sns.relplot(x=x_title, y=i, data=final, marker="o", kind="line", aspect=2)
+            fig.set_xticklabels(rotation=80)
+            plt.tight_layout()
+            fig.savefig(x_title+"_"+i+"_line.png", dpi=120)

@@ -49,8 +49,7 @@ def runSeq(initialNum=1, repeatRunNum=10):
     # Repetitions of the run
     for currRun in range(initialNum, repeatRunNum + 1):
         # Deleting old results
-        if os.path.exists('results'):
-            shutil.rmtree('results')
+        if os.path.exists('results'): shutil.rmtree('results')
         # Creating a new folder
         os.makedirs('results')
 
@@ -72,8 +71,12 @@ def runSeq(initialNum=1, repeatRunNum=10):
         csvfile.close()
 
         # Renaming folders to next run
-        os.rename('fitInstances.csv', 'fitInstances' + str(currRun) + '.csv')
-        os.rename('results', 'results' + str(currRun))
+        newName = ['fitInstances' + str(currRun) + '.csv', 'results' + str(currRun)]
+        # Deleting old results
+        for name in newName:
+            if os.path.exists(name): shutil.rmtree(name)
+        os.rename('fitInstances.csv', newName[0])
+        os.rename('results', newName[1])
 
 #-------------------------------------------------------
 

@@ -6,7 +6,8 @@ import random
 
 # Set '1' to allow, during the run, the print on terminal of some steps
 printSteps = 0
-
+# 0: no rand / 1: with possibility of rand / 2: only rand
+mutWithRand = 1
 #==============================================================================================================
 
 # Create the first generation of solutions
@@ -612,7 +613,9 @@ def mutationI(candidate, profList, subjList, subjIsPrefList):
     flag_work_done = False
     while(flag_work_done == False):
         # Choosing one type of restriction to repair
-        problemType = random.randrange(0,4)
+        if(mutWithRand == 0): problemType = random.randrange(1,4)
+        if(mutWithRand == 1): problemType = random.randrange(0,4)
+        if(mutWithRand == 2): problemType = 0
         
         # (0) No repair -> Random Change
         if(problemType == 0): flag_work_done, newCand = mutationRand(candidate, profList)
@@ -643,7 +646,9 @@ def mutationF(candidate, profList, subjList, subjIsPrefList):
     flag_work_done = False
     while(flag_work_done == False):
         # Choosing one type of 'Improvement work'
-        adjustType = random.randrange(0,6)
+        if(mutWithRand == 0): adjustType = random.randrange(1,6)
+        if(mutWithRand == 1): adjustType = random.randrange(0,6)
+        if(mutWithRand == 2): adjustType = 0
         
         # (0) No 'Improvement work' -> Random Change
         if(adjustType == 0): flag_work_done, newCand = mutationRand(candidate, profList)

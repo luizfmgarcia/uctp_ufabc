@@ -1,0 +1,4 @@
+;Inst;printSteps;asks;withRand;maxNum_Iter;maxNumCand_perPop;convergDetect;pctParentsCross;pctElitism;twoPointsCross;reposCross;reposSelInf;reposSelFea;w_alpha;w_beta;w_gamma;w_delta;w_omega;w_sigma;w_pi;w_rho;w_lambda;w_theta;Fit;Time (sec);First Feas (at Iter);Last Iter;Record Num Iter No New Max
+0;1.0;1.0;0.0;0.0;10000.0;20.0;500.0;80.0;25.0;1.0;0.0;0.0;1.0;0.75;0.75;0.75;0.25;0.25;0.25;0.25;0.25;0.75;0.75;0.8156906564144212;116.44497425556183;11.3;2045.5;239.6
+1;2.0;1.0;0.0;1.0;10000.0;20.0;500.0;80.0;25.0;1.0;0.0;0.0;1.0;0.75;0.75;0.75;0.25;0.25;0.25;0.25;0.25;0.75;0.75;0.815546496548821;167.4019376039505;16.3;2124.1;246.0
+2;3.0;1.0;0.0;2.0;10000.0;20.0;500.0;80.0;25.0;1.0;0.0;0.0;1.0;0.75;0.75;0.75;0.25;0.25;0.25;0.25;0.25;0.75;0.75;0.8001280056390228;344.08596482276914;382.3;5937.2;393.9
