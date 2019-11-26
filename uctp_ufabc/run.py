@@ -15,6 +15,7 @@ search_record = 'Record Num Iter No New Max' # NumCand
 #-------------------------------------------------------
 
 def getFitTime(i):
+    fit, time, first, last, record = '', '', '', '', ''
     folderName = 'results/run_' + str(i)
     fileName = folderName + '/runConfigResult_' + str(i) + '.csv'
     with open(fileName, encoding='unicode_escape') as csvfile:
@@ -90,35 +91,38 @@ def genConfig():
     #   Indv: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20
     #   %: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     # twoPointsCross = [0, 1, -1]
+    # mutWithRand = [0, 1, 2]
     # Reposition: [0, 1]
     # Weights
     #   Complete: [0.05, 0.25, 0.5, 0.75, 1.0]
     #   Partial: [0.05, 0.5, 0.75]
-    printSteps = [1]
+    printSteps = [0]
     asks = [0]
     maxNum_Iter = [10000]
     maxNumCand_perPop = [20]
     convergDetect = [500]
     pctParentsCross = [80]
     pctElitism = [25]
-    twoPointsCross = [1]
-    reposCross = [0]
+    twoPointsCross = [0, 1, -1]
+    reposCross = [0, 1]
     reposSelInf = [0]
     reposSelFea = [1]
+    mutWithRand = [1]
+
     w_alpha = [0.75]
     w_beta = [0.75]
     w_gamma = [0.75]
-    w_delta = [0.05, 0.5, 0.75]
-    w_omega = [0.05, 0.5, 0.75]
-    w_sigma = [0.05, 0.5, 0.75]
-    w_pi = [0.05, 0.5, 0.75]
-    w_rho = [0.05, 0.5, 0.75]
-    w_lambda = [0.05, 0.5, 0.75]
-    w_theta = [0.05, 0.5, 0.75]
+    w_delta = [0.25]
+    w_omega = [0.25]
+    w_sigma = [0.25]
+    w_pi = [0.25]
+    w_rho = [0.25]
+    w_lambda = [0.75]
+    w_theta = [0.75]
 
     # Getting the product of all possibilities
     result = itertools.product(printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, 
-    reposCross, reposSelInf, reposSelFea, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta)
+    reposCross, reposSelInf, reposSelFea, mutWithRand, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta)
     
     # Transforming the Product to list of configs
     result = str(list(result))[2:-2]
@@ -127,10 +131,10 @@ def genConfig():
     
     # Recording Configs
     with open('manyInstances.csv', 'w') as f:
-        f.write("printSteps;asks;maxNum_Iter;maxNumCand_perPop;convergDetect;pctParentsCross;pctElitism;twoPointsCross;reposCross;reposSelInf;reposSelFea;w_alpha;w_beta;w_gamma;w_delta;w_omega;w_sigma;w_pi;w_rho;w_lambda;w_theta" + '\n')
+        f.write("printSteps;asks;maxNum_Iter;maxNumCand_perPop;convergDetect;pctParentsCross;pctElitism;twoPointsCross;reposCross;reposSelInf;reposSelFea;mutWithRand;w_alpha;w_beta;w_gamma;w_delta;w_omega;w_sigma;w_pi;w_rho;w_lambda;w_theta" + '\n')
         for line in result: f.write(line + '\n')
 
 #-------------------------------------------------------
 
-#genConfig()
-runSeq()
+genConfig()
+runSeq(1,10)

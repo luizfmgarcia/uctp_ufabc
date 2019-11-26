@@ -41,10 +41,10 @@ final_FileName = 'runConfigResult'
 titles1_objFeat = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
                     'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
                     'pPrefSubjQ3List', 'pPrefSubjLimList']
-titles2_bestSolFeat = ['pName', 'numSubj', 'notPrefRestr', '/Relax', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 
+titles2_bestSolFeat = ['index','pName', 'numSubj', 'notPrefRestr', '/Relax', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 
                     'numI3', 'difCharge']
 titles3_configVar = ['maxNum_Iter', 'maxNumCand_perPop', 'convergDetect', 'pctParentsCross', 'pctElitism', 'twoPointsCross',
-                    'reposCross', 'reposSelInf', 'reposSelFea', 'w_alpha', 'w_beta', 'w_gamma', 
+                    'reposCross', 'reposSelInf', 'reposSelFea', 'mutWithRand', 'w_alpha', 'w_beta', 'w_gamma', 
                     'w_delta', 'w_omega', 'w_sigma', 'w_pi', 'w_rho', 'w_lambda', 'w_theta']
 
 #==============================================================================================================
@@ -107,17 +107,19 @@ def getConfig():
     maxNum_Iter = 10000 # Max Number of iterations to get a solution
     maxNumCand_perPop = 20 # Number of candidates in a generation (same for each Pop Feas./Inf.)
     # Convergence Detector: number of iterations passed since last MaxFit found
-    convergDetect = 500 # equal '0' to not consider this condition
+    convergDetect = 1000 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 80 # The rest (to complete 100%) will pass through Mutation
+    pctParentsCross = 100 # The rest (to complete 100%) will pass through Mutation
     pctElitism = 5 # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
-    twoPointsCross = 1 # Crossover using 2 cut points (1), 1 cut Point (0), Random (-1)
+    twoPointsCross = 0 # Crossover using 2 cut points (1), 1 cut Point (0), Random (-1)
     # Main Roulettes Reposition Config (1: True / 0: False)
-    reposCross = 1
+    reposCross = 0
     reposSelInf = 0
     reposSelFea = 0
+    # 0: no rand / 1: with possibility of rand / 2: only rand
+    mutWithRand = 1
 
     # WEIGHTS CONFIG (must be Float)
     w_alpha = 1.0   # i1 - Prof without Subj
@@ -135,10 +137,10 @@ def getConfig():
     #----------------------------------------------------------------------------------------------------------
     # CONFIGURATION by Command Line
     if(len(sys.argv) > 3):
-        printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, reposCross, reposSelInf, reposSelFea, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = (value for value in sys.argv[1:])
+        printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, reposCross, reposSelInf, reposSelFea, mutWithRand, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = (value for value in sys.argv[1:])
     #----------------------------------------------------------------------------------------------------------
 
-    return int(printSteps), int(asks), int(maxNum_Iter), int(maxNumCand_perPop), int(convergDetect), int(pctParentsCross), int(pctElitism), int(twoPointsCross), int(reposCross), int(reposSelInf), int(reposSelFea), float(w_alpha), float(w_beta), float(w_gamma), float(w_delta), float(w_omega), float(w_sigma), float(w_pi), float(w_rho), float(w_lambda), float(w_theta)
+    return int(printSteps), int(asks), int(maxNum_Iter), int(maxNumCand_perPop), int(convergDetect), int(pctParentsCross), int(pctElitism), int(twoPointsCross), int(reposCross), int(reposSelInf), int(reposSelFea), int(mutWithRand), float(w_alpha), float(w_beta), float(w_gamma), float(w_delta), float(w_omega), float(w_sigma), float(w_pi), float(w_rho), float(w_lambda), float(w_theta)
 
 #==============================================================================================================
 

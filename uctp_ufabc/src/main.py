@@ -18,7 +18,7 @@ import time
 
 class main():
     # Get CONFIG var values
-    printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, reposCross, reposSelInf, reposSelFea, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = ioData.getConfig()
+    printSteps, asks, maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross, reposCross, reposSelInf, reposSelFea, mutWithRand, w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta = ioData.getConfig()
 
     #----------------------------------------------------------------------------------------------------------
     # MAIN VARIABLES
@@ -28,7 +28,7 @@ class main():
     # Gathering all CONFIG variables
     weightsList = [w_alpha, w_beta, w_gamma, w_delta, w_omega, w_sigma, w_pi, w_rho, w_lambda, w_theta]
     configVarList = [maxNum_Iter, maxNumCand_perPop, convergDetect, pctParentsCross, pctElitism, twoPointsCross,
-                    reposCross, reposSelInf, reposSelFea] + weightsList
+                    reposCross, reposSelInf, reposSelFea, mutWithRand] + weightsList
 
     profList, subjList = [], [] # Base Lists of Professors and Subjects - never modified through the run
 
@@ -60,8 +60,8 @@ class main():
     stopReturn = False
     while(not stopReturn):
         # Choosing Parents to generate children (put all new into 'solutionsNoPop')
-        uctp.offspringI(solutionsNoPop, solutionsI, profList, subjList, subjIsPrefList)
-        uctp.offspringF(solutionsNoPop, solutionsF, profList, subjList, subjIsPrefList, maxNumCand_perPop, pctParentsCross, reposCross, twoPointsCross)
+        uctp.offspringI(solutionsNoPop, solutionsI, profList, subjList, subjIsPrefList, mutWithRand)
+        uctp.offspringF(solutionsNoPop, solutionsF, profList, subjList, subjIsPrefList, maxNumCand_perPop, pctParentsCross, reposCross, twoPointsCross, mutWithRand)
 
         # Classification and Fitness calculation of all new candidates
         uctp.twoPop(solutionsNoPop, infPool, feaPool, profList, subjList, weightsList, numInfWeights)
