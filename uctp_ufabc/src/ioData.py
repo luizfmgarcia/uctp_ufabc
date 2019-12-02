@@ -41,7 +41,7 @@ final_FileName = 'runConfigResult'
 titles1_objFeat = ['sLevel', 'sCode', 'sName', 'sQuadri', 'sPeriod', 'sCampus', 'sCharge', 'sTimetableList','pName', 
                     'pPeriod', 'pCharge', 'pQuadriSabbath', 'pPrefCampus', 'pPrefSubjQ1List', 'pPrefSubjQ2List', 
                     'pPrefSubjQ3List', 'pPrefSubjLimList']
-titles2_bestSolFeat = ['index','pName', 'numSubj', 'notPrefRestr', '/Relax', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 
+titles2_bestSolFeat = ['pName', 'numSubj', 'notPrefRestr', '/Relax', 'notPeriod', 'isSabbath', 'notCampus', 'numI2', 
                     'numI3', 'difCharge']
 titles3_configVar = ['maxNum_Iter', 'maxNumCand_perPop', 'convergDetect', 'pctParentsCross', 'pctElitism', 'twoPointsCross',
                     'reposCross', 'reposSelInf', 'reposSelFea', 'mutWithRand', 'w_alpha', 'w_beta', 'w_gamma', 
@@ -105,15 +105,15 @@ def getConfig():
     printSteps = 1 # Set '1' to allow, during the run, the print on terminal of some important steps
     asks = 1 # Set '1' to allow, during the run, some asks
     maxNum_Iter = 10000 # Max Number of iterations to get a solution
-    maxNumCand_perPop = 20 # Number of candidates in a generation (same for each Pop Feas./Inf.)
+    maxNumCand_perPop = 50 # Number of candidates in a generation (same for each Pop Feas./Inf.)
     # Convergence Detector: number of iterations passed since last MaxFit found
-    convergDetect = 1000 # equal '0' to not consider this condition
+    convergDetect = 500 # equal '0' to not consider this condition
  
     # OPERATORS CONFIG (Must be between '0' and '100')
     # Percentage of candidates from Feasible Pop. that will be selected, to become Parents and make Crossovers, through a Roulette Wheel with Reposition
-    pctParentsCross = 100 # The rest (to complete 100%) will pass through Mutation
-    pctElitism = 5 # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
-    twoPointsCross = 0 # Crossover using 2 cut points (1), 1 cut Point (0), Random (-1)
+    pctParentsCross = 50 # The rest (to complete 100%) will pass through Mutation
+    pctElitism = 25 # Percentage of selection by elitism of feasible candidates, the rest of them will pass through a Roulette Wheel
+    twoPointsCross = 1 # Crossover using 2 cut points (1), 1 cut Point (0), Random (-1)
     # Main Roulettes Reposition Config (1: True / 0: False)
     reposCross = 0
     reposSelInf = 0
@@ -122,17 +122,17 @@ def getConfig():
     mutWithRand = 1
 
     # WEIGHTS CONFIG (must be Float)
-    w_alpha = 1.0   # i1 - Prof without Subj
-    w_beta = 1.0    # i2 - Subjs (same Prof), same quadri and timetable conflicts
-    w_gamma = 1.0   # i3 - Subjs (same Prof), same quadri and day but in different campus
-    
-    w_delta = 0.25   # f1 - Balance of distribution of Subjs between Profs with each pCharge
-    w_omega = 0.25   # f2 - Profs preference Subjects
-    w_sigma = 0.25   # f3 - Profs with Subjs in quadriSabbath
-    w_pi = 0.25      # f4 - Profs with Subjs in Period
-    w_rho = 0.25     # f5 - Profs with Subjs in Campus
-    w_lambda = 0.75  # f6 - Balance of distribution of Subjs between Profs with an average
-    w_theta = 0.75   # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
+    w_alpha = 0.75   # i1 - Prof without Subj
+    w_beta = 0.75    # i2 - Subjs (same Prof), same quadri and timetable conflicts
+    w_gamma = 0.75   # i3 - Subjs (same Prof), same quadri and day but in different campus
+
+    w_delta = 0.5   # f1 - Balance of distribution of Subjs between Profs with each pCharge
+    w_omega = 0.5   # f2 - Profs preference Subjects
+    w_sigma = 0.5   # f3 - Profs with Subjs in quadriSabbath
+    w_pi = 0.5      # f4 - Profs with Subjs in Period
+    w_rho = 0.5     # f5 - Profs with Subjs in Campus
+    w_lambda = 0.55  # f6 - Balance of distribution of Subjs between Profs with an average
+    w_theta = 0.55   # f7 - Quality of relations (subj (not) appears in some list of pref or/and same quadriList)
 
     #----------------------------------------------------------------------------------------------------------
     # CONFIGURATION by Command Line
