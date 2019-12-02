@@ -41,13 +41,12 @@ def mma():
 
 def instances():
     num = 10
-    x_title = "Inst"
-    hue_title = "reposSelInf"
+    x_title = "twoPointsCross"
+    hue_title = "reposCross"
     
     configs = pd.read_csv("manyInstances.csv", sep=";")
     for i in range(1,num+1):
-        #table = pd.read_csv("fitInstances"+str(i)+".csv", sep=";")
-        table = pd.read_csv("occurrSum"+str(i)+".csv", sep=";")
+        table = pd.read_csv("fitInstances"+str(i)+".csv", sep=";")
         y_title = list(table)[1:]
         table1 = pd.DataFrame(table[list(table)[0]]) 
         table2 = pd.DataFrame(table, columns=y_title)
