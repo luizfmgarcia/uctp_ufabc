@@ -12,75 +12,37 @@ search_time = 'Time (sec)' # All
 search_first = 'First Feas Sol at (iter)' # Infeas.
 search_last = 'Last Iter' # NumCand
 search_record = 'Record Num Iter No New Max' # NumCand
-#-------------------------------------------------------
-
-def getFitTime(i):
-    fit, time, first, last, record = '', '', '', '', ''
-    folderName = 'results/run_' + str(i)
-    fileName = folderName + '/runConfigResult_' + str(i) + '.csv'
-    with open(fileName, encoding='unicode_escape') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=';')
-        for row in spamreader:
-            if(len(row) > 0):
-                if(search_fit in str(row[0])): fit = row[2]
-                if(search_time in str(row[0])): time = row[1]
-                if(search_first in str(row[0])): first = row[1]
-                if(search_last in str(row[0])): last = row[1]
-                if(search_record in str(row[0])): record = row[1]
-    csvfile.close()
-    return fit, time, first, last, record
 
 #-------------------------------------------------------
 
-def outFitTime(i, fit, time, first, last, record):
-    outFile = 'fitInstances.csv'
-    # First instance - Verify and delete file if already exists
-    if(i == 1 and os.path.exists(outFile)): os.remove(outFile)
-    
-    with open(outFile, 'a', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        if(i == 1): spamwriter.writerow(['Inst', search_fit, search_time, 'First Feas (at Iter)', search_last, search_record])
-        spamwriter.writerow([i, fit, time, first, last, record])
-    csvfile.close()
-
-#-------------------------------------------------------
-
-# Run sequentially different configurations
-def runSeq(initialNum=1, repeatRunNum=10):
-    # Repetitions of the run
-    for currRun in range(initialNum, repeatRunNum + 1):
-        # Deleting old results
-        if os.path.exists('results'): shutil.rmtree('results')
-        # Creating a new folder
-        os.makedirs('results')
-
-        with open("manyInstances.csv", encoding='unicode_escape') as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=';')
-            next(spamreader, None)  # Skip the headers
-            i = 1 # Each instance
+# Compile all best final results (occurrences of problems) of all runs
+def getOccurr():
+    repeatRunNum1 = 10
+    repeatRunNum2 = 54
+    for j in range(1, repeatRunNum1 + 1):
+        outFile = 'occurrSum'+str(j)+'.csv'
+        if(os.path.exists(outFile)): os.remove(outFile)
+        for i in range(1, repeatRunNum2 + 1):
+            values = 0
+            folderName = 'results'+str(j)+'/run_' + str(i)
+            fileName = folderName + '/runConfigResult_' + str(i) + '.csv'
+            with open(fileName, encoding='unicode_escape') as csvfile:
+                spamreader = csv.reader(csvfile, delimiter=';')
+                for row in spamreader:
+                    if(len(row) > 0 and '36' in str(row[0]) and 'Total' in str(row[1])):
+                        values = row[3:]
+                        values = [float(k) for k in values]
+                        break
+            csvfile.close()
             
-            # Execute the algorithm for each instance
-            for row in spamreader:
-                print("Executing the alg. with config:" + str(i))
-                executeString = "src" + os.sep + "main.py"
-                # Gathering config values to execute (cmd) the algorithm with params
-                for r in row: executeString = executeString + " " + str(r)
-                os.system(executeString) # Executing
-                fit, time, first, last, record = getFitTime(i) # Get fitTime obtained of curr instance
-                outFitTime(i, fit, time, first, last, record) # Output fit, Time and others
-                i = i + 1 # Next instance
-        csvfile.close()
-
-        # Renaming folders to next run
-        newName = ['fitInstances' + str(currRun) + '.csv', 'results' + str(currRun)]
-        # Deleting old results
-        for name in newName:
-            if os.path.exists(name): shutil.rmtree(name)
-        os.rename('fitInstances.csv', newName[0])
-        os.rename('results', newName[1])
+            with open(outFile, 'a', newline='') as csvfile:
+                spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+                if(i == 1): spamwriter.writerow(['Inst', 'notPrefRestr','Relax','notPeriod','isSabbath','notCampus','numI2','numI3','difCharge','sumAll','sumNoDifCharge','sumNoDifChargeAndRelax'])
+                spamwriter.writerow([i]+values+[sum(values)]+[sum(values)-values[-1]]+[sum(values)-values[-1]-values[1]])
+            csvfile.close()
 
 #-------------------------------------------------------
-
+            
 # Generate Cartesian Product of all different values for each config
 def genConfig():
     # Num Cand: [1, 2, 5, 10, 15, 20, 30, 50, 70, 100]
@@ -133,6 +95,75 @@ def genConfig():
     with open('manyInstances.csv', 'w') as f:
         f.write("printSteps;asks;maxNum_Iter;maxNumCand_perPop;convergDetect;pctParentsCross;pctElitism;twoPointsCross;reposCross;reposSelInf;reposSelFea;mutWithRand;w_alpha;w_beta;w_gamma;w_delta;w_omega;w_sigma;w_pi;w_rho;w_lambda;w_theta" + '\n')
         for line in result: f.write(line + '\n')
+
+#-------------------------------------------------------
+        
+# Get only some values of each run
+def getFitTime(i):
+    fit, time, first, last, record = '', '', '', '', ''
+    folderName = 'results/run_' + str(i)
+    fileName = folderName + '/runConfigResult_' + str(i) + '.csv'
+    with open(fileName, encoding='unicode_escape') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=';')
+        for row in spamreader:
+            if(len(row) > 0):
+                if(search_fit in str(row[0])): fit = row[2]
+                if(search_time in str(row[0])): time = row[1]
+                if(search_first in str(row[0])): first = row[1]
+                if(search_last in str(row[0])): last = row[1]
+                if(search_record in str(row[0])): record = row[1]
+    csvfile.close()
+    return fit, time, first, last, record
+
+#-------------------------------------------------------
+
+# record important data of all run
+def outFitTime(i, fit, time, first, last, record):
+    outFile = 'fitInstances.csv'
+    # First instance - Verify and delete file if already exists
+    if(i == 1 and os.path.exists(outFile)): os.remove(outFile)
+    
+    with open(outFile, 'a', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        if(i == 1): spamwriter.writerow(['Inst', search_fit, search_time, 'First Feas (at Iter)', search_last, search_record])
+        spamwriter.writerow([i, fit, time, first, last, record])
+    csvfile.close()
+
+#-------------------------------------------------------
+
+# Run sequentially different configurations
+def runSeq(initialNum=1, repeatRunNum=10):
+    # Repetitions of the run
+    for currRun in range(initialNum, repeatRunNum + 1):
+        # Deleting old results
+        if os.path.exists('results'): shutil.rmtree('results')
+        # Creating a new folder
+        os.makedirs('results')
+
+        with open("manyInstances.csv", encoding='unicode_escape') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=';')
+            next(spamreader, None)  # Skip the headers
+            i = 1 # Each instance
+            
+            # Execute the algorithm for each instance
+            for row in spamreader:
+                print("Executing the alg. with config:" + str(i))
+                executeString = "src" + os.sep + "main.py"
+                # Gathering config values to execute (cmd) the algorithm with params
+                for r in row: executeString = executeString + " " + str(r)
+                os.system(executeString) # Executing
+                fit, time, first, last, record = getFitTime(i) # Get fitTime obtained of curr instance
+                outFitTime(i, fit, time, first, last, record) # Output fit, Time and others
+                i = i + 1 # Next instance
+        csvfile.close()
+
+        # Renaming folders to next run
+        newName = ['fitInstances' + str(currRun) + '.csv', 'results' + str(currRun)]
+        # Deleting old results
+        for name in newName:
+            if os.path.exists(name): shutil.rmtree(name)
+        os.rename('fitInstances.csv', newName[0])
+        os.rename('results', newName[1])
 
 #-------------------------------------------------------
 
